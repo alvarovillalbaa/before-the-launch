@@ -1,0 +1,4 @@
+interface:
+  display_name: "Code Slides"
+  short_description: "Create code-first decks and AI-image slide packs with strong visual direction"
+  default_prompt: "Use $code-slides to create a responsive code-based slide deck, explore distinct visual presets, convert a PPTX into a web presentation, or generate an AI-image slide pack from markdown or JSON content."

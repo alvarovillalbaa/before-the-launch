@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "skills": {
+    "agentic-development": {
+      "source": "alvarovillalbaa/plugins",
+      "sourceType": "github",
+      "skillPath": "engineering/skills/agentic-development/SKILL.md",
+      "computedHash": "a1d7b1022c4ed66692f7ee9bf3d9c49d6abce82b0ac1af04a858abf225f9b6c3"
+    },
+    "ai-engineering": {
+      "source": "alvarovillalbaa/plugins",
+      "sourceType": "github",
+      "skillPath": "engineering/skills/ai-engineering/SKILL.md",
+      "computedHash": "e01543ee473bc885856c64fa12000e9cf36fbdb1bb4fb0f13660138931373ed8"
+    },
+    "auto-improve": {
+      "source": "alvarovillalbaa/plugins",
+      "sourceType": "github",
+      "skillPath": "learning-system/skills/auto-improve/SKILL.md",
+      "computedHash": "35c45a82d4432d49ba1d329b0ee1b6bfa3fbe54cceaaf4c6c3cac982358c6be0"
+    },
+    "backend": {
+      "source": "alvarovillalbaa/plugins",
+      "sourceType": "github",
+      "skillPath": "engineering/skills/backend/SKILL.md",
+      "computedHash": "feb87f054cb213968f0a14dfc83f38f203db213cfa64a067612cb0112f9fcb40"
+    },
+    "cloud-management": {
+      "source": "alvarovillalbaa/plugins",
+      "sourceType": "github",
+      "skillPath": "engineering/skills/cloud-management/SKILL.md",
+      "computedHash": "10e655452d8f60ccb638531530459fd288876267005260e8fef5e8035e5991db"
+    },
+    "code-as-images": {
+      "source": "alvarovillalbaa/plugins",
+      "sourceType": "github",
+      "skillPath": "marketing/skills/code-as-images/SKILL.md",
+      "computedHash": "9f2aee24d83e93ccfd5e3822e64edf5fbd51d643d220cd097bdf784539de54c0"
+    },
+    "code-documentation": {
+      "source": "alvarovillalbaa/plugins",
+      "sourceType": "github",
+      "skillPath": "engineering/skills/code-documentation/SKILL.md",
+      "computedHash": "d1dc480b96cfac696e00aa39f6bea8dbb7ed5be5e92e9b0152b0a8f80b8fa78c"
+    },
+    "code-slides": {
+      "source": "alvarovillalbaa/plugins",
+      "sourceType": "github",
+      "skillPath": "marketing/skills/code-slides/SKILL.md",
+      "computedHash": "0969f75a46c5cd38ce78343a74de509eb98cb468f10772369a7e8ff58cc584d7"
+    },
+    "content-writing": {
+      "source": "alvarovillalbaa/plugins",
+      "sourceType": "github",
+      "skillPath": "marketing/skills/content-writing/SKILL.md",
+      "computedHash": "927bb8556ee4af3b4f25c216e7f0dd9b57d519da1442cc377c6ce23f4b77ddfa"
+    },
+    "frontend": {
+      "source": "alvarovillalbaa/plugins",
+      "sourceType": "github",
+      "skillPath": "engineering/skills/frontend/SKILL.md",
+      "computedHash": "d2f6e66c3e4ce812fbb5dea5495fae949d40b8654b8e9c2e26c82fb8b80f14c8"
+    },
+    "html-visualization": {
+      "source": "alvarovillalbaa/plugins",
+      "sourceType": "github",
+      "skillPath": "marketing/skills/html-visual/SKILL.md",
+      "computedHash": "408c6e6686f88bc6bcea537d83c98704c735a5f8451afef16ef26a018f569352"
+    },
+    "memory-management": {
+      "source": "alvarovillalbaa/plugins",
+      "sourceType": "github",
+      "skillPath": "learning-system/skills/memory-management/SKILL.md",
+      "computedHash": "039cb72f1800f71b71b02cf3c2904f4e3cbb5d11c86863b695bec84b50814b0b"
+    },
+    "pentest": {
+      "source": "alvarovillalbaa/plugins",
+      "sourceType": "github",
+      "skillPath": "engineering/skills/pentest/SKILL.md",
+      "computedHash": "ebffedcaebdab9f284e6482b4546ad267a5c68e96cfca796407b12d4104c45eb"
+    },
+    "pr-management": {
+      "source": "alvarovillalbaa/plugins",
+      "sourceType": "github",
+      "skillPath": "engineering/skills/pr-management/SKILL.md",
+      "computedHash": "63e4096db43732f0395374eea654010228d24e4b6918f981f935da0f4dee146f"
+    },
+    "product-development": {
+      "source": "alvarovillalbaa/plugins",
+      "sourceType": "github",
+      "skillPath": "product/skills/product-development/SKILL.md",
+      "computedHash": "af007fdf83a8e8a3f6a543054c95ae8fc66875ffd6abf250e3f8e3ac2d6da050"
+    },
+    "quality-assurance": {
+      "source": "alvarovillalbaa/plugins",
+      "sourceType": "github",
+      "skillPath": "engineering/skills/quality-assurance/SKILL.md",
+      "computedHash": "f3ce7339b0d57c7356ab9c320f5ad2360941637c655170650188c88334b58173"
+    },
+    "reporting": {
+      "source": "alvarovillalbaa/plugins",
+      "sourceType": "github",
+      "skillPath": "business-ops/skills/reporting/SKILL.md",
+      "computedHash": "68f92a23bd306a8f0d8345329e37b697722b65944267ab8c623d19ecfaccba1a"
+    },
+    "research": {
+      "source": "alvarovillalbaa/plugins",
+      "sourceType": "github",
+      "skillPath": "business-ops/skills/research/SKILL.md",
+      "computedHash": "f6fc2019fbe56cb48df67a8e641339dce1a07856f2a2364314c57ad5a2f1d5d9"
+    },
+    "review": {
+      "source": "alvarovillalbaa/plugins",
+      "sourceType": "github",
+      "skillPath": "business-ops/skills/review/SKILL.md",
+      "computedHash": "c637f1a3fc260c897a73a0e93854919e8d32b0fa2480a92ca99eddcaab766ba6"
+    },
+    "second-brain": {
+      "source": "alvarovillalbaa/plugins",
+      "sourceType": "github",
+      "skillPath": "learning-system/skills/second-brain/SKILL.md",
+      "computedHash": "9319498110dc744155ef1a39b7213879f57ea8e77f7a243d29892fa9e2c5d6a3"
+    },
+    "seo-and-geo": {
+      "source": "alvarovillalbaa/plugins",
+      "sourceType": "github",
+      "skillPath": "marketing/skills/seo-and-geo/SKILL.md",
+      "computedHash": "5b6f58b3ec061dc04e6f8f6fff42e7b8e7e2c66f322bc7049c6303586189270d"
+    },
+    "video-generation": {
+      "source": "alvarovillalbaa/plugins",
+      "sourceType": "github",
+      "skillPath": "marketing/skills/video-generation/SKILL.md",
+      "computedHash": "084061d4b61222aa9bb3ade6afce229b4d8ee8f9ad5abb64793df6dbb162a91b"
+    }
+  }
+}

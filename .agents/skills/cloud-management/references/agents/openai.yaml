@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cloud Management"
+  short_description: "CLI-first AWS, Azure, and GCP cloud operations"
+  default_prompt: "Use $cloud-management to detect this repo's cloud footprint, choose the right provider workflow, and handle deploys, CI/CD, diagnostics, optimization, or Azure-specific cloud tasks safely."

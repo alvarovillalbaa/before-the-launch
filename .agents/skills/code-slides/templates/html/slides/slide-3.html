@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        font-family: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        background: #f2f6ff;
+      }
+
+      body {
+        display: grid;
+        place-items: center;
+        padding: 1.5rem;
+      }
+
+      .layout {
+        width: min(72rem, 100%);
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+        gap: 1rem;
+      }
+
+      .text-panel,
+      .mockup {
+        background: #fff;
+        border: 1px solid #d5def1;
+        border-radius: 1rem;
+        padding: 1rem;
+      }
+
+      .mockup {
+        display: grid;
+        gap: 0.65rem;
+      }
+
+      .row {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.5rem;
+      }
+
+      .stat {
+        background: linear-gradient(120deg, #ecf6ff, #f7f9ff);
+        border-radius: 0.75rem;
+        padding: 0.75rem;
+      }
+
+      .chart {
+        height: 10rem;
+        border-radius: 0.75rem;
+        background:
+          linear-gradient(
+            to top,
+            #5fa7f5 0%,
+            #5fa7f5 22%,
+            #8ec7ff 22%,
+            #8ec7ff 48%,
+            #c8e5ff 48%,
+            #c8e5ff 100%
+          );
+      }
+
+      @media (max-width: 900px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <section class="layout">
+      <article class="text-panel">
+        <h2>Code-as-Image Product Slide</h2>
+        <p>
+          Model product visuals directly in code when screenshots are unavailable, stale, or hard to capture.
+        </p>
+        <p>
+          Layer this foreground with AI-generated or photographic backgrounds for richer composition.
+        </p>
+      </article>
+      <aside class="mockup" aria-label="Dashboard mockup">
+        <div class="row">
+          <div class="stat"><strong>+38%</strong><br />Activation</div>
+          <div class="stat"><strong>2.4s</strong><br />TTI</div>
+          <div class="stat"><strong>91</strong><br />NPS</div>
+        </div>
+        <div class="chart" role="img" aria-label="Sample stacked performance chart"></div>
+      </aside>
+    </section>
+  </body>
+</html>

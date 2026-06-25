@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>__TITLE__</title>
+  <style>
+    :root {
+      --bg: __BG__;
+      --panel: __PANEL__;
+      --text: __TEXT__;
+      --muted: __MUTED__;
+      --accent: __ACCENT__;
+      --border: __BORDER__;
+      --good: #43b581;
+      --warn: #f0b429;
+      --bad: #e57373;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), transparent 20%), var(--bg);
+    }
+
+    .page {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 32px 20px 72px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .hero, .panel {
+      border: 1px solid var(--border);
+      background: var(--panel);
+      border-radius: 24px;
+      padding: 24px;
+    }
+
+    h1, h2, h3 { margin: 0; }
+
+    .subtitle {
+      margin-top: 10px;
+      max-width: 72ch;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .findings {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+      background: rgba(255,255,255,0.02);
+    }
+
+    .card strong {
+      display: inline-block;
+      margin-bottom: 6px;
+    }
+
+    .matrix {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+    }
+
+    .matrix th,
+    .matrix td {
+      border: 1px solid var(--border);
+      padding: 12px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .matrix th {
+      color: var(--muted);
+      font-size: 0.84rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .status-good { color: var(--good); }
+    .status-warn { color: var(--warn); }
+    .status-bad { color: var(--bad); }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <h1>__TITLE__</h1>
+      <div class="subtitle">__SUBTITLE__</div>
+      <div class="findings">__SUMMARY_CARDS__</div>
+    </section>
+    <section class="panel">
+      <h2>Review Matrix</h2>
+      __MATRIX__
+    </section>
+    <section class="panel">
+      <h2>Detailed Sections</h2>
+      __SECTIONS__
+    </section>
+  </main>
+</body>
+</html>

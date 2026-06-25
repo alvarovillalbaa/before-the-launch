@@ -1,0 +1,4 @@
+interface:
+  display_name: "Quality Assurance"
+  short_description: "Review code, improve coverage, debug failures, and harden tests and CI"
+  default_prompt: "Use $quality-assurance to choose the right review, coverage-improvement, testing, failure-triage, debugging, and CI strategy for this repo."

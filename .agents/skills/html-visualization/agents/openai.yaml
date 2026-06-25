@@ -1,0 +1,4 @@
+interface:
+  display_name: "Visualizer"
+  short_description: "Build intentional HTML explainers, reviews, dashboards, and slide-mode pages"
+  default_prompt: "Use $visualizer to turn this topic, diff, plan, audit, table, recap, or dashboard into a polished self-contained HTML artifact with a clear visual direction instead of a text wall."

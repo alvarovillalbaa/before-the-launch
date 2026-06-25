@@ -1,0 +1,4 @@
+interface:
+  display_name: "Code As Images"
+  short_description: "Create product visuals and technical images directly in code"
+  default_prompt: "Use $code-as-images to build a product-focused image, dashboard mockup, terminal card, or mixed composition where the foreground should be authored in code."

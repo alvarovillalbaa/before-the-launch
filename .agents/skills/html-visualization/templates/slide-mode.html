@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>__TITLE__</title>
+  <style>
+    :root {
+      --bg: __BG__;
+      --panel: __PANEL__;
+      --text: __TEXT__;
+      --muted: __MUTED__;
+      --accent: __ACCENT__;
+      --border: __BORDER__;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .deck {
+      display: grid;
+      gap: 24px;
+      padding: 24px;
+    }
+
+    .slide {
+      min-height: min(78vh, 760px);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 32px;
+      background: linear-gradient(140deg, rgba(255,255,255,0.05), transparent 45%), var(--panel);
+      display: grid;
+      align-content: start;
+      gap: 18px;
+    }
+
+    .kicker {
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 0.82rem;
+    }
+
+    h1, h2 {
+      margin: 0;
+      line-height: 0.95;
+    }
+
+    h1 { font-size: clamp(2.4rem, 5vw, 5rem); }
+    h2 { font-size: clamp(1.8rem, 3vw, 3rem); }
+
+    .lede, .body {
+      color: var(--muted);
+      max-width: 64ch;
+      line-height: 1.6;
+    }
+
+    .bullets {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding-left: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+  <main class="deck">
+    __SLIDES__
+  </main>
+</body>
+</html>

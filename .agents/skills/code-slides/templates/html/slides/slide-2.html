@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        font-family: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      }
+
+      body {
+        display: grid;
+        place-items: center;
+        padding: 1.5rem;
+        background: radial-gradient(circle at 80% 10%, #ffd9a8, #ffb877 45%, #ff9750 100%);
+      }
+
+      .panel {
+        width: min(70rem, 100%);
+        background: rgba(255, 255, 255, 0.94);
+        border-radius: 1rem;
+        padding: 1.3rem;
+        display: grid;
+        gap: 1rem;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: clamp(1.3rem, 2.6vw, 2rem);
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 1.2rem;
+        display: grid;
+        gap: 0.4rem;
+      }
+
+      li {
+        font-size: clamp(0.95rem, 1.7vw, 1.2rem);
+      }
+    </style>
+  </head>
+  <body>
+    <section class="panel">
+      <h2>Image Sources Workflow</h2>
+      <ul>
+        <li>Discover local assets from repository paths.</li>
+        <li>Reuse existing external URLs already referenced in code/content.</li>
+        <li>Generate missing visuals with AI prompts tailored to the deck narrative.</li>
+        <li>Combine generated backgrounds with code-as-image product visuals.</li>
+      </ul>
+    </section>
+  </body>
+</html>

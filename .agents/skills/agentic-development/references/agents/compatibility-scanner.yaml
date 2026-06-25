@@ -1,0 +1,85 @@
+---
+name: compatibility-scanner
+description: Orchestrate a full repo compatibility pass — scanner score, docs reliability, startup path, and validation efficiency. Returns a P0/P1/P2 finding list with remediation guidance.
+model: inherit
+---
+
+# Compatibility Scanner
+
+Run the four-subagent compatibility pass against a repository. Each subagent has a focused scope; this orchestrator runs them in priority order and collects results into a unified finding report.
+
+## Trigger
+
+Invoked by `/check-agent-compat` or directly when extending agent autonomy on a new or significantly changed repo.
+
+## Phase 1: Compatibility Scan
+
+Run the harness audit script for a raw readiness score across all 13 dimensions:
+```bash
+python <skill-dir>/scripts/harness_audit.py <repo-root>
+python <skill-dir>/scripts/repo_scan.py <repo-root>
+```
+Classify every finding as P0 / P1 / P2. P0 items block the pass — surface them immediately.
+
+## Phase 2: Docs Reliability Review
+
+Extract every command from `README.md`, `AGENTS.md`, `CLAUDE.md`, and subsystem docs:
+```bash
+grep -E '```[^`]*\n.*\n```|^\$ |^> ' README.md AGENTS.md CLAUDE.md 2>/dev/null
+```
+For each command found:
+1. Run it in a clean shell (source a clean env, not the current session).
+2. Record: PASS | FAIL | UNDOC_PREREQUISITE | WRONG_OUTPUT.
+3. Flag undocumented prerequisites (env vars, credentials, installed tools not in setup docs).
+
+A docs reliability finding is P1 if any setup or verify command fails silently.
+
+## Phase 3: Startup Review
+
+Simulate cold-start conditions:
+1. Identify the documented bootstrap command (e.g., `scripts/bootstrap.sh`, `npm ci && npm run db:migrate`).
+2. Trace its execution: check each step for hidden prerequisites, unclear error messages, and silent failures.
+3. Document the first point of failure (if any) and the exact error text.
+
+A startup reliability finding is P1 if the repo cannot reach working state in one documented command.
+
+## Phase 4: Validation Review
+
+Determine if agents can self-verify changes without CI roundtrips:
+1. Find the fastest local verify command (typecheck, focused tests, lint, build).
+2. Time it. > 60 seconds is a P2; > 3 minutes is a P1.
+3. Check if the output is binary (pass/fail) or ambiguous (warn-only, mixed signals).
+4. Check if the command works without network access.
+
+## Output
+
+Emit a unified compatibility report:
+
+```
+COMPATIBILITY SCORE: <repo-name>
+Run: <timestamp>
+
+P0 BLOCKERS (fix before any agent autonomy extension):
+- [dim] <finding> → <remediation>
+
+P1 ISSUES (fix before long-running loops):
+- [docs] <finding> → <remediation>
+- [startup] <finding> → <remediation>
+- [validation] <finding> → <remediation>
+
+P2 IMPROVEMENTS:
+- ...
+
+SCORE SUMMARY:
+Context architecture: PASS | WARN | FAIL
+Docs reliability: PASS | WARN | FAIL
+Startup reliability: PASS | WARN | FAIL
+Validation efficiency: PASS | WARN | FAIL
+[... all 13 dimensions ...]
+```
+
+## Guardrails
+
+- Confirm important claims by reading files; do not rely solely on the audit script output.
+- A dimension is PASS only if verified by direct inspection, not just the absence of findings.
+- Do not prescribe remediations beyond the repo's current stack and constraints.

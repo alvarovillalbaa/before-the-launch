@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>__DECK_TITLE__</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="nav-__NAV_POSITION__ screen-mode">
+    <header class="deck-header">
+      <h1>__DECK_TITLE__</h1>
+      <p class="meta-line">Deck ID: <code>__DECK_ID__</code></p>
+    </header>
+
+    <main class="deck-shell">
+      <iframe id="slide-frame" title="Slide content" loading="eager"></iframe>
+    </main>
+
+    <nav id="nav-bar" aria-label="Deck navigation">
+      <button id="first-btn" type="button">First</button>
+      <button id="prev-btn" type="button">Prev</button>
+      <span id="slide-indicator" aria-live="polite">Slide 1 / 1</span>
+      <button id="next-btn" type="button">Next</button>
+      <button id="last-btn" type="button">Last</button>
+      <a id="open-remote" href="./remote.html?deck=__DECK_ID__" target="_blank" rel="noopener noreferrer">
+        Open Remote
+      </a>
+    </nav>
+
+    <script src="./deck.js"></script>
+  </body>
+</html>

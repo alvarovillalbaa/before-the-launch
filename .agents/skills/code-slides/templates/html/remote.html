@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>__DECK_TITLE__ Remote</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="remote-mode nav-__NAV_POSITION__">
+    <main class="remote-shell">
+      <h1>Remote Controller</h1>
+      <p class="meta-line">Deck ID: <code>__DECK_ID__</code></p>
+      <p id="remote-status">Connected via local channel.</p>
+
+      <div class="remote-controls" role="group" aria-label="Remote controls">
+        <button id="remote-first" type="button">First</button>
+        <button id="remote-prev" type="button">Prev</button>
+        <button id="remote-next" type="button">Next</button>
+        <button id="remote-last" type="button">Last</button>
+      </div>
+
+      <label for="remote-slide-index">Go to slide</label>
+      <div class="goto-row">
+        <input id="remote-slide-index" type="number" min="1" step="1" value="1" />
+        <button id="remote-go" type="button">Go</button>
+      </div>
+
+      <p id="remote-indicator" aria-live="polite">Slide 1 / 1</p>
+      <a href="./index.html?deck=__DECK_ID__">Open Screen</a>
+    </main>
+
+    <script src="./deck.js"></script>
+  </body>
+</html>

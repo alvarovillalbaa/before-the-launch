@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: before-the-launch-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: before_launch
+      POSTGRES_USER: before_launch
+      POSTGRES_PASSWORD: before_launch
+    ports:
+      - "54329:5432"
+    volumes:
+      - before_the_launch_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U before_launch -d before_launch"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+volumes:
+  before_the_launch_pgdata:
