@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
 import { SourceCreateInputSchema } from "@/lib/shared/schemas";
 import {
+  DATABASE_UNAVAILABLE_STATUS,
+  databaseUnavailableErrorBody,
+  isDatabaseUnavailableError,
+} from "@/lib/server/db/errors";
+import {
   createTextSource,
   createUrlSource,
 } from "@/lib/server/services/source-ingestion";
@@ -14,20 +19,30 @@ export async function POST(request: Request) {
       { status: 400 },
     );
   }
-  if (input.data.inputType === "url") {
-    const source = await createUrlSource({
+  try {
+    if (input.data.inputType === "url") {
+      const source = await createUrlSource({
+        projectId: input.data.projectId,
+        kind: input.data.kind,
+        title: input.data.title,
+        url: input.data.url!,
+      });
+      return NextResponse.json({ ok: true, data: source }, { status: 201 });
+    }
+    const source = await createTextSource({
       projectId: input.data.projectId,
       kind: input.data.kind,
-      title: input.data.title,
-      url: input.data.url!,
+      title: input.data.title ?? "Manual note",
+      text: input.data.text ?? "",
     });
     return NextResponse.json({ ok: true, data: source }, { status: 201 });
+  } catch (error) {
+    if (isDatabaseUnavailableError(error)) {
+      return NextResponse.json(databaseUnavailableErrorBody(), {
+        status: DATABASE_UNAVAILABLE_STATUS,
+      });
+    }
+
+    throw error;
   }
-  const source = await createTextSource({
-    projectId: input.data.projectId,
-    kind: input.data.kind,
-    title: input.data.title ?? "Manual note",
-    text: input.data.text ?? "",
-  });
-  return NextResponse.json({ ok: true, data: source }, { status: 201 });
 }

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AppShell } from "@/components/app-shell";
+import { DatabaseUnavailableEmpty } from "@/components/database-unavailable-empty";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,6 +22,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { isDatabaseUnavailableError } from "@/lib/server/db/errors";
 import { getRunResults } from "@/lib/server/services/project-service";
 
 export const dynamic = "force-dynamic";
@@ -31,7 +33,14 @@ type PageProps = {
 
 export default async function RunPage({ params }: PageProps) {
   const { runId } = await params;
-  const detail = await getRunResults(runId);
+  const { detail, databaseUnavailable } = await loadRunResults(runId);
+  if (databaseUnavailable) {
+    return (
+      <AppShell>
+        <DatabaseUnavailableEmpty />
+      </AppShell>
+    );
+  }
   if (!detail) notFound();
   const scores = detail.score?.scores;
 
@@ -208,6 +217,24 @@ export default async function RunPage({ params }: PageProps) {
       </div>
     </AppShell>
   );
+}
+
+async function loadRunResults(runId: string) {
+  try {
+    return {
+      detail: await getRunResults(runId),
+      databaseUnavailable: false as const,
+    };
+  } catch (error) {
+    if (isDatabaseUnavailableError(error)) {
+      return {
+        detail: null,
+        databaseUnavailable: true as const,
+      };
+    }
+
+    throw error;
+  }
 }
 
 function ScoreCard({ label, value }: { label: string; value: number }) {

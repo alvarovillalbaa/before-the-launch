@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRightIcon, PlusIcon } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
+import { DatabaseUnavailableEmpty } from "@/components/database-unavailable-empty";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -27,12 +28,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { isDatabaseUnavailableError } from "@/lib/server/db/errors";
 import { listProjectDashboard } from "@/lib/server/services/project-service";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const rows = await listProjectDashboard();
+  const { rows, databaseUnavailable } = await loadDashboardRows();
 
   return (
     <AppShell>
@@ -47,12 +49,19 @@ export default async function Home() {
               and decide what to improve before shipping.
             </p>
           </div>
-          <Button asChild>
-            <Link href="/projects/new">
+          {databaseUnavailable ? (
+            <Button disabled>
               <PlusIcon data-icon="inline-start" />
               New product
-            </Link>
-          </Button>
+            </Button>
+          ) : (
+            <Button asChild>
+              <Link href="/projects/new">
+                <PlusIcon data-icon="inline-start" />
+                New product
+              </Link>
+            </Button>
+          )}
         </section>
 
         <div className="grid gap-4 md:grid-cols-4">
@@ -87,11 +96,15 @@ export default async function Home() {
               Latest run status, launch readiness, and recommended next action.
             </CardDescription>
             <CardAction>
-              <Badge variant="secondary">{rows.length} total</Badge>
+              <Badge variant={databaseUnavailable ? "destructive" : "secondary"}>
+                {databaseUnavailable ? "offline" : `${rows.length} total`}
+              </Badge>
             </CardAction>
           </CardHeader>
           <CardContent>
-            {rows.length === 0 ? (
+            {databaseUnavailable ? (
+              <DatabaseUnavailableEmpty />
+            ) : rows.length === 0 ? (
               <Empty>
                 <EmptyHeader>
                   <EmptyMedia variant="icon">
@@ -167,6 +180,24 @@ export default async function Home() {
       </div>
     </AppShell>
   );
+}
+
+async function loadDashboardRows() {
+  try {
+    return {
+      rows: await listProjectDashboard(),
+      databaseUnavailable: false,
+    };
+  } catch (error) {
+    if (isDatabaseUnavailableError(error)) {
+      return {
+        rows: [],
+        databaseUnavailable: true,
+      };
+    }
+
+    throw error;
+  }
 }
 
 function MetricCard({ label, value }: { label: string; value: string }) {

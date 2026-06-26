@@ -9,6 +9,7 @@ import {
   startSimulationAction,
 } from "@/app/actions";
 import { AppShell } from "@/components/app-shell";
+import { DatabaseUnavailableEmpty } from "@/components/database-unavailable-empty";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -38,6 +39,7 @@ import {
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
+import { isDatabaseUnavailableError } from "@/lib/server/db/errors";
 import { getProjectDetail } from "@/lib/server/services/project-service";
 import { sourceKinds } from "@/lib/shared/schemas";
 
@@ -49,7 +51,14 @@ type PageProps = {
 
 export default async function ProjectPage({ params }: PageProps) {
   const { projectId } = await params;
-  const detail = await getProjectDetail(projectId);
+  const { detail, databaseUnavailable } = await loadProjectDetail(projectId);
+  if (databaseUnavailable) {
+    return (
+      <AppShell>
+        <DatabaseUnavailableEmpty />
+      </AppShell>
+    );
+  }
   if (!detail) notFound();
 
   const readySources = detail.sources.filter((source) => source.status === "ready");
@@ -313,6 +322,24 @@ export default async function ProjectPage({ params }: PageProps) {
       </div>
     </AppShell>
   );
+}
+
+async function loadProjectDetail(projectId: string) {
+  try {
+    return {
+      detail: await getProjectDetail(projectId),
+      databaseUnavailable: false as const,
+    };
+  } catch (error) {
+    if (isDatabaseUnavailableError(error)) {
+      return {
+        detail: null,
+        databaseUnavailable: true as const,
+      };
+    }
+
+    throw error;
+  }
 }
 
 function MetricCard({ label, value }: { label: string; value: string }) {
