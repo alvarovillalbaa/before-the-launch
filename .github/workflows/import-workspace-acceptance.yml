@@ -1,4 +1,4 @@
-# TEMPORARY. Explicit backend/browser/CI approval received on 2026-10-27.
+# TEMPORARY. Approved 2026-10-27; rerun after the focused JSX lint correction.
 # Remove the active workflow after the focused acceptance run.
 name: Temporary import workspace acceptance
 on:

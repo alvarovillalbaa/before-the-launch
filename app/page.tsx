@@ -277,7 +277,7 @@ function RunHistory({ runs, databaseUnavailable }: { runs: Awaited<ReturnType<ty
     <Card className="rounded-lg">
       <CardHeader>
         <CardTitle>All simulation runs</CardTitle>
-        <CardDescription>Every product's persisted run history, linked to its project and results.</CardDescription>
+        <CardDescription>Persisted run history across products, linked to each project and its results.</CardDescription>
         <CardAction><Badge variant={databaseUnavailable ? "destructive" : "secondary"}>{databaseUnavailable ? "offline" : `${runs.length} total`}</Badge></CardAction>
       </CardHeader>
       <CardContent>
