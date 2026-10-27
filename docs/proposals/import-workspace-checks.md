@@ -1,6 +1,6 @@
 # Focused import and workspace acceptance
 
-Status: proposed; execution and temporary CI installation require approval.
+Status: executed with explicit user approval on 2026-10-27. All seven import cases and four browser scenarios passed. The active workflow was removed after acceptance; this file and the inactive template retain the reviewed scope. See [results](../results/2026/10-27/upload-workspace.md).
 
 The [recorded product requirements](https://app.notion.com/p/3b6a1ee8bd068081a408e5a8103912a6) call for a sidebar, one Projects surface for projects and runs, an in-page simulation entry point, and file-only new-product intake. The implementation is reviewed as one vertical flow rather than navigation alone.
 
@@ -34,4 +34,4 @@ The four authored scenarios are in [the focused browser source](../../tests/e2e/
 
 These checks would establish behavior in the disposable CI environment. They would not establish production Auth, user ownership, durable hosted file storage, provider/model behavior, Safari, or physical-device behavior. The current public host's availability is separate from import acceptance. No managed database or storage provisioning is included in this proposal.
 
-Local execution is not proposed: Storage Guard reported 24.9 GiB free versus 34.0 GiB required. User `AGENTS.md` §§7 and 14 require explicit approval for backend/browser checks and temporary CI.
+Local execution was not used: Storage Guard reported 24.9 GiB free versus 34.0 GiB required. The user explicitly approved the backend/browser checks and temporary CI required by supplied `AGENTS.md` §§7 and 14. No continuing CI installation or broader test authority is implied.
