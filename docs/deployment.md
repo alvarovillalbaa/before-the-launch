@@ -36,6 +36,8 @@ The app is wired with `withWorkflow` in `next.config.ts` and includes a simulati
 
 Local storage is the default fallback. In production, configure Vercel Blob and update the storage adapter in `source-ingestion.ts` to write uploaded bytes to Blob while keeping the same source metadata fields.
 
+The upload-only intake also stages originals through local storage. Both ingestion paths need durable hosted storage before production file retention can be claimed. Current services use one shared workspace and have no account ownership boundary; choosing public access or isolated account storage is a separate deployment decision. No managed database, Auth policy, or storage configuration is provisioned by the intake source change. See [product intake](product-intake.md) for current import behavior and [acceptance evidence](results/2026/10-27/upload-workspace.md) for its proof limits.
+
 ## Security Checklist
 
 - Set conservative upload and fetch limits.

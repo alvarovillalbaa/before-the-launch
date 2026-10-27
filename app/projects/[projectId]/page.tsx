@@ -37,7 +37,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { isDatabaseUnavailableError } from "@/lib/server/db/errors";
 import { getProjectDetail } from "@/lib/server/services/project-service";
@@ -47,10 +46,27 @@ export const dynamic = "force-dynamic";
 
 type PageProps = {
   params: Promise<{ projectId: string }>;
+  searchParams: Promise<{ tab?: string | string[] }>;
 };
 
-export default async function ProjectPage({ params }: PageProps) {
-  const { projectId } = await params;
+const MISSING_FACT = "Not supplied in uploads";
+const briefFields = [
+  ["productName", "Product name"],
+  ["category", "Category"],
+  ["icp", "Target customer"],
+  ["market", "Market"],
+  ["expectedPrice", "Expected price"],
+  ["competitors", "Competitors"],
+  ["launchChannel", "Launch channel"],
+  ["positioningStatement", "Positioning statement"],
+  ["notes", "Notes"],
+] as const;
+
+export default async function ProjectPage({ params, searchParams }: PageProps) {
+  const [{ projectId }, query] = await Promise.all([params, searchParams]);
+  const selectedTab = typeof query.tab === "string" && ["sources", "setup", "runs", "brief"].includes(query.tab)
+    ? query.tab
+    : "sources";
   const { detail, databaseUnavailable } = await loadProjectDetail(projectId);
   if (databaseUnavailable) {
     return (
@@ -63,6 +79,7 @@ export default async function ProjectPage({ params }: PageProps) {
 
   const readySources = detail.sources.filter((source) => source.status === "ready");
   const latestRun = detail.runs[0];
+  const missingFacts = briefFields.filter(([key]) => key !== "competitors" && key !== "notes" && !detail.brief?.[key]?.trim());
 
   return (
     <AppShell>
@@ -76,15 +93,25 @@ export default async function ProjectPage({ params }: PageProps) {
               <Badge variant="outline">{detail.project.status}</Badge>
             </div>
             <p className="max-w-3xl text-pretty text-sm text-muted-foreground">
-              {detail.brief?.positioningStatement}
+              {detail.brief?.positioningStatement?.trim() || MISSING_FACT}
             </p>
           </div>
-          {latestRun ? (
-            <Button asChild variant="outline">
-              <Link href={`/runs/${latestRun.id}`}>Open latest run</Link>
-            </Button>
-          ) : null}
+          <div className="flex flex-wrap gap-2">
+            <Button asChild className="min-h-11"><Link href={`/projects/${projectId}?tab=setup`}><PlayIcon data-icon="inline-start" />New simulation</Link></Button>
+            {latestRun ? (
+              <Button asChild variant="outline" className="min-h-11">
+                <Link href={`/runs/${latestRun.id}`}>Open latest run</Link>
+              </Button>
+            ) : null}
+          </div>
         </section>
+
+        {missingFacts.length > 0 ? (
+          <div role="note" aria-label="Missing uploaded product facts" className="space-y-1 rounded-lg border border-amber-500/40 bg-amber-500/5 p-4 text-sm">
+            <p className="font-medium">Some product facts were not supplied in uploads.</p>
+            <p className="text-muted-foreground">{missingFacts.map(([, label]) => label).join(", ")}. These values remain blank and may affect the simulation. You can configure its target market in Simulation setup and upload further context in Sources.</p>
+          </div>
+        ) : null}
 
         <div className="grid gap-4 md:grid-cols-4">
           <MetricCard label="Ready sources" value={readySources.length.toString()} />
@@ -93,15 +120,16 @@ export default async function ProjectPage({ params }: PageProps) {
           <MetricCard label="Latest status" value={latestRun?.status ?? "No run"} />
         </div>
 
-        <Tabs defaultValue="sources" className="flex flex-col gap-4">
-          <TabsList>
-            <TabsTrigger value="sources">Sources</TabsTrigger>
-            <TabsTrigger value="setup">Simulation setup</TabsTrigger>
-            <TabsTrigger value="runs">Runs</TabsTrigger>
-            <TabsTrigger value="brief">Brief</TabsTrigger>
-          </TabsList>
+        <div className="flex min-w-0 flex-col gap-4">
+          <nav aria-label="Project sections" className="flex max-w-full flex-wrap gap-2">
+            {[["sources", "Sources"], ["setup", "Simulation setup"], ["runs", "Runs"], ["brief", "Brief"]].map(([tab, label]) => (
+              <Button key={tab} asChild variant={selectedTab === tab ? "default" : "outline"} className="min-h-11">
+                <Link href={`/projects/${projectId}?tab=${tab}`} aria-current={selectedTab === tab ? "page" : undefined}>{label}</Link>
+              </Button>
+            ))}
+          </nav>
 
-          <TabsContent value="sources" className="flex flex-col gap-4">
+          {selectedTab === "sources" ? <div className="flex flex-col gap-4">
             <div className="grid gap-4 lg:grid-cols-3">
               <SourceCard
                 title="Paste URL"
@@ -172,6 +200,7 @@ export default async function ProjectPage({ params }: PageProps) {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
+                    {detail.sources.length === 0 ? <TableRow><TableCell colSpan={5} className="py-8 text-center text-muted-foreground">No sources yet. Add product context above before running a simulation.</TableCell></TableRow> : null}
                     {detail.sources.map((source) => (
                       <TableRow key={source.id}>
                         <TableCell className="max-w-sm whitespace-normal">
@@ -203,9 +232,9 @@ export default async function ProjectPage({ params }: PageProps) {
                 </Table>
               </CardContent>
             </Card>
-          </TabsContent>
+          </div> : null}
 
-          <TabsContent value="setup">
+          {selectedTab === "setup" ? <div>
             <Card className="rounded-lg">
               <CardHeader>
                 <CardTitle>Run simulation</CardTitle>
@@ -220,7 +249,12 @@ export default async function ProjectPage({ params }: PageProps) {
                     <div className="grid gap-4 md:grid-cols-4">
                       <Field>
                         <FieldLabel htmlFor="targetMarket">Target market</FieldLabel>
-                        <Input id="targetMarket" name="targetMarket" defaultValue={detail.brief?.market} required />
+                        <Input id="targetMarket" name="targetMarket" defaultValue={detail.brief?.market?.trim() || ""} maxLength={180} aria-describedby="target-market-help" required />
+                        <FieldDescription id="target-market-help">
+                          {detail.brief?.market?.trim()
+                            ? "Choose the audience or market for this simulation."
+                            : "Not supplied in uploads. Enter the audience or market to use for this simulation."}
+                        </FieldDescription>
                       </Field>
                       <Field>
                         <FieldLabel htmlFor="agentCount">Agents</FieldLabel>
@@ -242,7 +276,7 @@ export default async function ProjectPage({ params }: PageProps) {
                     <Separator />
                     <div className="grid gap-3 md:grid-cols-2">
                       {detail.personas.map((persona) => (
-                        <label key={persona.id} className="flex gap-3 rounded-lg border p-3 text-sm">
+                        <label key={persona.id} className="flex min-h-11 gap-3 rounded-lg border p-3 text-sm">
                           <input type="checkbox" name="personaIds" value={persona.id} defaultChecked={persona.isDefault} />
                           <span className="flex flex-col gap-1">
                             <span className="font-medium">{persona.name}</span>
@@ -251,17 +285,18 @@ export default async function ProjectPage({ params }: PageProps) {
                         </label>
                       ))}
                     </div>
-                    <Button type="submit">
+                    <Button type="submit" className="min-h-11" disabled={!detail.brief}>
                       <PlayIcon data-icon="inline-start" />
                       Run simulation
                     </Button>
                   </FieldGroup>
+                  {!detail.brief ? <p role="note" className="mt-3 text-sm text-muted-foreground">A current product brief is required before starting a simulation.</p> : null}
                 </form>
               </CardContent>
             </Card>
-          </TabsContent>
+          </div> : null}
 
-          <TabsContent value="runs">
+          {selectedTab === "runs" ? <div>
             <Card className="rounded-lg">
               <CardHeader>
                 <CardTitle>Runs</CardTitle>
@@ -279,15 +314,16 @@ export default async function ProjectPage({ params }: PageProps) {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
+                    {detail.runs.length === 0 ? <TableRow><TableCell colSpan={5} className="py-8 text-center text-muted-foreground">No simulation runs yet. Use Simulation setup to configure the first run.</TableCell></TableRow> : null}
                     {detail.runs.map((run) => (
                       <TableRow key={run.id}>
                         <TableCell><Badge variant="outline">{run.status}</Badge></TableCell>
                         <TableCell>{run.engine}</TableCell>
-                        <TableCell className="tabular-nums">{run.globalScore ?? "n/a"}</TableCell>
+                        <TableCell className="tabular-nums">{run.globalScore ?? "No score yet"}</TableCell>
                         <TableCell>{new Intl.DateTimeFormat("en", { dateStyle: "medium", timeStyle: "short" }).format(run.createdAt)}</TableCell>
                         <TableCell className="text-right">
-                          <Button asChild variant="ghost" size="sm">
-                            <Link href={`/runs/${run.id}`}>Inspect</Link>
+                          <Button asChild variant="ghost" size="sm" className="min-h-11">
+                            <Link href={`/runs/${run.id}`} aria-label={`Inspect run from ${new Intl.DateTimeFormat("en", { dateStyle: "medium", timeStyle: "short" }).format(run.createdAt)}`}>Inspect</Link>
                           </Button>
                         </TableCell>
                       </TableRow>
@@ -296,29 +332,27 @@ export default async function ProjectPage({ params }: PageProps) {
                 </Table>
               </CardContent>
             </Card>
-          </TabsContent>
+          </div> : null}
 
-          <TabsContent value="brief">
+          {selectedTab === "brief" ? <div>
             <Card className="rounded-lg">
               <CardHeader>
                 <CardTitle>Current brief</CardTitle>
                 <CardDescription>
-                  Runs freeze this brief at execution time.
+                  Runs freeze this brief at execution time. Missing values stay marked as not supplied in uploads.
                 </CardDescription>
               </CardHeader>
               <CardContent className="grid gap-4 text-sm md:grid-cols-2">
-                {Object.entries(detail.brief ?? {}).map(([key, value]) =>
-                  ["id", "projectId", "createdAt", "updatedAt", "isCurrent"].includes(key) ? null : (
-                    <div key={key} className="flex flex-col gap-1">
-                      <span className="font-medium">{key}</span>
-                      <span className="text-muted-foreground">{String(value)}</span>
-                    </div>
-                  ),
-                )}
+                {briefFields.map(([key, label]) => (
+                  <div key={key} className="flex flex-col gap-1">
+                    <span className="font-medium">{label}</span>
+                    <span className="whitespace-pre-wrap break-words text-muted-foreground">{detail.brief?.[key]?.trim() || MISSING_FACT}</span>
+                  </div>
+                ))}
               </CardContent>
             </Card>
-          </TabsContent>
-        </Tabs>
+          </div> : null}
+        </div>
       </div>
     </AppShell>
   );

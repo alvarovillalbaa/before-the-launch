@@ -18,6 +18,10 @@ The durable entities are implemented in `lib/server/db/schema.ts`.
 - `Recommendation`: product, pricing, messaging, and GTM changes.
 - `Report`: exportable markdown report.
 
+## Uploaded Partial Briefs
+
+Upload-only intake can create a current brief with omitted facts stored as empty strings. A filename-derived project label belongs to `ProductProject.name`; it does not populate a missing `ProductBrief.productName`. Run snapshots preserve those missing facts. The existing strict JSON project-creation API remains unchanged. See [product intake](product-intake.md) for the import contract.
+
 ## Immutable Run Snapshots
 
 Every simulation run stores:

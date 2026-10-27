@@ -212,7 +212,7 @@ export async function createUrlSource(input: CreateUrlSourceInput) {
   }
 }
 
-async function extractFileText(input: CreateFileSourceInput) {
+export async function extractFileText(input: CreateFileSourceInput) {
   const lowerName = input.fileName.toLowerCase();
   if (
     input.mimeType.includes("text") ||

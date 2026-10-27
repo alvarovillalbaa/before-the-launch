@@ -57,12 +57,14 @@ AI_GATEWAY_MODEL=anthropic/claude-sonnet-4.5
 
 ## Core Flow
 
-1. Create a product project and brief.
+1. Upload product files, review the imported context, and create a project.
 2. Add context as text, URLs, or files.
 3. Run a simulation with selected personas.
 4. Inspect live-style agent traces and structured findings.
 5. Review score breakdown and recommendations.
 6. Export the generated markdown report.
+
+Projects contains product and run history, plus the New simulation chooser for new or existing products. See [product intake](docs/product-intake.md) for supported files and optional structured brief fields.
 
 ## Useful Commands
 
@@ -80,6 +82,7 @@ pnpm db:seed
 ## Documentation
 
 - [Local development](docs/local-development.md)
+- [Product intake](docs/product-intake.md)
 - [Architecture](docs/architecture.md)
 - [AI agents](docs/ai-agents.md)
 - [Data model](docs/data-model.md)
