@@ -103,13 +103,13 @@ test("network failures retain selected files and preview for a safe retry", asyn
   await page.goto("/projects/new");
   await page.getByLabel("Product files", { exact: true }).setInputFiles(productFile("Retained authored product"));
   await page.getByRole("button", { name: "Preview imported context", exact: true }).click();
-  await expect(page.getByRole("alert")).toContainText("selected files are still here");
+  await expect(page.getByRole("alert").filter({ hasText: "The preview could not be loaded." })).toContainText("selected files are still here");
   await expect(page.getByRole("list", { name: "Selected files", exact: true })).toContainText("authored-product.json");
   await page.getByRole("button", { name: "Preview imported context", exact: true }).click();
   await expect(page.locator('[aria-label="Imported context preview"]')).toBeVisible();
   failNextAction = true;
   await page.getByRole("button", { name: "Create project from uploads", exact: true }).click();
-  await expect(page.getByRole("alert")).toContainText("Check Projects before retrying");
+  await expect(page.getByRole("alert").filter({ hasText: "The server response could not be received." })).toContainText("Check Projects before retrying");
   await expect(page.locator('[aria-label="Imported context preview"]')).toContainText("Retained authored product");
   await expect(page.getByRole("list", { name: "Selected files", exact: true })).toContainText("authored-product.json");
   await createReviewedProject(page);
