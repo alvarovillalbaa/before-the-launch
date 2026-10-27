@@ -22,7 +22,7 @@ Independent source review found and closed two defects before publication: uncon
 
 ## Verification and hosting limits
 
-The checkout has no installed Next documentation. Per its `AGENTS.md`, the matching upstream [Next 16.2.9 forms guide](https://raw.githubusercontent.com/vercel/next.js/v16.2.9/docs/01-app/02-guides/forms.mdx) was read instead; no local dependency install was performed merely to read it. Node 24.21.0 with the existing TypeScript 5.9.3 parser accepted all 104 product/test TypeScript files and resolved all 203 local imports, with no syntax or local-path errors. This local check is a parser/import check, not a type compile. `git diff --check` passed. No local backend tests, browser sessions, app builds, broad type checking, or temporary CI were run for this change. The hosted production build is recorded below separately.
+The checkout has no installed Next documentation. Per its `AGENTS.md`, the matching upstream [Next 16.2.9 forms guide](https://raw.githubusercontent.com/vercel/next.js/v16.2.9/docs/01-app/02-guides/forms.mdx) was read instead; no local dependency install was performed merely to read it. Node 24.21.0 with the existing TypeScript 5.9.3 parser accepted all 104 product/test TypeScript files and resolved all 203 local imports, with no syntax or local-path errors. This local check is a parser/import check, not a type compile. `git diff --check` passed. No local backend tests, browser sessions, app builds, broad type checking, or dependency installs were used. Approved remote CI and hosted production builds are recorded below separately.
 
 The existing manifest/lockfile, Next configuration, strict JSON schema/API, legacy actions, and database schema are byte-unchanged from the baseline. The existing ingestion module changes only by exporting its parser for reuse. No user-provided dirty changes were present when this checkout was created.
 
@@ -75,5 +75,7 @@ Final CI SHA-256 receipts:
 6020ef4b02e3fc23a89c927b1196ffbf09fab6d82df80cb83e272f69401a3eeb  tests/integration/product-intake.test.ts
 23cdc5ddb7711684be62e03900dc8f5d554f2fa6a07b7e52ec1f9ae1a519af2c  tests/e2e/import-workspace.spec.ts
 ```
+
+Cleanup commit [`8b1afaaef5872d2e0e24480b6c48e830581afc4f`](https://github.com/alvarovillalbaa/before-the-launch/commit/8b1afaaef5872d2e0e24480b6c48e830581afc4f), tree `a8bf279e161bb222062a71a1902afc5f565963e0`, was published to `main` and read back from the remote. Its application, test, dependency, and configuration files compare byte-identically with passing CI source `73ec76ba255fc64c118594ff2fb872e0c46fd268`; `git ls-files .github/workflows` is empty. Production deployment [`dpl_B99dsXp6Sb4H7e4ThpUP2jiP6SoX`](https://vercel.com/my-team-4f230354/before-the-launch/B99dsXp6Sb4H7e4ThpUP2jiP6SoX) is READY at that cleanup SHA. A connected fetch of the canonical intake page returned 200 and referenced that exact deployment ID. The working tree was clean before this evidence-only follow-up, which preserves those same application/test bytes.
 
 CI proves this disposable PostgreSQL/Chromium environment. It does not prove public production database/storage configuration, account isolation, provider/model behavior, successful PDF/DOCX extraction, native OS file-picker interaction, Safari, or physical-device behavior. Existing shared-workspace/local-file hosting limits above remain open.
