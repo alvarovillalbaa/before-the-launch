@@ -1,6 +1,6 @@
 # Upload-only product intake and unified workspace
 
-Status: source implementation complete and statically reviewed; focused runtime acceptance remains pending approval. Publication and current deployment readback will be recorded below.
+Status: source published and production deployment READY; focused import/backend/browser acceptance remains pending approval.
 
 ## Requirement and baseline
 
@@ -22,7 +22,7 @@ Independent source review found and closed two defects before publication: uncon
 
 ## Verification and hosting limits
 
-The checkout has no installed Next documentation. Per its `AGENTS.md`, the matching upstream [Next 16.2.9 forms guide](https://raw.githubusercontent.com/vercel/next.js/v16.2.9/docs/01-app/02-guides/forms.mdx) was read instead; no local dependency install was performed merely to read it. Node 24.21.0 with the existing TypeScript 5.9.3 parser accepted all 104 product/test TypeScript files and resolved all 203 local imports, with no syntax or local-path errors. This is a parser/import check, not a type compile. `git diff --check` passed. Backend tests, browser sessions, app builds, broad type checking, and temporary CI have not been run for this change.
+The checkout has no installed Next documentation. Per its `AGENTS.md`, the matching upstream [Next 16.2.9 forms guide](https://raw.githubusercontent.com/vercel/next.js/v16.2.9/docs/01-app/02-guides/forms.mdx) was read instead; no local dependency install was performed merely to read it. Node 24.21.0 with the existing TypeScript 5.9.3 parser accepted all 104 product/test TypeScript files and resolved all 203 local imports, with no syntax or local-path errors. This local check is a parser/import check, not a type compile. `git diff --check` passed. No local backend tests, browser sessions, app builds, broad type checking, or temporary CI were run for this change. The hosted production build is recorded below separately.
 
 The existing manifest/lockfile, Next configuration, strict JSON schema/API, legacy actions, and database schema are byte-unchanged from the baseline. The existing ingestion module changes only by exporting its parser for reuse. No user-provided dirty changes were present when this checkout was created.
 
@@ -37,3 +37,13 @@ Read-only hosting inventory found Vercel project `prj_rSuzr7pJuiPUjPnyxqQ0ALiLk2
 Managed database configuration remains unverified: the environment-name lookup returned 403, and was not retried or replaced with a secret lookup. No stored user rows were read. Source uses PostgreSQL and local filesystem originals; Blob is installed but not implemented. APIs/services share one workspace without an account ownership boundary. Durable public uploads therefore require an explicit hosting/access decision before claiming production readiness. No paid service or alternate capacity workaround is proposed.
 
 Focused disposable acceptance is prepared in [the checks proposal](../../../proposals/import-workspace-checks.md) and [inactive workflow template](../../../proposals/import-workspace-ci.yml.example). Its execution remains subject to the user's backend/browser/CI approval gates.
+
+## Publication and hosted build
+
+Source commit [`d7d94f31eedbe363c476acb956c747f5db3e3d3a`](https://github.com/alvarovillalbaa/before-the-launch/commit/d7d94f31eedbe363c476acb956c747f5db3e3d3a), tree `0df9d85450da4cf7a16e1a96a986ec1027bdcc9a`, was pushed to personal-repository `main` and read back from the remote. No active workflow was added. This evidence-only follow-up leaves the application, tests, dependency files, and configuration identical to that source release.
+
+The connected Vercel deployment [`dpl_3jeBaJvbiwGb3JczFu5Ctcq1D5DS`](https://vercel.com/my-team-4f230354/before-the-launch/3jeBaJvbiwGb3JczFu5Ctcq1D5DS) is READY for that exact source SHA and targets production. Its aliases include `before-the-launch.vercel.app`. The hosted Next 16.2.9 build compiled in 6.7 seconds, finished TypeScript in 7.5 seconds, and completed successfully. It emitted a nonblocking NFT tracing warning referencing `next.config.ts`; tracing/configuration was not changed. This is hosted compile/build proof, not execution of the seven import or four browser cases.
+
+A connected Vercel fetch of the [canonical intake page](https://before-the-launch.vercel.app/projects/new) returned HTTP 200. Delivered HTML references the exact deployment ID, contains the upload/preview UI, has one file input and no manual brief inputs, and lists only Projects/Sources/Settings in primary navigation. This is static delivered-HTML proof. The local plain `curl` request failed DNS resolution, and the general web-fetch tool could not access the page; those failures were not treated as application failures or anonymous browser acceptance.
+
+No files were submitted to production, no model was called, and no managed data/storage/Auth configuration was changed. The supplied-AGENTS approval request for the prepared disposable backend/browser/temporary-CI checks is pending. The wider all-project goal remains active.
