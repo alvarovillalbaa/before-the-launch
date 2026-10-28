@@ -4,6 +4,7 @@ import {
   buildScoreBreakdown,
   type BriefSnapshot,
   type PersonaSnapshot,
+  type SimulationContext,
   type SourceSnapshot,
 } from "@/lib/server/services/simulation-service";
 
@@ -46,11 +47,12 @@ const personas: PersonaSnapshot[] = [
     evaluationLens: "Can this pass review?",
   },
 ];
+const simulationContext: SimulationContext = Object.freeze({ targetMarket: "Independent bookshops" });
 
 describe("deterministic simulation", () => {
   it("runs fake agents concurrently and aggregates score components", async () => {
     const results = await Promise.all(
-      personas.map((persona) => Promise.resolve(buildFakeAgentResult(brief, sources, persona))),
+      personas.map((persona) => Promise.resolve(buildFakeAgentResult(brief, sources, persona, simulationContext))),
     );
     const scores = buildScoreBreakdown(results);
 
@@ -60,5 +62,28 @@ describe("deterministic simulation", () => {
     expect(scores.positioningClarity).toBeGreaterThan(0);
     expect(scores.pricingFit).toBeLessThanOrEqual(100);
     expect(scores.negativeFeedbackRisk).toBeGreaterThanOrEqual(0);
+  });
+
+  it("retains the selected market in deterministic fake results without rewriting brief facts or evidence", () => {
+    const partialBrief = { ...brief, market: "" };
+    const originalBrief = structuredClone(partialBrief);
+    const originalSources = structuredClone(sources);
+    const persona = personas[0]!;
+    const first = buildFakeAgentResult(partialBrief, sources, persona, simulationContext);
+    const repeated = buildFakeAgentResult(partialBrief, sources, persona, simulationContext);
+    const otherMarket = buildFakeAgentResult(partialBrief, sources, persona, { targetMarket: "Enterprise security buyers" });
+
+    expect(first).toEqual(repeated);
+    expect(first.recommendation).toContain('operator-selected market "Independent bookshops"');
+    expect(otherMarket.recommendation).toContain('operator-selected market "Enterprise security buyers"');
+    expect(otherMarket).not.toEqual(first);
+    expect(first.evidenceReferences).toEqual(otherMarket.evidenceReferences);
+    expect(first.evidenceReferences[0]?.quote).toBe(sources[0]?.extractedText.slice(0, 260));
+    const escapedMarket = "\u0001".repeat(180);
+    const boundaryResult = buildFakeAgentResult(partialBrief, sources, persona, { targetMarket: escapedMarket });
+    expect(boundaryResult.recommendation).toContain(JSON.stringify(escapedMarket));
+    expect(boundaryResult.recommendation.length).toBeLessThanOrEqual(1_200);
+    expect(partialBrief).toEqual(originalBrief);
+    expect(sources).toEqual(originalSources);
   });
 });

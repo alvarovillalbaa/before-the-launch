@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "baseCommit": "22e5168acdeb83e6827d848635d035fabcf5bf05",
+  "status": "source/static review only; all6 focused cases unexecuted; approval pending",
+  "runtimeObservation": {
+    "nodeVersion": "v26.8.2",
+    "use": "version/executable query only"
+  },
+  "syntaxCheck": {
+    "nodeVersion": "v24.21.0",
+    "typescriptVersion": "5.9.3",
+    "files": [
+      "lib/server/services/simulation-service.ts",
+      "tests/unit/simulation.test.ts",
+      "tests/unit/simulation-context.test.ts"
+    ],
+    "diagnostics": 0,
+    "productImports": 0,
+    "testExecutions": 0
+  },
+  "authoredCases": {
+    "tests/unit/simulation.test.ts": [
+      "runs fake agents concurrently and aggregates score components",
+      "retains the selected market in deterministic fake results without rewriting brief facts or evidence"
+    ],
+    "tests/unit/simulation-context.test.ts": [
+      "uses the persisted market for fake findings, context trace, and report without filling missing brief facts",
+      "passes the selected market separately from a conflicting brief market in the Gateway request",
+      "retains the same selected market when a mocked Gateway failure falls back to fake output",
+      "captures the persisted market before later asynchronous work can change the loaded record"
+    ]
+  },
+  "sha256": {
+    "lib/server/services/simulation-service.ts": "497e7510644c8ce8881bede6546e1cc257ce90faf4818850dd720e1d8c6f59aa",
+    "tests/unit/simulation.test.ts": "1990695e0483f0e0a8a8f58fe2d8b634f4239a3beba79aecf9f667aee32a2fdf",
+    "tests/unit/simulation-context.test.ts": "f0d79fefae0f7d0d336e8c3a67aa5b2d9abc09ea3de614c91d4a6638d417ccd6",
+    "lib/server/config/env.ts": "329d16e55a882db171016137d4f824542a45cec8bd517dca97ada3217890e394",
+    "lib/server/db/client.ts": "196203a01f0411b1cf074d3615d3dd401602ab8fa70f1a1c964e932f821ac66a",
+    "lib/server/db/schema.ts": "51f8cb9b97f2e04a69ffbe5a00756be693e71c3cea10d0f0b61861602cffd568",
+    "lib/shared/schemas.ts": "17c02e6ce2974732a389aa8f831ae549306438a7d08cbd93bc2e7190e08d4c5f",
+    "lib/server/services/source-ingestion.ts": "1124b0d83c99235888f4bd99bee592a5759e59818ec4d71954a85f3e034a210c",
+    "vitest.config.ts": "d4573773ec156fd366efa48db82e9258355fe5566b025c6e1d05554075c49fa9",
+    "pnpm-lock.yaml": "99c2910c000dc4188987b03efd4567966dcd1c8f7e3d15bd5423cfefeeb91c08",
+    "package.json": "331243c4833dd9fe00211593af1a4c192fa48a78d81ef0739d70c8b1cc8e93a1"
+  },
+  "limits": "No database/server/browser/provider/model/install/CI/config/Auth execution; fake and mocked transport fixtures only if separately approved"
+}

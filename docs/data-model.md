@@ -32,6 +32,8 @@ Every simulation run stores:
 
 These snapshots are used for agent execution and results. Later edits to sources, personas, or briefs do not silently change historical outputs.
 
+The existing `SimulationRun.targetMarket` column is the saved operator-selected evaluation audience. Execution copies it into a frozen context shared by both engines and fallback; it does not replace `briefSnapshot.market` or become a source fact. New context traces and reports record this audience explicitly. No schema or historical-row migration is needed. See [agent execution](ai-agents.md#engines).
+
 ## Scoring Components
 
 Scores include launch readiness, market clarity, positioning clarity, differentiation, trust, urgency, adoption likelihood, pricing fit, negative feedback risk, support burden, sales friction, virality/shareability, and enterprise readiness.
