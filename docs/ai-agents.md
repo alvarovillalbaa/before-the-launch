@@ -1,5 +1,7 @@
 # AI Agents
 
+Last updated: 2026-10-28
+
 Agents are configurable persona records stored in the database. UI copy is not hardcoded into the screens.
 
 ## Default Personas

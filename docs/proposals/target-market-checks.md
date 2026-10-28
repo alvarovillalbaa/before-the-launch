@@ -1,6 +1,8 @@
 # Focused target-market checks
 
-Status: authored, unexecuted; explicit approval pending. The earlier seven import checks and four browser scenarios do not authorize this scope. No workflow, install, database, server, browser, model call or provider change is proposed here.
+Last updated: 2026-10-28
+
+Status: authored, unexecuted; explicit approval pending. The earlier seven import checks and four browser scenarios do not authorize this scope. A separately approved temporary runner is proposed below because local locked dependencies are absent. No local installation, database, server, browser, model call or provider change is proposed.
 
 The current [product flow](../product-intake.md) allows an operator to choose a simulation target market after uploading partial product facts. The [source receipt](../results/2026/10-28/target-market.md) records why the selected market must reach both engines without rewriting the original brief or creating evidence.
 
@@ -32,7 +34,27 @@ pnpm exec vitest run tests/unit/simulation.test.ts tests/unit/simulation-context
 git diff --check
 ```
 
-No dependency install or temporary CI change is included in this request. If a suitable environment is unavailable, retain the unexecuted status and prepare a separate concrete environment proposal. Do not run the broader unit, integration or browser suites under this scope.
+Do not run the broader unit, integration or browser suites under this scope.
+
+## Concrete disposable environment
+
+The [inactive workflow](target-market-ci.yml.example) is review source only.
+After explicit workspace §§7 and 14 approval, copy it to
+`.github/workflows/target-market-checks.yml` on the task-specific
+`qa/target-market-checks` branch and publish that branch for one run. It permits
+one public Ubuntu 24.04 job, capped at 15 minutes, with read-only repository
+permissions and the same pinned checkout/setup-node actions as the earlier
+approved import workflow. It verifies all eleven frozen source/lockfile hashes
+and Node 24.21.0, then installs the existing pnpm 10.24.0 lockfile with lifecycle
+scripts disabled. No dependency version or lockfile change is proposed.
+
+The job runs only the two files/six cases above, with one worker and file
+parallelism disabled. It starts no database, server, browser or model provider;
+it has no application credentials, persistent runner, cache or artifact upload.
+Retain bounded textual logs and actual discovered/pass/fail/error/skip totals
+in the owning results. Remove the active workflow after the single authorized
+run, preserving this inactive review template and result evidence. No continuing
+CI installation or broader test authority is requested.
 
 ## Proof limits
 

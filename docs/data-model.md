@@ -1,5 +1,7 @@
 # Data Model
 
+Last updated: 2026-10-28
+
 The durable entities are implemented in `lib/server/db/schema.ts`.
 
 ## Entities

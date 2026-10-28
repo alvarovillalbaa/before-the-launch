@@ -38,10 +38,32 @@ dependency files changed.
 
 ## Publication and remaining acceptance
 
-Source publication is recorded after remote readback. The six-case proposal
-requests only the existing-toolchain fake/mocked-boundary run; it does not
-authorize installation, temporary CI, database, browser or real Gateway calls.
-Hosted storage/access isolation and the complete application acceptance remain
-separate requirements. Existing reports are preserved.
+Source
+[`b3fdbc6824e441056785a6f2ea02f82c265dc7b7`](https://github.com/alvarovillalbaa/before-the-launch/commit/b3fdbc6824e441056785a6f2ea02f82c265dc7b7)
+was pushed to personal `main`. Connected GitHub readback matched all 981 file
+paths, modes, types and blob SHAs against the local tree, without truncation.
+Production deployment
+[`dpl_8XVcPExhudAbMUtVaRVALkAUprQL`](https://vercel.com/my-team-4f230354/before-the-launch/8XVcPExhudAbMUtVaRVALkAUprQL)
+reached READY at that exact source with the canonical alias assigned. Build
+logs show successful Next 16.2.9 compilation, TypeScript completion and a
+completed build in 28 seconds, with the existing nonblocking tracing warning.
+A connected fetch of the canonical `/projects/new` page returned HTTP 200,
+referenced that exact deployment and retained the upload-preview interface.
+These are build/delivered-HTML observations, not simulation or browser acceptance.
+
+Because local locked dependencies are absent and storage prevents installation,
+the updated six-case proposal includes an
+[inactive temporary-CI template](../../../proposals/target-market-ci.yml.example)
+for explicit §§7 and 14 approval. Its YAML parses and all three shell blocks
+pass `bash -n`; nothing is installed as an active workflow. The proposed public
+Ubuntu job is capped at 15 minutes, verifies the frozen source, installs the
+unchanged lockfile with lifecycle scripts disabled and runs only the two
+fake/mocked-boundary unit files. No database, server, browser, model, secrets,
+cache or artifact upload is part of that proposed run.
+
+This documentation/template follow-up preserves all checked runtime/fixture
+hashes and does not activate CI or execute the six cases. Hosted storage/access
+isolation and complete application acceptance remain separate requirements.
+Existing reports are preserved.
 
 `git diff --check` passed after the edits. A bounded file-only check resolved local Markdown link targets in the four changed/new documents and counted the six authored case registrations. These checks do not import or execute product/test modules.

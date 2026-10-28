@@ -1,0 +1,56 @@
+# INACTIVE. Install only after explicit six-case backend and temporary-CI approval.
+# Remove the active workflow after its single focused run.
+name: Temporary target market checks
+on:
+  push:
+    branches: [qa/target-market-checks]
+    paths: [.github/workflows/target-market-checks.yml]
+permissions:
+  contents: read
+jobs:
+  checks:
+    if: github.repository == 'alvarovillalbaa/before-the-launch' && github.event.repository.private == false && github.ref == 'refs/heads/qa/target-market-checks'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      CI: "true"
+      NEXT_TELEMETRY_DISABLED: "1"
+      DO_NOT_TRACK: "1"
+      SIMULATION_ENGINE: fake
+      AI_GATEWAY_API_KEY: ""
+      VERCEL_OIDC_TOKEN: ""
+      BLOB_READ_WRITE_TOKEN: ""
+      OPENAI_API_KEY: ""
+      ANTHROPIC_API_KEY: ""
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: 24.21.0
+          package-manager-cache: false
+      - name: Verify the reviewed source
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const crypto = require('node:crypto');
+          const record = JSON.parse(fs.readFileSync('docs/results/2026/10-28/target-market-source.json', 'utf8'));
+          if (process.version !== 'v24.21.0') throw new Error('Re-review the changed runtime.');
+          for (const [file, expected] of Object.entries(record.sha256)) {
+            const actual = crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
+            if (actual !== expected) throw new Error('Re-review changed source: ' + file);
+          }
+          console.log(JSON.stringify({node:process.version,executable:process.execPath,verifiedFiles:Object.keys(record.sha256).length}));
+          NODE
+          git rev-parse HEAD
+      - name: Install existing locked dependencies in the disposable runner
+        run: |
+          corepack enable
+          corepack prepare pnpm@10.24.0 --activate
+          corepack pnpm install --frozen-lockfile --ignore-scripts
+      - name: Run only the six reviewed fake and mocked-service cases
+        run: >-
+          corepack pnpm exec vitest run
+          tests/unit/simulation.test.ts tests/unit/simulation-context.test.ts
+          --reporter=verbose --maxWorkers=1 --no-file-parallelism
