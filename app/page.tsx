@@ -288,7 +288,7 @@ function RunHistory({ runs, databaseUnavailable }: { runs: Awaited<ReturnType<ty
           </Empty>
         ) : (
           <Table>
-            <TableHeader><TableRow><TableHead>Product</TableHead><TableHead>Status</TableHead><TableHead>Engine</TableHead><TableHead>Score</TableHead><TableHead>Created</TableHead><TableHead><span className="sr-only">Results</span></TableHead></TableRow></TableHeader>
+            <TableHeader><TableRow><TableHead>Product</TableHead><TableHead>Status</TableHead><TableHead>Configured engine</TableHead><TableHead>Score</TableHead><TableHead>Created</TableHead><TableHead><span className="sr-only">Results</span></TableHead></TableRow></TableHeader>
             <TableBody>
               {runs.map(({ run, project }) => (
                 <TableRow key={run.id}>

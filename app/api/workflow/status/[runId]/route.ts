@@ -22,15 +22,17 @@ export async function GET(_request: Request, context: RouteContext) {
       id: detail.run.id,
       status: detail.run.status,
       engine: detail.run.engine,
+      provenance: detail.provenance,
       globalScore: detail.run.globalScore,
       startedAt: detail.run.startedAt,
       completedAt: detail.run.completedAt,
-      agents: detail.agents.map(({ agent, events }) => ({
+      agents: detail.agents.map(({ agent, events, provenance }) => ({
         id: agent.id,
         status: agent.status,
         currentStep: agent.currentStep,
         persona: agent.personaSnapshot,
         traceEvents: events.length,
+        provenance,
       })),
     });
   } catch (error) {

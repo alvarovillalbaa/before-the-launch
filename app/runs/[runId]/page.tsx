@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AppShell } from "@/components/app-shell";
 import { DatabaseUnavailableEmpty } from "@/components/database-unavailable-empty";
+import { AgentProvenanceNotice, SimulationProvenanceNotice } from "@/components/simulation-provenance";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,6 +25,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { isDatabaseUnavailableError } from "@/lib/server/db/errors";
 import { getRunResults } from "@/lib/server/services/project-service";
+import { formatSimulationProvenanceMarkdown } from "@/lib/shared/simulation-provenance";
 
 export const dynamic = "force-dynamic";
 
@@ -43,6 +45,15 @@ export default async function RunPage({ params }: PageProps) {
   }
   if (!detail) notFound();
   const scores = detail.score?.scores;
+  const qualifiedReportMarkdown = detail.report
+    ? [
+        "# Current provenance assessment",
+        formatSimulationProvenanceMarkdown(detail.provenance),
+        "---",
+        "## Recorded report (unchanged)",
+        detail.report.body,
+      ].join("\n\n")
+    : null;
 
   return (
     <AppShell>
@@ -54,7 +65,7 @@ export default async function RunPage({ params }: PageProps) {
                 Simulation run
               </h1>
               <Badge variant="outline">{detail.run.status}</Badge>
-              <Badge variant="secondary">{detail.run.engine}</Badge>
+              <Badge variant="secondary">Configured engine: {detail.run.engine}</Badge>
             </div>
             <p className="max-w-3xl text-pretty text-sm text-muted-foreground">
               {detail.project?.name} in {detail.run.targetMarket}. Refresh-safe traces
@@ -66,11 +77,13 @@ export default async function RunPage({ params }: PageProps) {
           </Button>
         </section>
 
+        <SimulationProvenanceNotice provenance={detail.provenance} />
+
         <div className="grid gap-4 md:grid-cols-4">
-          <ScoreCard label="Launch readiness" value={Number(scores?.launchReadiness ?? detail.run.globalScore ?? 0)} />
-          <ScoreCard label="Trust" value={Number(scores?.trust ?? 0)} />
-          <ScoreCard label="Differentiation" value={Number(scores?.differentiation ?? 0)} />
-          <ScoreCard label="Pricing fit" value={Number(scores?.pricingFit ?? 0)} />
+          <ScoreCard label="Launch readiness" value={scores?.launchReadiness ?? (detail.run.globalScore != null ? Number(detail.run.globalScore) : null)} />
+          <ScoreCard label="Trust" value={scores?.trust ?? null} />
+          <ScoreCard label="Differentiation" value={scores?.differentiation ?? null} />
+          <ScoreCard label="Pricing fit" value={scores?.pricingFit ?? null} />
         </div>
 
         <Tabs defaultValue="results" className="flex flex-col gap-4">
@@ -130,7 +143,7 @@ export default async function RunPage({ params }: PageProps) {
               <CardHeader>
                 <CardTitle>Persona-by-persona perception</CardTitle>
                 <CardDescription>
-                  Each persona emits validated structured JSON and evidence references.
+                  Available findings retain their stored scores and evidence references. Origin labels distinguish Gateway, synthetic and unverified results.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -138,6 +151,7 @@ export default async function RunPage({ params }: PageProps) {
                   <TableHeader>
                     <TableRow>
                       <TableHead>Persona</TableHead>
+                      <TableHead>Result origin</TableHead>
                       <TableHead>Value</TableHead>
                       <TableHead>Trust</TableHead>
                       <TableHead>Adoption</TableHead>
@@ -145,7 +159,7 @@ export default async function RunPage({ params }: PageProps) {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {detail.agents.map(({ agent, finding }) => {
+                    {detail.agents.map(({ agent, finding, provenance }) => {
                       const result = finding?.result;
                       return (
                         <TableRow key={agent.id}>
@@ -154,6 +168,9 @@ export default async function RunPage({ params }: PageProps) {
                               <span className="font-medium">{String(agent.personaSnapshot.name)}</span>
                               <span className="text-muted-foreground">{agent.status}</span>
                             </div>
+                          </TableCell>
+                          <TableCell className="max-w-md whitespace-normal">
+                            <AgentProvenanceNotice provenance={provenance} />
                           </TableCell>
                           <TableCell>{result?.perceivedValueScore ?? "n/a"}</TableCell>
                           <TableCell>{result?.trustScore ?? "n/a"}</TableCell>
@@ -171,13 +188,14 @@ export default async function RunPage({ params }: PageProps) {
           </TabsContent>
 
           <TabsContent value="trace" className="flex flex-col gap-4">
-            {detail.agents.map(({ agent, events, finding }) => (
+            {detail.agents.map(({ agent, events, finding, provenance }) => (
               <Card key={agent.id} className="rounded-lg">
                 <CardHeader>
                   <CardTitle>{String(agent.personaSnapshot.name)}</CardTitle>
                   <CardDescription>{String(agent.personaSnapshot.description)}</CardDescription>
                 </CardHeader>
                 <CardContent className="flex flex-col gap-4">
+                  <AgentProvenanceNotice provenance={provenance} />
                   {events.map((event) => (
                     <div key={event.id} className="grid gap-3 md:grid-cols-[140px_1fr]">
                       <Badge variant="outline">{event.eventType}</Badge>
@@ -204,11 +222,18 @@ export default async function RunPage({ params }: PageProps) {
             <Card className="rounded-lg">
               <CardHeader>
                 <CardTitle>{detail.report?.title ?? "Report"}</CardTitle>
-                <CardDescription>Markdown export generated from persisted run outputs.</CardDescription>
+                <CardDescription>Current provenance assessment followed by the unchanged recorded Markdown report.</CardDescription>
               </CardHeader>
-              <CardContent>
-                <pre className="max-h-[720px] overflow-auto whitespace-pre-wrap rounded-lg bg-muted p-4 text-sm">
-                  {detail.report?.body ?? "Report is not available yet."}
+              <CardContent className="grid gap-3">
+                <p className="text-sm text-muted-foreground">
+                  <strong className="text-foreground">Current assessment: {detail.provenance.label}.</strong>{" "}
+                  {detail.provenance.qualification}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  The assessment is included below for copying. The recorded report follows unchanged; any provenance inside it reflects what was recorded when it was generated.
+                </p>
+                <pre role="region" aria-label="Qualified Markdown report" tabIndex={0} className="max-h-[720px] overflow-auto whitespace-pre-wrap rounded-lg bg-muted p-4 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                  {qualifiedReportMarkdown ?? "Report is not available yet."}
                 </pre>
               </CardContent>
             </Card>
@@ -237,15 +262,17 @@ async function loadRunResults(runId: string) {
   }
 }
 
-function ScoreCard({ label, value }: { label: string; value: number }) {
+function ScoreCard({ label, value }: { label: string; value: number | null }) {
   return (
     <Card className="rounded-lg" size="sm">
       <CardHeader>
         <CardDescription>{label}</CardDescription>
-        <CardTitle className="text-2xl tabular-nums">{Math.round(value)}</CardTitle>
+        <CardTitle className="text-2xl tabular-nums">{value === null ? "n/a" : Math.round(value)}</CardTitle>
       </CardHeader>
       <CardContent>
-        <Progress value={value} />
+        {value === null
+          ? <p className="text-xs text-muted-foreground">Score unavailable</p>
+          : <Progress value={value} />}
       </CardContent>
     </Card>
   );

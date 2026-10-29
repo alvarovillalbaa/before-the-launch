@@ -15,6 +15,11 @@ import {
   workspaces,
 } from "@/lib/server/db/schema";
 import type { ProductBriefInput } from "@/lib/shared/schemas";
+import {
+  bindSimulationProvenanceToOutputs,
+  deriveAgentProvenance,
+  summarizeSimulationProvenance,
+} from "@/lib/shared/simulation-provenance";
 import { defaultPersonas } from "./personas";
 
 export async function getOrCreateDefaultWorkspace() {
@@ -207,9 +212,19 @@ export async function getRunResults(runId: string) {
         .from(agentFindings)
         .where(eq(agentFindings.agentRunId, agent.id))
         .limit(1);
-      return { agent, events, finding: finding ?? null };
+      return {
+        agent, events, finding: finding ?? null,
+        provenance: deriveAgentProvenance(run.engine, finding ?? null, events),
+      };
     }),
   );
+  const findingProvenance = summarizeSimulationProvenance(run.engine, agentsWithDetails.map((entry) => entry.provenance));
+  const provenance = bindSimulationProvenanceToOutputs(findingProvenance, {
+    record: run.disagreementSummary?.executionProvenance,
+    scoreId: score?.id ?? null,
+    reportId: report?.id ?? null,
+    findingIds: agentsWithDetails.flatMap((entry) => entry.finding ? [entry.finding.id] : []),
+  });
   return {
     run,
     project: project ?? null,
@@ -217,5 +232,6 @@ export async function getRunResults(runId: string) {
     recommendations: recs,
     report: report ?? null,
     agents: agentsWithDetails,
+    provenance,
   };
 }

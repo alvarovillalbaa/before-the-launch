@@ -1,0 +1,1103 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-30",
+  "project": "Before the Launch",
+  "status": "authored-and-unrun",
+  "baseCommit": "387e163b17f6a28ede67fce3c14bd7126392151f",
+  "total_cases": 48,
+  "case_files": [
+    {
+      "path": "tests/unit/simulation-provenance.test.ts",
+      "names": [
+        "simulation provenance: a selected finding needs its own matching Gateway judgment stamp",
+        "simulation provenance: explicitly bound fake findings stay synthetic",
+        "simulation provenance: a bound Gateway failure is distinguished from a Gateway judgment",
+        "simulation provenance: configured Gateway alone never establishes a completed result origin",
+        "simulation provenance: historical fake-engine findings retain qualified synthetic provenance",
+        "simulation provenance: an unbound historical fallback event does not identify the selected finding",
+        "simulation provenance: judgments attached to another finding cannot promote this finding",
+        "simulation provenance: selected finding proof is not replaced by an unbound fallback from another attempt",
+        "simulation provenance: duplicate matching stamps are ambiguous even when their values agree",
+        "simulation provenance: conflicting selected-finding origins are never resolved by event order",
+        "simulation provenance: malformed versions origins and configured-engine contradictions reject positive attribution",
+        "simulation provenance: malformed unbound origin records cannot piggyback on valid selected-finding proof",
+        "simulation provenance: absent findings remain pending regardless of stale judgment events",
+        "simulation provenance: malformed finding results cannot inherit a positive engine label",
+        "simulation provenance: unknown historical engine names do not become Gateway evidence",
+        "simulation provenance: classification leaves scores evidence and event metadata unchanged",
+        "simulation provenance: a complete Gateway cohort counts every independently derived judgment",
+        "simulation provenance: explicit fake and Gateway fallback findings are both synthetic without collapsing their counts",
+        "simulation provenance: mixed Gateway and fallback output cannot be advertised as all Gateway",
+        "simulation provenance: unknown and pending findings remain visible in aggregate accounting",
+        "simulation provenance: an empty cohort is pending rather than evidence of successful Gateway execution",
+        "simulation provenance: exported Markdown retains the derived origin label and its qualification",
+        "simulation provenance: aggregate binding accepts only the exact output identities with order-independent finding membership",
+        "simulation provenance: missing duplicated or mismatched selected outputs cannot borrow another attempt origin",
+        "simulation provenance: output identities alone do not validate a contradictory recorded summary",
+        "simulation provenance: absent legacy output binding preserves persona counts but qualifies aggregate origin",
+        "simulation provenance: output binding never mutates its summaries or immutable receipt"
+      ]
+    },
+    {
+      "path": "tests/unit/simulation-provenance-service.test.ts",
+      "names": [
+        "simulation provenance service: fake execution binds synthetic findings and report outputs without altering deterministic results",
+        "simulation provenance service: successful mocked Gateway output is bound to its saved finding and aggregate outputs",
+        "simulation provenance service: Gateway failure keeps fallback behavior while qualifying the exact synthetic finding and report",
+        "simulation provenance service: mixed success and fallback persist separate origins with one correctly bound report composition",
+        "simulation provenance service: historical Gateway flags and unbound fallback traces remain unknown without rewriting saved numerical outputs",
+        "simulation provenance service: an older selected score or report cannot borrow a newer attempt aggregate attribution",
+        "simulation provenance service: first selected historical findings cannot inherit current report lineage despite valid per-finding stamps",
+        "simulation provenance service: unfinished agents stay pending and absent runs stay absent",
+        "simulation provenance service: asynchronous changes to the loaded engine cannot relabel an already captured execution attempt"
+      ]
+    },
+    {
+      "path": "tests/unit/simulation-provenance-ui.test.tsx",
+      "names": [
+        "provenance UI: mixed findings retain separate Gateway and synthetic counts in a labeled notice",
+        "provenance UI: fake and fallback cohorts remain explicitly synthetic after matched output linkage",
+        "provenance UI: a pending cohort names missing findings without claiming completed Gateway output",
+        "provenance UI: positive Gateway counts do not promote an unbound aggregate or report",
+        "provenance UI: every persona origin exposes its visible label and full qualification",
+        "provenance UI: authored markup stays escaped text without mutating provenance inputs"
+      ]
+    },
+    {
+      "path": "tests/unit/simulation.test.ts",
+      "names": [
+        "deterministic simulation runs fake agents concurrently and aggregates score components",
+        "deterministic simulation retains the selected market in deterministic fake results without rewriting brief facts or evidence"
+      ]
+    },
+    {
+      "path": "tests/unit/simulation-context.test.ts",
+      "names": [
+        "persisted simulation target market uses the persisted market for fake findings, context trace, and report without filling missing brief facts",
+        "persisted simulation target market passes the selected market separately from a conflicting brief market in the Gateway request",
+        "persisted simulation target market retains the same selected market when a mocked Gateway failure falls back to fake output",
+        "persisted simulation target market captures the persisted market before later asynchronous work can change the loaded record"
+      ]
+    }
+  ],
+  "protected_functions": [
+    {
+      "path": "lib/server/services/simulation-service.ts",
+      "name": "clampScore",
+      "sha256": "bc76650933aaba374d8ee28bbc0bae355483cde147f879b8313feff657a466bf"
+    },
+    {
+      "path": "lib/server/services/simulation-service.ts",
+      "name": "signalScore",
+      "sha256": "78f46f3358dea5b9e0e4efffd4d4771c72d7176429d5386ed74e3a7062da4f9e"
+    },
+    {
+      "path": "lib/server/services/simulation-service.ts",
+      "name": "pickEvidence",
+      "sha256": "987309b7fd8854ff3695bedffdf2dc7ff86d7ed1a6cc7abddc4ce7607e56d323"
+    },
+    {
+      "path": "lib/server/services/simulation-service.ts",
+      "name": "buildFakeAgentResult",
+      "sha256": "5162ffb5a700d501c847aec974c7acf2f5415baf2a24595d170c79d1a4d9747f"
+    },
+    {
+      "path": "lib/server/services/simulation-service.ts",
+      "name": "buildGatewayAgentResult",
+      "sha256": "23457e9749ee4359a1cad93fb611e1704281ade2919a920af2680e3c89d572d8"
+    },
+    {
+      "path": "lib/server/services/simulation-service.ts",
+      "name": "buildScoreBreakdown",
+      "sha256": "271fee326c394b2dee7d8e310a481bf138596c56e1bf70daba1261cbdc20b2a0"
+    },
+    {
+      "path": "lib/server/services/simulation-service.ts",
+      "name": "buildRecommendations",
+      "sha256": "eac73aa14f2ccdfd8fa6b010f116f5f46e112a0282abada1a62be22b9fd93e5c"
+    },
+    {
+      "path": "lib/server/services/simulation-service.ts",
+      "name": "createSimulationRun",
+      "sha256": "68881eb7e1747ffa923d181b0231f1712660681cec47993f20a54a6e94146f2e"
+    },
+    {
+      "path": "lib/server/services/simulation-service.ts",
+      "name": "deleteRun",
+      "sha256": "c5fe7c2ca077cddf5c42f524e756f3869dbe87b392abc1e378c16c0ce39ff833"
+    },
+    {
+      "path": "lib/server/services/project-service.ts",
+      "name": "getOrCreateDefaultWorkspace",
+      "sha256": "c75c96b77a0a316cbbc05e7d27ea2c85855c52f482aabe92e7055aae55499492"
+    },
+    {
+      "path": "lib/server/services/project-service.ts",
+      "name": "getWorkspacePersonas",
+      "sha256": "79296f9ce23dc278f4e77843371ea5196c64ceeb5bbee53d6a11ecfc3d0e6692"
+    },
+    {
+      "path": "lib/server/services/project-service.ts",
+      "name": "createProductProject",
+      "sha256": "7a8b1bdcfe4264365041dc643a5ef13d175620ad745130b1c9e6d0dcc923784b"
+    },
+    {
+      "path": "lib/server/services/project-service.ts",
+      "name": "listProjectDashboard",
+      "sha256": "0727d912a9a442829b625738a5a1d1ba72bdf38ad6cfac1d8ec86bbf6899a2a7"
+    },
+    {
+      "path": "lib/server/services/project-service.ts",
+      "name": "getProjectDetail",
+      "sha256": "29bd6b838d4b83c9408594302f801123b126d10d834bb1187fe419ed3a33c3b4"
+    },
+    {
+      "path": "lib/server/services/project-service.ts",
+      "name": "listAllSources",
+      "sha256": "d6895212dc8a9bb0b19ef28b5ed248b79bb16cd4136d7436836345b7fe10f709"
+    },
+    {
+      "path": "lib/server/services/project-service.ts",
+      "name": "listAllRuns",
+      "sha256": "2c03fc7cc75c2c17a1d1fdfe74b313700a153deae7418c95b35496faf35033ab"
+    }
+  ],
+  "protected_baseline": {
+    "baseline": "387e163b17f6a28ede67fce3c14bd7126392151f",
+    "baselineLeaves": 982,
+    "preservedLeaves": 974,
+    "changedBaselinePaths": [
+      "README.md",
+      "app/api/workflow/status/[runId]/route.ts",
+      "app/page.tsx",
+      "app/projects/[projectId]/page.tsx",
+      "app/runs/[runId]/page.tsx",
+      "docs/ai-agents.md",
+      "lib/server/services/project-service.ts",
+      "lib/server/services/simulation-service.ts"
+    ]
+  },
+  "static_checks": {
+    "typescript": "5.9.3",
+    "syntaxFiles": 13,
+    "localImports": 63,
+    "typecheck": false,
+    "testsExecuted": 0,
+    "productImports": 0,
+    "workflowYaml": true,
+    "workflowShellBlocks": 6,
+    "workflowNodeBlocks": 3,
+    "gitDiffCheck": true
+  },
+  "storage_preflight": {
+    "freeGiB": 27.2,
+    "requiredGiB": 34,
+    "reserveGiB": 30,
+    "estimatedNeedGiB": 4,
+    "exitCode": 2,
+    "localEnvironmentCreated": false
+  },
+  "limits": {
+    "backendChecksRun": false,
+    "ssrRendersRun": false,
+    "browserRun": false,
+    "providerCall": false,
+    "activeWorkflow": false,
+    "budgetZeroMeaning": "pending owner answer",
+    "budgetOrDepthActivated": false
+  },
+  "excluded_prefixes": [
+    "docs/results/",
+    ".agents/"
+  ],
+  "source_files": [
+    {
+      "path": ".env.example",
+      "mode": "100644",
+      "bytes": 341,
+      "sha256": "b89c98cbb8341df040df0b74b510d67037b58a981abbcb86cd5993a26f5dea1e"
+    },
+    {
+      "path": ".gitignore",
+      "mode": "100644",
+      "bytes": 637,
+      "sha256": "39162e1932c6abe6a498acad2af38c940db15938e79740bef3eab4913e7c0d6c"
+    },
+    {
+      "path": "AGENTS.md",
+      "mode": "100644",
+      "bytes": 327,
+      "sha256": "e3447d84251880fb34cfae09131cb4c57471529bbfe60976a3245793cf621627"
+    },
+    {
+      "path": "CLAUDE.md",
+      "mode": "100644",
+      "bytes": 11,
+      "sha256": "336cc4fbf19beaada7ccf9986414fa91851a8d7a07dfb3ccbe800a69eed0ab49"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "mode": "100644",
+      "bytes": 966,
+      "sha256": "e40f00596415493fd2a56ef084fd2327dcb7b22a447a64703893f9ca9ab3e0ad"
+    },
+    {
+      "path": "LICENSE",
+      "mode": "100644",
+      "bytes": 1087,
+      "sha256": "e17e365b34a79b2abd94aeb29b54d5a0ace5b8013aac32e24ea246ca8e77dc49"
+    },
+    {
+      "path": "README.md",
+      "mode": "100644",
+      "bytes": 2789,
+      "sha256": "7a48ea2f753bad2a71c77036f49153772d8792a96981cde766f53e5224eb7e2c"
+    },
+    {
+      "path": "SECURITY.md",
+      "mode": "100644",
+      "bytes": 1371,
+      "sha256": "bd861a1c18d4f26b607a5ef9e9e44c92b3a7b04dc5b55915852fbdb6fbbbc867"
+    },
+    {
+      "path": "app/actions.ts",
+      "mode": "100644",
+      "bytes": 4296,
+      "sha256": "bf724759b936dfd5bc8e24fa0797ac7d1602ac9dbf2489bd2adce65164b17420"
+    },
+    {
+      "path": "app/api/projects/route.ts",
+      "mode": "100644",
+      "bytes": 1396,
+      "sha256": "909ece0b068309f27d5352c4eae2ab0ab8fd87daabe0f917729b1255794daba6"
+    },
+    {
+      "path": "app/api/runs/[runId]/route.ts",
+      "mode": "100644",
+      "bytes": 1310,
+      "sha256": "5f34438e18c4ead48f48f838bf30d0558af75bfd12dd9aeb6b5305f10f2ce133"
+    },
+    {
+      "path": "app/api/runs/route.ts",
+      "mode": "100644",
+      "bytes": 1005,
+      "sha256": "5c66123d35511e2898e2826f1bf9403f7684d18c022781d18a322cd644387ba5"
+    },
+    {
+      "path": "app/api/sources/[sourceId]/route.ts",
+      "mode": "100644",
+      "bytes": 737,
+      "sha256": "be598d6db97b613809dcaa0339e22ddcf9aadb189bc02b1504e2202551585bd7"
+    },
+    {
+      "path": "app/api/sources/route.ts",
+      "mode": "100644",
+      "bytes": 1478,
+      "sha256": "35558aa2750974d5bf7d90db277b251bb0093b7201c1150bf64e0cedc6352710"
+    },
+    {
+      "path": "app/api/workflow/status/[runId]/route.ts",
+      "mode": "100644",
+      "bytes": 1362,
+      "sha256": "2c5befabeaa60e6a3043fe119653e5aa4c4da6abfa71007fcb64b314f5b01c3e"
+    },
+    {
+      "path": "app/favicon.ico",
+      "mode": "100644",
+      "bytes": 25931,
+      "sha256": "2b8ad2d33455a8f736fc3a8ebf8f0bdea8848ad4c0db48a2833bd0f9cd775932"
+    },
+    {
+      "path": "app/globals.css",
+      "mode": "100644",
+      "bytes": 4810,
+      "sha256": "9491b573095fc409bf3c29f431d1fec395b950885d34832e5b7614e59a836ed8"
+    },
+    {
+      "path": "app/intake-actions.ts",
+      "mode": "100644",
+      "bytes": 1343,
+      "sha256": "5e5cfc2e5ca20ec4906bd55082e6b50d0291eb2543a2833f24c5a8667edfe567"
+    },
+    {
+      "path": "app/layout.tsx",
+      "mode": "100644",
+      "bytes": 879,
+      "sha256": "7d347a8013edebcfa155e5021e250fe77df9808583a84686580b3ac3d31cffb6"
+    },
+    {
+      "path": "app/new-simulation/page.tsx",
+      "mode": "100644",
+      "bytes": 162,
+      "sha256": "6e70a24a39d960eb107a3a244041aca7fafcc24b06a18a371ad2feba3b8cc54b"
+    },
+    {
+      "path": "app/page.tsx",
+      "mode": "100644",
+      "bytes": 14381,
+      "sha256": "a4e5579e96ddbc6c182475a9a0766caf2b0dbb9b13701bd5ba30e2afa657d555"
+    },
+    {
+      "path": "app/projects/[projectId]/page.tsx",
+      "mode": "100644",
+      "bytes": 19159,
+      "sha256": "05e3fc3caacadf2e18ff0b89fa91d3e7c47f1746130665c165bc70cf503aa7d5"
+    },
+    {
+      "path": "app/projects/new/page.tsx",
+      "mode": "100644",
+      "bytes": 760,
+      "sha256": "3c5222fc9c70bc8269594eebd389be34708c750d15d8d6563156fe5a662ca941"
+    },
+    {
+      "path": "app/runs/[runId]/page.tsx",
+      "mode": "100644",
+      "bytes": 12333,
+      "sha256": "0b074b705c5e2428a0f8d8deffa0fea05490359c5797d8213cfa3281e954558e"
+    },
+    {
+      "path": "app/runs/page.tsx",
+      "mode": "100644",
+      "bytes": 152,
+      "sha256": "1b405c8e7947bde72548fc8113cd24aae96ffd2ca7632c97c4228c92cc592f89"
+    },
+    {
+      "path": "app/settings/page.tsx",
+      "mode": "100644",
+      "bytes": 2200,
+      "sha256": "b5fd70375f66f37eb250e86bc34ddaf841a354ea9dd025c65b132fbca196ecfc"
+    },
+    {
+      "path": "app/sources/page.tsx",
+      "mode": "100644",
+      "bytes": 2787,
+      "sha256": "bd5767b4ec9faf2c80697465d12a56760e67da24fb6980e76319a961c7c49f68"
+    },
+    {
+      "path": "components.json",
+      "mode": "100644",
+      "bytes": 515,
+      "sha256": "6fc22492985fc604cbc5270317db5ef5b738271a58e1ff89abaff8d94d531a72"
+    },
+    {
+      "path": "components/app-shell.tsx",
+      "mode": "100644",
+      "bytes": 972,
+      "sha256": "b0c3ba9c651beeda0ed1b64ed22e4ff3e530b2d669a6eeea371d3d576d5fe19b"
+    },
+    {
+      "path": "components/app-sidebar.tsx",
+      "mode": "100644",
+      "bytes": 3342,
+      "sha256": "52d9dbff09a2b93d2cd4909892ac9d04420bac918ee1c06a0862a9129c0115af"
+    },
+    {
+      "path": "components/database-unavailable-empty.tsx",
+      "mode": "100644",
+      "bytes": 822,
+      "sha256": "542a1db8b7b0a1761fc1a98e466b188ba314189c72c83ba601be8d8474d5f175"
+    },
+    {
+      "path": "components/product-upload-intake.tsx",
+      "mode": "100644",
+      "bytes": 11280,
+      "sha256": "77a71cd5c39bc751ae0f466bd743588faabfc83b8b832d6c18984d3a1b10b0b2"
+    },
+    {
+      "path": "components/simulation-provenance.tsx",
+      "mode": "100644",
+      "bytes": 2365,
+      "sha256": "918868e214a5cf24b76d4101771ce4c2faa3f81cf543af2f0c0f2cd95e745414"
+    },
+    {
+      "path": "components/ui/accordion.tsx",
+      "mode": "100644",
+      "bytes": 2655,
+      "sha256": "5b0b31aca229e47f8f4fab59e2b07435f9eec3afe0d0bac31f38484380d39cec"
+    },
+    {
+      "path": "components/ui/alert-dialog.tsx",
+      "mode": "100644",
+      "bytes": 5588,
+      "sha256": "e2c151fe975f17d3932caf18fc56882695aefbaf10b800d128bdbaed4ca18467"
+    },
+    {
+      "path": "components/ui/alert.tsx",
+      "mode": "100644",
+      "bytes": 2050,
+      "sha256": "26142e6f255d291475046412fd47b6054294f244f531636e40e57d5fdd3bbbf3"
+    },
+    {
+      "path": "components/ui/aspect-ratio.tsx",
+      "mode": "100644",
+      "bytes": 274,
+      "sha256": "b1c157886236782cb92d8fbcd4749532aaf6d8aabefd6e157ca40358f902f407"
+    },
+    {
+      "path": "components/ui/avatar.tsx",
+      "mode": "100644",
+      "bytes": 3098,
+      "sha256": "fd03e439ae00bf718834132df24072b58a6019538329d4db47f874f247d428fc"
+    },
+    {
+      "path": "components/ui/badge.tsx",
+      "mode": "100644",
+      "bytes": 1877,
+      "sha256": "3a41ceadb0a13070e475b7b75f3e005bf39c79e980953895a77c06a9c9149570"
+    },
+    {
+      "path": "components/ui/breadcrumb.tsx",
+      "mode": "100644",
+      "bytes": 2489,
+      "sha256": "2b47430223f5097256d2ff5c8471a053cb67afba5af905c97fa3a8d5f160f1fb"
+    },
+    {
+      "path": "components/ui/button-group.tsx",
+      "mode": "100644",
+      "bytes": 2363,
+      "sha256": "9a540fbd2ce693dd5f4211e12a2b6dafda43d763581f75544f18a79e52ece47d"
+    },
+    {
+      "path": "components/ui/button.tsx",
+      "mode": "100644",
+      "bytes": 2954,
+      "sha256": "5446dd338c54f9c9b8c82119466c9345a2764a6e15861c9d02f9179688ee74cb"
+    },
+    {
+      "path": "components/ui/calendar.tsx",
+      "mode": "100644",
+      "bytes": 8285,
+      "sha256": "0c7c6519e1c8b2fa1959b62d62fb510f99a765d41309bfa88b1588b217659241"
+    },
+    {
+      "path": "components/ui/card.tsx",
+      "mode": "100644",
+      "bytes": 2491,
+      "sha256": "efc71e6f0d48db41c5d4ede88e8d85e6046e5f62a3a9221550c2bcde02aa6c15"
+    },
+    {
+      "path": "components/ui/carousel.tsx",
+      "mode": "100644",
+      "bytes": 5764,
+      "sha256": "f2859dbcb39d5a7e7bf7110cd0b09bcb13d87892fc83ee59b2b615850da1e598"
+    },
+    {
+      "path": "components/ui/chart.tsx",
+      "mode": "100644",
+      "bytes": 10501,
+      "sha256": "0060b7708d85a5fffc914dcd1ee4753b5acfe83db7ba634b4cea280bd9f19c8f"
+    },
+    {
+      "path": "components/ui/checkbox.tsx",
+      "mode": "100644",
+      "bytes": 1408,
+      "sha256": "b6bad6e5f5e5a487580a259dd50bda189d4da39a1be273f9579d12aea7ffc86a"
+    },
+    {
+      "path": "components/ui/collapsible.tsx",
+      "mode": "100644",
+      "bytes": 795,
+      "sha256": "c6598e5584f4258b5d9fefadbc5ad6a66888ad58729f4b634a0bb2d9c513188b"
+    },
+    {
+      "path": "components/ui/combobox.tsx",
+      "mode": "100644",
+      "bytes": 9080,
+      "sha256": "86bf0246d51121b37198f613c0ab06a88a6805d893b269758795385515a5a3e6"
+    },
+    {
+      "path": "components/ui/command.tsx",
+      "mode": "100644",
+      "bytes": 4878,
+      "sha256": "e89c811d1dde45ebab1aca2e49519f64231c01fd55418313de9539deac33a633"
+    },
+    {
+      "path": "components/ui/context-menu.tsx",
+      "mode": "100644",
+      "bytes": 8284,
+      "sha256": "8546e2f9f6e99e47dec2e7674ab7d1542deb81a9067a0ab12e1f7ebf66d57fb4"
+    },
+    {
+      "path": "components/ui/dialog.tsx",
+      "mode": "100644",
+      "bytes": 4184,
+      "sha256": "e80bad1714ef7aeb19e682c5ff3d1455a01049cdbd85368cb3abba9a483e84b9"
+    },
+    {
+      "path": "components/ui/direction.tsx",
+      "mode": "100644",
+      "bytes": 506,
+      "sha256": "84ae2ad658207f0e0f367978e5508cd8027cd00c29c41d3d13db21a708c3d1e6"
+    },
+    {
+      "path": "components/ui/drawer.tsx",
+      "mode": "100644",
+      "bytes": 4144,
+      "sha256": "74195dc57edf36be27e57bafa9fea0641803e1896395deb735506b6a67ea7131"
+    },
+    {
+      "path": "components/ui/dropdown-menu.tsx",
+      "mode": "100644",
+      "bytes": 8844,
+      "sha256": "286ba3937589075fe88f12421da451eb4e0df4f5d503af1edf99d5a4df08e87e"
+    },
+    {
+      "path": "components/ui/empty.tsx",
+      "mode": "100644",
+      "bytes": 2397,
+      "sha256": "98f56d81c34b7012044519963fffd9f4a198f64a26633e1f6714122268cf5bfd"
+    },
+    {
+      "path": "components/ui/field.tsx",
+      "mode": "100644",
+      "bytes": 6011,
+      "sha256": "72bbd57b854cd11c618061bcf5b1baebbf6293c6e0a8dd6831f5641e0a20d983"
+    },
+    {
+      "path": "components/ui/hover-card.tsx",
+      "mode": "100644",
+      "bytes": 1519,
+      "sha256": "0157217b35d15704920b527b892ce3c6853809984b116e488fa4b52809ffcd2e"
+    },
+    {
+      "path": "components/ui/input-group.tsx",
+      "mode": "100644",
+      "bytes": 5102,
+      "sha256": "03c78ce436e257772e0e7378ae1c89f2c8b407fb12c96cef54ba8ac026c55762"
+    },
+    {
+      "path": "components/ui/input-otp.tsx",
+      "mode": "100644",
+      "bytes": 2553,
+      "sha256": "42de90f7a7d921de005ba4cea94da2b19e2ab97d4593accdd2b3ec35ea6f4375"
+    },
+    {
+      "path": "components/ui/input.tsx",
+      "mode": "100644",
+      "bytes": 908,
+      "sha256": "451779f46bae615b318784dfebccdffc77861f012c9bf65643c4e545eaac920a"
+    },
+    {
+      "path": "components/ui/item.tsx",
+      "mode": "100644",
+      "bytes": 4773,
+      "sha256": "583f4c6a19003f8e50d1e0215d7cdb5a53a3a0af124ae6cd0a5572b6dc4fc0ee"
+    },
+    {
+      "path": "components/ui/kbd.tsx",
+      "mode": "100644",
+      "bytes": 837,
+      "sha256": "1e477363fca474e23b9a1f0e5d2920cd7319e076eaa5156ba29ea4722b96bba5"
+    },
+    {
+      "path": "components/ui/label.tsx",
+      "mode": "100644",
+      "bytes": 606,
+      "sha256": "a476e41f08b9de5bd447de66a33d8bc2ad18f2fa6b96c064778bab4b6f439f4c"
+    },
+    {
+      "path": "components/ui/menubar.tsx",
+      "mode": "100644",
+      "bytes": 8422,
+      "sha256": "cca8bd05fa34751bd694fbfe4f46e8804992cffa28f48d3e78a77cc75269654d"
+    },
+    {
+      "path": "components/ui/native-select.tsx",
+      "mode": "100644",
+      "bytes": 2023,
+      "sha256": "16860192ef712fd05d5e041d77c075b9678e1ea7d296fe4c1a9aee3cb98aea34"
+    },
+    {
+      "path": "components/ui/navigation-menu.tsx",
+      "mode": "100644",
+      "bytes": 6585,
+      "sha256": "415ae90f05e3b896de6760cb7716786381e660bdca58b501c92ef89426d3a3ea"
+    },
+    {
+      "path": "components/ui/pagination.tsx",
+      "mode": "100644",
+      "bytes": 2823,
+      "sha256": "603b8128610cc5f03bbc599b30ba4044ed05c97c69136fb8aefe7e99da6f10b7"
+    },
+    {
+      "path": "components/ui/popover.tsx",
+      "mode": "100644",
+      "bytes": 2380,
+      "sha256": "c5b47f339e30b24a4dacf286cc4497bd9dbf2731425b607247c1ed9b9ffdbefd"
+    },
+    {
+      "path": "components/ui/progress.tsx",
+      "mode": "100644",
+      "bytes": 745,
+      "sha256": "36ea2515042bd370e836ea2340af0f2c61d68f3787fd8640f2c79efbd9721dac"
+    },
+    {
+      "path": "components/ui/radio-group.tsx",
+      "mode": "100644",
+      "bytes": 1692,
+      "sha256": "64be8317b73d8aabcbd64ac595d8e7e3b640d0c6e5dab0895f99d622cf1e7eef"
+    },
+    {
+      "path": "components/ui/resizable.tsx",
+      "mode": "100644",
+      "bytes": 1671,
+      "sha256": "379baf7a1de109a1ea14419c99b76fbec1cb4f10d6ee13605b0b2940d615afeb"
+    },
+    {
+      "path": "components/ui/scroll-area.tsx",
+      "mode": "100644",
+      "bytes": 1692,
+      "sha256": "c3e7e2201d33bc24e439b18f3d3eb2568578eb017ca995c899ed0924a569b15d"
+    },
+    {
+      "path": "components/ui/select.tsx",
+      "mode": "100644",
+      "bytes": 6623,
+      "sha256": "35dfd5f736b190eb0183043484c0d5bafc8ee41db1a594e42ef506a335eda24f"
+    },
+    {
+      "path": "components/ui/separator.tsx",
+      "mode": "100644",
+      "bytes": 644,
+      "sha256": "c924a82e99fda03684c17238d04eec857edc83977da2ee601795e94e52b4828f"
+    },
+    {
+      "path": "components/ui/sheet.tsx",
+      "mode": "100644",
+      "bytes": 4564,
+      "sha256": "ddb4e4453af687e61fb5d2760ba03be3fc67f9b3ab9fada4cc2568a08941df09"
+    },
+    {
+      "path": "components/ui/sidebar.tsx",
+      "mode": "100644",
+      "bytes": 21316,
+      "sha256": "43c293796e7c6c9234af8b697fcac33e07aceffabc55f714ba1bae22607c3bff"
+    },
+    {
+      "path": "components/ui/skeleton.tsx",
+      "mode": "100644",
+      "bytes": 275,
+      "sha256": "4a1e9bb4ba6eccd5da12f61f604bbddc06ced618a384b2212cb6b1834e170735"
+    },
+    {
+      "path": "components/ui/slider.tsx",
+      "mode": "100644",
+      "bytes": 1799,
+      "sha256": "053cd830c1aabe70bf73d0bec409ec66c2bb0bcad8bc98ac6445784a8791e2f6"
+    },
+    {
+      "path": "components/ui/sonner.tsx",
+      "mode": "100644",
+      "bytes": 1226,
+      "sha256": "2dd975ad2170ba2570b00e58713dcbda90f26a7fffdaceb1ef7255f450c2d2a6"
+    },
+    {
+      "path": "components/ui/spinner.tsx",
+      "mode": "100644",
+      "bytes": 322,
+      "sha256": "900f722c961fa6e1c28104809d56831c9056dc69599e49d364cc13a6f33966a3"
+    },
+    {
+      "path": "components/ui/switch.tsx",
+      "mode": "100644",
+      "bytes": 1756,
+      "sha256": "1fb57829852a82b931cbb52e6a778767a415f059c02ba5f482bfb0b0c2c7cfca"
+    },
+    {
+      "path": "components/ui/table.tsx",
+      "mode": "100644",
+      "bytes": 2402,
+      "sha256": "e31edb92cb81ad582a30fd57925095b10b6ca3b5878ebec51a3db400938e4849"
+    },
+    {
+      "path": "components/ui/tabs.tsx",
+      "mode": "100644",
+      "bytes": 3553,
+      "sha256": "2e6cd219a119677eda0663227c3f03f02b3e0edaeb3338205807821ffdec70f0"
+    },
+    {
+      "path": "components/ui/textarea.tsx",
+      "mode": "100644",
+      "bytes": 793,
+      "sha256": "18e665f6f1a2d6a97c4447c0f83272c640bf20feef9a04c081908b5a816c757f"
+    },
+    {
+      "path": "components/ui/toggle-group.tsx",
+      "mode": "100644",
+      "bytes": 3257,
+      "sha256": "773e41d50d768b37ff42120ee7a73f43039645638cef3a6b5f4f22fd52377769"
+    },
+    {
+      "path": "components/ui/toggle.tsx",
+      "mode": "100644",
+      "bytes": 1700,
+      "sha256": "a7694689552dec0bca92398e2410427895d063b32424438719174a64046103c3"
+    },
+    {
+      "path": "components/ui/tooltip.tsx",
+      "mode": "100644",
+      "bytes": 2189,
+      "sha256": "1841c0afc62f9c7baf2d15c8f3e7e11d6103c69c581e809ff22c79792bfc4733"
+    },
+    {
+      "path": "docker-compose.yml",
+      "mode": "100644",
+      "bytes": 538,
+      "sha256": "112e516ac02b952cf5f430f82ea4d89af0cc9cc781a81399932a2f33c55d6125"
+    },
+    {
+      "path": "docs/ai-agents.md",
+      "mode": "100644",
+      "bytes": 3215,
+      "sha256": "d22c958b2302ce23cbc1a2636f470a35dd3f1fb1a05c9f118dfe0d63de66b964"
+    },
+    {
+      "path": "docs/architecture.md",
+      "mode": "100644",
+      "bytes": 1604,
+      "sha256": "9fb08ce74b45be0f0cb546eb03f2c9d99a323a1d607ce3c59b01c4ee486e2076"
+    },
+    {
+      "path": "docs/data-model.md",
+      "mode": "100644",
+      "bytes": 2153,
+      "sha256": "09b5099d21bbc533b36e149b3a840ef1d8c29540c1e6eeffcaa77c602c732b64"
+    },
+    {
+      "path": "docs/deployment.md",
+      "mode": "100644",
+      "bytes": 1768,
+      "sha256": "ced6d3ef8adc7d90a5370fd55b02c0a0646be08fa7ba4329afe6100f4f6a5e9a"
+    },
+    {
+      "path": "docs/local-development.md",
+      "mode": "100644",
+      "bytes": 1074,
+      "sha256": "746b77e48dcc45d2845b3e721988c87dcc1ff8d4f31b31b4ffccfbee25eaff24"
+    },
+    {
+      "path": "docs/product-intake.md",
+      "mode": "100644",
+      "bytes": 3517,
+      "sha256": "23ddb5bea650703f11ee9d379b98093a160cad63c1add50a72feb872d053f5b4"
+    },
+    {
+      "path": "docs/proposals/import-workspace-checks.md",
+      "mode": "100644",
+      "bytes": 4560,
+      "sha256": "09538c4f8a21b0c3d86c341da858240084e05da3384947512079d739bdbfdf0c"
+    },
+    {
+      "path": "docs/proposals/import-workspace-ci.yml.example",
+      "mode": "100644",
+      "bytes": 6779,
+      "sha256": "ce77951dac8db1cf27d53255c7dcf767f993e2b4b70dbbce206f913eb39a6bc5"
+    },
+    {
+      "path": "docs/proposals/simulation-execution-controls.md",
+      "mode": "100644",
+      "bytes": 8031,
+      "sha256": "689aed1ca12644989784421b35e3ca7864ef1ba2993238f8c526d19d885cc378"
+    },
+    {
+      "path": "docs/proposals/simulation-provenance-checks.md",
+      "mode": "100644",
+      "bytes": 5460,
+      "sha256": "8aaf3f40e8fbdcd59b3227410e114626a37ac5b945f19e020089b7f25dc2b935"
+    },
+    {
+      "path": "docs/proposals/simulation-provenance-ci.yml.example",
+      "mode": "100644",
+      "bytes": 10630,
+      "sha256": "a163fd0ba036efc4bda7bc21e01f209af00e7d5c2be6f1e7e5923f81854d70f7"
+    },
+    {
+      "path": "docs/proposals/target-market-checks.md",
+      "mode": "100644",
+      "bytes": 4659,
+      "sha256": "5e48104ad1e146a1a3b58f51015e811ffcd3af96f4e135c66a018e7a55b2dc41"
+    },
+    {
+      "path": "docs/proposals/target-market-ci.yml.example",
+      "mode": "100644",
+      "bytes": 2444,
+      "sha256": "c07262e5598f6e32477e1b67ac4ecc9e6a63beb75735c40e3073ec18f185bf10"
+    },
+    {
+      "path": "docs/simulation-provenance.md",
+      "mode": "100644",
+      "bytes": 4079,
+      "sha256": "552ba7beebfb2431c4009176b2f3c06d2d03b6746214438ee272eae8109b93d3"
+    },
+    {
+      "path": "drizzle.config.ts",
+      "mode": "100644",
+      "bytes": 365,
+      "sha256": "8b4fb924a01d9f3147053139ffaecc63dd1db3ac39be6b6b537801b11ec4d7dd"
+    },
+    {
+      "path": "eslint.config.mjs",
+      "mode": "100644",
+      "bytes": 587,
+      "sha256": "cae026ab2c37586010e955f14abdef862e682ecea3fabb088151b57a28760c46"
+    },
+    {
+      "path": "hooks/use-mobile.ts",
+      "mode": "100644",
+      "bytes": 600,
+      "sha256": "4dedbeba854d08d40bf2c2a86cf1fcc6301352d056530bfd06fbd299160173b4"
+    },
+    {
+      "path": "lib/server/config/env.ts",
+      "mode": "100644",
+      "bytes": 1200,
+      "sha256": "329d16e55a882db171016137d4f824542a45cec8bd517dca97ada3217890e394"
+    },
+    {
+      "path": "lib/server/db/client.ts",
+      "mode": "100644",
+      "bytes": 593,
+      "sha256": "196203a01f0411b1cf074d3615d3dd401602ab8fa70f1a1c964e932f821ac66a"
+    },
+    {
+      "path": "lib/server/db/errors.ts",
+      "mode": "100644",
+      "bytes": 1464,
+      "sha256": "d38410d8d32f1e585de2ba6ab477d9828f89f073acd822c2d087364b93eadd9f"
+    },
+    {
+      "path": "lib/server/db/schema.ts",
+      "mode": "100644",
+      "bytes": 9511,
+      "sha256": "51f8cb9b97f2e04a69ffbe5a00756be693e71c3cea10d0f0b61861602cffd568"
+    },
+    {
+      "path": "lib/server/services/personas.ts",
+      "mode": "100644",
+      "bytes": 3135,
+      "sha256": "643624c7bf7f07c01d427d7cd318d865c048a07a7a0468fc258b872975ec5e51"
+    },
+    {
+      "path": "lib/server/services/product-intake-service.ts",
+      "mode": "100644",
+      "bytes": 14186,
+      "sha256": "4c8918f7e5c0ede1b5b7e25c78ee776056fc723d566c464c8179f8e73cf17831"
+    },
+    {
+      "path": "lib/server/services/project-service.ts",
+      "mode": "100644",
+      "bytes": 6727,
+      "sha256": "17cfd134da5fede917dda799c9ad8a1e5142159b1354aa16aff4f9ee9d832350"
+    },
+    {
+      "path": "lib/server/services/simulation-service.ts",
+      "mode": "100644",
+      "bytes": 20118,
+      "sha256": "eb387cde8805b64386d12fcd5d587a4ddcac7e7867692b293934d7aaf0c7fedf"
+    },
+    {
+      "path": "lib/server/services/source-ingestion.ts",
+      "mode": "100644",
+      "bytes": 9425,
+      "sha256": "1124b0d83c99235888f4bd99bee592a5759e59818ec4d71954a85f3e034a210c"
+    },
+    {
+      "path": "lib/server/services/source-security.ts",
+      "mode": "100644",
+      "bytes": 2471,
+      "sha256": "e84444a1c734bf858fd30b3edb136ba31f9ff267e53b977b1721feebc961144a"
+    },
+    {
+      "path": "lib/shared/product-intake.ts",
+      "mode": "100644",
+      "bytes": 1523,
+      "sha256": "75aa45f43cc8bfa7fbcccafe8c04fc70fa48f586361a8957d2acb1e91489f6fa"
+    },
+    {
+      "path": "lib/shared/schemas.ts",
+      "mode": "100644",
+      "bytes": 4099,
+      "sha256": "17c02e6ce2974732a389aa8f831ae549306438a7d08cbd93bc2e7190e08d4c5f"
+    },
+    {
+      "path": "lib/shared/simulation-provenance.ts",
+      "mode": "100644",
+      "bytes": 9703,
+      "sha256": "8ae657f39f4dcc2424e79aef9f795e6141494e5c599c8133fc9f9b28c13438db"
+    },
+    {
+      "path": "lib/utils.ts",
+      "mode": "100644",
+      "bytes": 166,
+      "sha256": "7c8c3dfc0cdd370d44932828eb067ef771c8fe7996693221d5d4b90af6d54f2d"
+    },
+    {
+      "path": "next.config.ts",
+      "mode": "100644",
+      "bytes": 363,
+      "sha256": "86a3b56b8e6a11a783de62d87e5641c390884828cf9bc9bf9e557275bee5925f"
+    },
+    {
+      "path": "package.json",
+      "mode": "100644",
+      "bytes": 1912,
+      "sha256": "331243c4833dd9fe00211593af1a4c192fa48a78d81ef0739d70c8b1cc8e93a1"
+    },
+    {
+      "path": "playwright.config.ts",
+      "mode": "100644",
+      "bytes": 649,
+      "sha256": "e3742b0190d7f8bed3abbce98b9d053660e648d74793f71a4dd6f131b33db814"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "mode": "100644",
+      "bytes": 463859,
+      "sha256": "99c2910c000dc4188987b03efd4567966dcd1c8f7e3d15bd5423cfefeeb91c08"
+    },
+    {
+      "path": "postcss.config.mjs",
+      "mode": "100644",
+      "bytes": 94,
+      "sha256": "dfac7ac2d86d326a0e5adb024e7943c181393ed17a5fcb8f0315b24c7da6ddde"
+    },
+    {
+      "path": "public/file.svg",
+      "mode": "100644",
+      "bytes": 391,
+      "sha256": "2b67812c325c199a02536cdbeea0c593a72f707d323b72ee3e08dbab06753bd4"
+    },
+    {
+      "path": "public/globe.svg",
+      "mode": "100644",
+      "bytes": 1035,
+      "sha256": "b614b9bf183925957661ac851498fe1d8029fd43a62fbfed86f9e2624a57e7cf"
+    },
+    {
+      "path": "public/next.svg",
+      "mode": "100644",
+      "bytes": 1375,
+      "sha256": "55995dfad6ecb4945a1e856ddca03c5e16aa5bf13fd21b4df6a74ae79357bcfc"
+    },
+    {
+      "path": "public/vercel.svg",
+      "mode": "100644",
+      "bytes": 128,
+      "sha256": "f081337b2fee635b455b63275406a3e7f39d6a014e25ad90dab5a67e62a12ac4"
+    },
+    {
+      "path": "public/window.svg",
+      "mode": "100644",
+      "bytes": 385,
+      "sha256": "644768c4aaeb4767bce293344eeb0c125fb804a94d801440424072202d85e3a1"
+    },
+    {
+      "path": "scripts/seed.ts",
+      "mode": "100644",
+      "bytes": 7368,
+      "sha256": "8c5a097f8a634a41b3ff38fe3d5e388fa8229a492c5fb4bee80478929f84fe0e"
+    },
+    {
+      "path": "scripts/setup-local.mjs",
+      "mode": "100644",
+      "bytes": 1490,
+      "sha256": "dce85e3a9e751dd9db344d6a4f53ef526d2e4a4badc11084c05b6c4df2070c31"
+    },
+    {
+      "path": "skills-lock.json",
+      "mode": "100644",
+      "bytes": 5663,
+      "sha256": "c2c5eea6cb6be69987f1277f077839a8b62d0e77dfee3c59149232478b4171c0"
+    },
+    {
+      "path": "tests/e2e/app.spec.ts",
+      "mode": "100644",
+      "bytes": 1329,
+      "sha256": "a7f1e8bf3a44c556d7f668b6f971d6ea7a93492fe1034aacdabe10f391bdf0b1"
+    },
+    {
+      "path": "tests/e2e/import-workspace.spec.ts",
+      "mode": "100644",
+      "bytes": 8708,
+      "sha256": "23cdc5ddb7711684be62e03900dc8f5d554f2fa6a07b7e52ec1f9ae1a519af2c"
+    },
+    {
+      "path": "tests/integration/product-intake.test.ts",
+      "mode": "100644",
+      "bytes": 11448,
+      "sha256": "6020ef4b02e3fc23a89c927b1196ffbf09fab6d82df80cb83e272f69401a3eeb"
+    },
+    {
+      "path": "tests/unit/db-errors.test.ts",
+      "mode": "100644",
+      "bytes": 1067,
+      "sha256": "5b0a161cb8af242fb733cef397b80f1f90451baa7211816137eee364b3c33983"
+    },
+    {
+      "path": "tests/unit/env.test.ts",
+      "mode": "100644",
+      "bytes": 570,
+      "sha256": "b71fa63ca8ad5e676bc98525507ff5001b2bc936b1b2ae5d30079c217e23a784"
+    },
+    {
+      "path": "tests/unit/simulation-context.test.ts",
+      "mode": "100644",
+      "bytes": 6751,
+      "sha256": "f0d79fefae0f7d0d336e8c3a67aa5b2d9abc09ea3de614c91d4a6638d417ccd6"
+    },
+    {
+      "path": "tests/unit/simulation-provenance-service.test.ts",
+      "mode": "100644",
+      "bytes": 15931,
+      "sha256": "9338713b9cdf33fc33b4c3c8e6697f56712d1d58406296a08e297ede7d2fb76f"
+    },
+    {
+      "path": "tests/unit/simulation-provenance-ui.test.tsx",
+      "mode": "100644",
+      "bytes": 7684,
+      "sha256": "e008350fa169a9d1bcae6da465f3899a0fd67e030d79b57dc6b6f7f13806479d"
+    },
+    {
+      "path": "tests/unit/simulation-provenance.test.ts",
+      "mode": "100644",
+      "bytes": 12916,
+      "sha256": "d2b3701e71d1677f97e97270faff0dd2569629da3d754996d953541ba39b3373"
+    },
+    {
+      "path": "tests/unit/simulation.test.ts",
+      "mode": "100644",
+      "bytes": 3801,
+      "sha256": "1990695e0483f0e0a8a8f58fe2d8b634f4239a3beba79aecf9f667aee32a2fdf"
+    },
+    {
+      "path": "tests/unit/source-processing.test.ts",
+      "mode": "100644",
+      "bytes": 890,
+      "sha256": "96e22606f5ca9ea831951324f2f0cf31d8d3af2b48f8dcf3bb38836bec6645ab"
+    },
+    {
+      "path": "tests/unit/source-security.test.ts",
+      "mode": "100644",
+      "bytes": 1117,
+      "sha256": "0bda59bd63fdd1a86c8adf41d70f3db53f69c5f93fefcc61620d85f61ec8a137"
+    },
+    {
+      "path": "tsconfig.json",
+      "mode": "100644",
+      "bytes": 666,
+      "sha256": "be18523b23b78b6e1a876ddd107d330f0168bddf09d751b57e0b5edce69c66f3"
+    },
+    {
+      "path": "vitest.config.ts",
+      "mode": "100644",
+      "bytes": 450,
+      "sha256": "d4573773ec156fd366efa48db82e9258355fe5566b025c6e1d05554075c49fa9"
+    },
+    {
+      "path": "workflows/simulation-workflow.ts",
+      "mode": "100644",
+      "bytes": 217,
+      "sha256": "116b7f0630bf4e1c7701cf73ea0859b81eeda6ed11b2044b4b1df37f1ab2b34b"
+    }
+  ]
+}

@@ -40,6 +40,10 @@ pnpm dev
 
 The app works without AI credentials. In that mode, simulations use deterministic fake agents and still produce traces, evidence references, scores, recommendations, and exportable reports.
 
+[Result provenance](docs/simulation-provenance.md) distinguishes Gateway output,
+synthetic demo output and Gateway fallbacks in results, persona rows and reports.
+The configured engine alone does not establish how each judgment was produced.
+
 To use AI Gateway, set one of:
 
 ```bash

@@ -307,7 +307,7 @@ export default async function ProjectPage({ params, searchParams }: PageProps) {
                   <TableHeader>
                     <TableRow>
                       <TableHead>Status</TableHead>
-                      <TableHead>Engine</TableHead>
+                      <TableHead>Configured engine</TableHead>
                       <TableHead>Score</TableHead>
                       <TableHead>Created</TableHead>
                       <TableHead />

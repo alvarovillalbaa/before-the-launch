@@ -1,4 +1,5 @@
 import { and, eq, inArray } from "drizzle-orm";
+import { randomUUID } from "node:crypto";
 import { getServerEnv, hasAiGatewayCredentials } from "@/lib/server/config/env";
 import { getDb } from "@/lib/server/db/client";
 import {
@@ -23,6 +24,14 @@ import {
   type ScoreBreakdown,
   type SimulationSetupInput,
 } from "@/lib/shared/schemas";
+import {
+  bindSimulationProvenanceToOutputs,
+  deriveAgentProvenance,
+  formatSimulationProvenanceMarkdown,
+  summarizeSimulationProvenance,
+  type GeneratedResultOrigin,
+  type SimulationProvenance,
+} from "@/lib/shared/simulation-provenance";
 import { sha256 } from "./source-ingestion";
 
 export type BriefSnapshot = Record<string, unknown>;
@@ -230,7 +239,7 @@ function buildRecommendations(results: AgentResult[], scores: ScoreBreakdown): R
   ].map((recommendation) => RecommendationSchema.parse(recommendation));
 }
 
-function buildReport(runId: string, simulationContext: SimulationContext, scores: ScoreBreakdown, results: AgentResult[], recs: Recommendation[]) {
+function buildReport(runId: string, simulationContext: SimulationContext, scores: ScoreBreakdown, results: AgentResult[], recs: Recommendation[], provenance: SimulationProvenance) {
   const topObjections = results.flatMap((result) => result.likelyObjections).slice(0, 6);
   const positives = results.flatMap((result) => result.likelyPositiveComments).slice(0, 6);
   return [
@@ -238,6 +247,8 @@ function buildReport(runId: string, simulationContext: SimulationContext, scores
     ``,
     `Simulation run: ${runId}`,
     `Target market (operator-selected run configuration): ${JSON.stringify(simulationContext.targetMarket)}`,
+    ``,
+    formatSimulationProvenanceMarkdown(provenance),
     ``,
     `## Launch readiness`,
     ``,
@@ -343,6 +354,7 @@ export async function executeSimulationRun(runId: string) {
   const db = getDb();
   const [run] = await db.select().from(simulationRuns).where(eq(simulationRuns.id, runId)).limit(1);
   if (!run) throw new Error("Simulation run not found.");
+  const configuredEngine = run.engine;
   const simulationContext: SimulationContext = Object.freeze({ targetMarket: run.targetMarket });
 
   await db
@@ -353,7 +365,7 @@ export async function executeSimulationRun(runId: string) {
   const runAgents = await db.select().from(agentRuns).where(eq(agentRuns.simulationRunId, runId));
   const brief = run.briefSnapshot as BriefSnapshot;
   const sourceSnapshot = run.sourceSnapshot as SourceSnapshot[];
-  const allResults = await Promise.all(
+  const executions = await Promise.all(
     runAgents.map(async (agentRun) => {
       const persona = agentRun.personaSnapshot as PersonaSnapshot;
       const start = Date.now();
@@ -381,13 +393,15 @@ export async function executeSimulationRun(runId: string) {
       ]);
 
       let result: AgentResult;
+      let origin: GeneratedResultOrigin = configuredEngine === "gateway" ? "gateway" : "fake";
       try {
         result =
-          run.engine === "gateway"
+          configuredEngine === "gateway"
             ? await buildGatewayAgentResult(brief, sourceSnapshot, persona, simulationContext)
             : buildFakeAgentResult(brief, sourceSnapshot, persona, simulationContext);
       } catch (error) {
         result = buildFakeAgentResult(brief, sourceSnapshot, persona, simulationContext);
+        origin = configuredEngine === "gateway" ? "gateway-fallback" : "fake";
         await db.insert(agentTraceEvents).values({
           agentRunId: agentRun.id,
           sequence: 3,
@@ -401,15 +415,18 @@ export async function executeSimulationRun(runId: string) {
         });
       }
 
+      const findingId = randomUUID();
+      const executionOrigin = { version: 1, findingId, origin, configuredEngine };
       await db.insert(agentTraceEvents).values({
         agentRunId: agentRun.id,
         sequence: 4,
         eventType: "judgment",
         title: "Final structured judgment",
         body: result.recommendation,
-        metadata: { scores: result },
+        metadata: { scores: result, executionOrigin },
       });
       await db.insert(agentFindings).values({
+        id: findingId,
         agentRunId: agentRun.id,
         result,
         evidenceSummary: result.evidenceReferences.map((ref) => ref.sourceTitle).join(", "),
@@ -425,14 +442,26 @@ export async function executeSimulationRun(runId: string) {
           updatedAt: new Date(),
         })
         .where(eq(agentRuns.id, agentRun.id));
-      return result;
+      return {
+        result,
+        findingId,
+        provenance: deriveAgentProvenance(configuredEngine, { id: findingId, result }, [
+          { eventType: "judgment", metadata: { executionOrigin } },
+        ]),
+      };
     }),
   );
 
+  const allResults = executions.map((execution) => execution.result);
   const scores = buildScoreBreakdown(allResults);
   const recs = buildRecommendations(allResults, scores);
   const globalScore = scores.launchReadiness.toFixed(2);
-  await db.insert(scoreBreakdowns).values({ simulationRunId: runId, scores, globalScore });
+  const scoreId = randomUUID(), reportId = randomUUID();
+  const findingIds = executions.map((execution) => execution.findingId);
+  const findingProvenance = summarizeSimulationProvenance(configuredEngine, executions.map((execution) => execution.provenance));
+  const executionProvenance = { version: 1, configuredEngine, scoreId, reportId, findingIds, summary: findingProvenance };
+  const provenance = bindSimulationProvenanceToOutputs(findingProvenance, { record: executionProvenance, scoreId, reportId, findingIds });
+  await db.insert(scoreBreakdowns).values({ id: scoreId, simulationRunId: runId, scores, globalScore });
   await db.insert(recommendations).values(
     recs.map((rec) => ({
       simulationRunId: runId,
@@ -445,9 +474,10 @@ export async function executeSimulationRun(runId: string) {
     })),
   );
   await db.insert(reports).values({
+    id: reportId,
     simulationRunId: runId,
     title: "Launch perception report",
-    body: buildReport(runId, simulationContext, scores, allResults, recs),
+    body: buildReport(runId, simulationContext, scores, allResults, recs, provenance),
   });
   await db
     .update(simulationRuns)
@@ -455,6 +485,7 @@ export async function executeSimulationRun(runId: string) {
       status: "completed",
       globalScore,
       disagreementSummary: {
+        executionProvenance,
         confidenceRange: [
           Math.min(...allResults.map((result) => result.confidence)),
           Math.max(...allResults.map((result) => result.confidence)),

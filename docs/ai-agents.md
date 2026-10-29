@@ -1,6 +1,6 @@
 # AI Agents
 
-Last updated: 2026-10-28
+Last updated: 2026-10-30
 
 Agents are configurable persona records stored in the database. UI copy is not hardcoded into the screens.
 
@@ -47,3 +47,20 @@ Each execution captures a frozen context from the saved run's `targetMarket` bef
 Fake output includes the market in its deterministic seed and labels it in the recommendation. This is synthetic demo variation, not validated market-fit reasoning; changing markets need not change every score. Existing depth and budget fields gain no new execution semantics from this repair. Previously saved reports and findings are not rewritten. See the [source receipt](results/2026/10-28/target-market.md) and [unexecuted focused check proposal](proposals/target-market-checks.md).
 
 All source text is prompt-injection-aware: it is included as untrusted evidence and the prompt tells the model never to follow instructions found inside sources.
+
+## Result provenance
+
+New judgment traces bind the actual output origin to the finding's existing ID.
+The configured engine remains unchanged: a Gateway failure can still use the
+existing synthetic fallback. Results now show that distinction prominently and
+per persona. New Markdown reports include their composition; historical report
+bodies remain stored unchanged and receive a separate current qualification in
+the Report view. A record with missing or conflicting lineage remains unverified.
+See [the provenance contract](simulation-provenance.md).
+
+Depth and budget execution remain separate unfinished work. The
+[inactive execution-control proposal](proposals/simulation-execution-controls.md)
+records the unresolved zero-budget meaning and the evidence needed for a real
+spending bound. It does not activate a cap, change provider settings or authorize
+a model call. The provenance change does not change scores, fallback policy,
+personas, target market or those controls.

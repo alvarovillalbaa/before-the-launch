@@ -1,0 +1,123 @@
+# INACTIVE. Activate only after separate 48-case and temporary-CI approval.
+# Activation/removal commits use [skip actions]; remove after terminal inspection.
+name: Temporary simulation provenance checks
+on:
+  workflow_dispatch:
+    inputs:
+      source_commit:
+        description: Approved immutable source commit containing the reviewed inventory
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  provenance:
+    if: github.repository == 'alvarovillalbaa/before-the-launch' && github.event.repository.private == false && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      SOURCE_COMMIT: ${{ inputs.source_commit }}
+      CI: "true"
+      NEXT_TELEMETRY_DISABLED: "1"
+      DO_NOT_TRACK: "1"
+      COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
+      SIMULATION_ENGINE: fake
+      DATABASE_URL: ""
+      AI_GATEWAY_API_KEY: ""
+      VERCEL_OIDC_TOKEN: ""
+      VERCEL: ""
+      BLOB_READ_WRITE_TOKEN: ""
+      OPENAI_API_KEY: ""
+      ANTHROPIC_API_KEY: ""
+      GOOGLE_GENERATIVE_AI_API_KEY: ""
+      FIRECRAWL_API_KEY: ""
+      CONVEX_DEPLOY_KEY: ""
+      SUPABASE_SERVICE_ROLE_KEY: ""
+    steps:
+      - name: Validate the source pin
+        run: '[[ "$SOURCE_COMMIT" =~ ^[0-9a-f]{40}$ ]]'
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ inputs.source_commit }}
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: 24.21.0
+          package-manager-cache: false
+      - name: Verify all reviewed source and allocate owned runner paths
+        run: |
+          node <<'NODE'
+          const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),cp=require('node:child_process');
+          const manifest='docs/results/2026/10-30/simulation-provenance-source.json',bytes=fs.readFileSync(manifest);
+          if(!bytes.equals(cp.execFileSync('git',['show','HEAD:'+manifest])))throw Error('The reviewed manifest changed.');
+          const seal=JSON.parse(bytes);
+          if(cp.execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim()!==process.env.SOURCE_COMMIT)throw Error('Source commit changed.');
+          if(JSON.stringify(seal.excluded_prefixes)!==JSON.stringify(['docs/results/','.agents/']))throw Error('Unexpected source exclusions.');
+          const actual=cp.execFileSync('git',['ls-files','-co','--exclude-standard','-z'],{encoding:'utf8'}).split('\0').filter(p=>p&&!seal.excluded_prefixes.some(prefix=>p.startsWith(prefix))).sort();
+          const expected=seal.source_files.map(entry=>entry.path).sort();
+          if(new Set(expected).size!==expected.length||JSON.stringify(actual)!==JSON.stringify(expected))throw Error('Reviewed source input set changed.');
+          for(const entry of seal.source_files){const stat=fs.lstatSync(entry.path),mode=stat.isSymbolicLink()?'120000':stat.isFile()?(stat.mode&0o111?'100755':'100644'):'unsupported',data=stat.isSymbolicLink()?Buffer.from(fs.readlinkSync(entry.path),'utf8'):fs.readFileSync(entry.path);if(mode!==entry.mode||data.length!==entry.bytes||crypto.createHash('sha256').update(data).digest('hex')!==entry.sha256)throw Error('Source seal mismatch: '+entry.path);}
+          const cases=new Map([['tests/unit/simulation-provenance.test.ts',27],['tests/unit/simulation-provenance-service.test.ts',9],['tests/unit/simulation-provenance-ui.test.tsx',6],['tests/unit/simulation.test.ts',2],['tests/unit/simulation-context.test.ts',4]]);
+          if(seal.total_cases!==48||seal.case_files.length!==5||new Set(seal.case_files.map(entry=>entry.path)).size!==5)throw Error('Unexpected reviewed case manifest.');
+          for(const entry of seal.case_files)if(!cases.has(entry.path)||entry.names.length!==cases.get(entry.path)||new Set(entry.names).size!==entry.names.length||entry.names.some(name=>typeof name!=='string'||!name.trim()))throw Error('Unexpected reviewed cases: '+entry.path);
+          const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));
+          if(process.version!=='v24.21.0'||pkg.packageManager!=='pnpm@10.24.0'||pkg.dependencies.next!=='16.2.9')throw Error('Re-review the changed toolchain baseline.');
+          const temp=path.resolve(process.env.RUNNER_TEMP||'');
+          if(!process.env.RUNNER_TEMP||!process.env.GITHUB_ENV||fs.realpathSync(temp)!==temp||fs.lstatSync(temp).isSymbolicLink()||!/^\d+$/.test(process.env.GITHUB_RUN_ID||'')||!/^\d+$/.test(process.env.GITHUB_RUN_ATTEMPT||''))throw Error('Missing canonical runner identity.');
+          const root=fs.mkdtempSync(path.join(temp,'btl-provenance-'+process.env.GITHUB_RUN_ID+'-'+process.env.GITHUB_RUN_ATTEMPT+'-')),stat=fs.statSync(root);
+          fs.writeFileSync(path.join(root,'owner.json'),JSON.stringify({root,dev:stat.dev,ino:stat.ino}));
+          fs.appendFileSync(process.env.GITHUB_ENV,[['BTL_PROVENANCE_ROOT',root],['COREPACK_HOME',path.join(root,'corepack')],['PNPM_HOME',path.join(root,'pnpm')],['XDG_CACHE_HOME',path.join(root,'cache')],['npm_config_cache',path.join(root,'npm-cache')]].map(([k,v])=>k+'='+v).join('\n')+'\n');
+          console.log(JSON.stringify({source:process.env.SOURCE_COMMIT,node:process.version,sourceFiles:expected.length,cases:seal.total_cases,manifestSha256:crypto.createHash('sha256').update(bytes).digest('hex')}));
+          NODE
+      - name: Install only the unchanged locked dependencies
+        run: |
+          corepack prepare pnpm@10.24.0 --activate
+          test "$(corepack pnpm --version)" = "10.24.0"
+          corepack pnpm install --frozen-lockfile --ignore-scripts --store-dir "$BTL_PROVENANCE_ROOT/pnpm-store"
+          git diff --exit-code -- package.json pnpm-lock.yaml
+      - name: Run exactly 48 approved unit and SSR cases
+        id: checks
+        run: >-
+          node node_modules/vitest/vitest.mjs run
+          tests/unit/simulation-provenance.test.ts
+          tests/unit/simulation-provenance-service.test.ts
+          tests/unit/simulation-provenance-ui.test.tsx
+          tests/unit/simulation.test.ts
+          tests/unit/simulation-context.test.ts
+          --maxWorkers=1 --no-file-parallelism --retry=0
+          --reporter=tap --reporter=json
+          --outputFile.json="$BTL_PROVENANCE_ROOT/results.json"
+      - name: Verify every outcome and unchanged reviewed source
+        if: always()
+        env:
+          CHECK_OUTCOME: ${{ steps.checks.outcome }}
+        run: |
+          node <<'NODE'
+          const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),cp=require('node:child_process');
+          const manifest='docs/results/2026/10-30/simulation-provenance-source.json',bytes=fs.readFileSync(manifest);
+          if(!bytes.equals(cp.execFileSync('git',['show','HEAD:'+manifest])))throw Error('The reviewed manifest changed.');
+          const seal=JSON.parse(bytes);
+          if(cp.execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim()!==process.env.SOURCE_COMMIT)throw Error('Source identity changed.');
+          if(JSON.stringify(seal.excluded_prefixes)!==JSON.stringify(['docs/results/','.agents/']))throw Error('Source exclusions changed.');
+          const actual=cp.execFileSync('git',['ls-files','-co','--exclude-standard','-z'],{encoding:'utf8'}).split('\0').filter(p=>p&&!seal.excluded_prefixes.some(prefix=>p.startsWith(prefix))).sort();
+          if(JSON.stringify(actual)!==JSON.stringify(seal.source_files.map(entry=>entry.path).sort()))throw Error('Source input set changed.');
+          for(const entry of seal.source_files){const stat=fs.lstatSync(entry.path),mode=stat.isSymbolicLink()?'120000':stat.isFile()?(stat.mode&0o111?'100755':'100644'):'unsupported',data=stat.isSymbolicLink()?Buffer.from(fs.readlinkSync(entry.path),'utf8'):fs.readFileSync(entry.path);if(mode!==entry.mode||data.length!==entry.bytes||crypto.createHash('sha256').update(data).digest('hex')!==entry.sha256)throw Error('Source changed: '+entry.path);}
+          if(!process.env.BTL_PROVENANCE_ROOT)throw Error('Checks did not reach preparation.');
+          const file=path.join(process.env.BTL_PROVENANCE_ROOT,'results.json'),stat=fs.lstatSync(file);
+          if(!stat.isFile()||stat.isSymbolicLink()||stat.size>2097152)throw Error('Missing or oversized results.');
+          const report=JSON.parse(fs.readFileSync(file,'utf8')),expected=new Map(seal.case_files.map(entry=>[entry.path,entry.names])),seen=new Set(),cases=[];let valid=true;
+          for(const suite of report.testResults||[]){const name=path.relative(process.cwd(),suite.name).split(path.sep).join('/'),names=(suite.assertionResults||[]).map(item=>item.fullName);if(seen.has(name)||!expected.has(name)||new Set(names).size!==names.length||JSON.stringify([...names].sort())!==JSON.stringify([...(expected.get(name)||[])].sort()))valid=false;seen.add(name);for(const item of suite.assertionResults||[])cases.push({file:name,name:item.fullName,status:item.status});}
+          console.log(JSON.stringify({kind:'simulation-provenance-outcomes',source:process.env.SOURCE_COMMIT,total:report.numTotalTests,passed:report.numPassedTests,failed:report.numFailedTests,pending:report.numPendingTests,todo:report.numTodoTests,cases}));
+          if(process.env.CHECK_OUTCOME!=='success'||!valid||seen.size!==5||report.success!==true||report.numTotalTests!==48||report.numPassedTests!==48||report.numFailedTests!==0||report.numPendingTests!==0||(report.numTodoTests!==undefined&&report.numTodoTests!==0)||cases.length!==48||cases.some(item=>item.status!=='passed'))throw Error('The exact 48 cases did not all pass once.');
+          NODE
+      - name: Remove only identity-checked owned runner data
+        if: always()
+        run: |
+          node <<'NODE'
+          const fs=require('node:fs'),path=require('node:path'),root=process.env.BTL_PROVENANCE_ROOT;
+          if(!root){console.log('No task root allocated.');process.exit(0);}
+          const temp=path.resolve(process.env.RUNNER_TEMP||''),stat=fs.lstatSync(root),owner=JSON.parse(fs.readFileSync(path.join(root,'owner.json'),'utf8'));
+          if(!stat.isDirectory()||stat.isSymbolicLink()||path.dirname(root)!==temp||fs.realpathSync(temp)!==temp||fs.realpathSync(root)!==root||!path.basename(root).startsWith('btl-provenance-'+process.env.GITHUB_RUN_ID+'-'+process.env.GITHUB_RUN_ATTEMPT+'-')||owner.root!==root||owner.dev!==stat.dev||owner.ino!==stat.ino)throw Error('Refusing unowned temporary cleanup.');
+          fs.rmSync(root,{recursive:true});
+          console.log('Owned simulation-provenance tooling cache and outcome data removed.');
+          NODE
