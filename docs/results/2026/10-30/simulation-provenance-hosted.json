@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "observedAtUtc": "2026-10-29 23:56:17 UTC",
+  "sourceCommit": "0dbdc584310e1da9011ae1de40e5d0455bb67caa",
+  "sourceTree": "e22df4ab9c3978195070fee25384def60ff73427",
+  "sourceRemoteLeafIdentities": 993,
+  "sourceActionsRunCount": 0,
+  "deployment": {
+    "id": "dpl_6b37RLX8HZBVmwPZ7oiHAXTh9zu2",
+    "url": "before-the-launch-nhdq8kds4-my-team-4f230354.vercel.app",
+    "state": "READY",
+    "sha": "0dbdc584310e1da9011ae1de40e5d0455bb67caa"
+  },
+  "canonicalAlias": {
+    "alias": "before-the-launch.vercel.app",
+    "deploymentId": "dpl_6b37RLX8HZBVmwPZ7oiHAXTh9zu2",
+    "projectId": "prj_rSuzr7pJuiPUjPnyxqQ0ALiLk2AA"
+  },
+  "buildEvidence": {
+    "boundedRead": true,
+    "requestedEvents": 100,
+    "returnedEvents": 100,
+    "selectedEvents": [
+      {
+        "type": "stdout",
+        "text": "Cloning github.com/alvarovillalbaa/before-the-launch (Branch: main, Commit: 0dbdc58)"
+      },
+      {
+        "type": "stdout",
+        "text": "✓ Compiled successfully in 5.8s"
+      },
+      {
+        "type": "stdout",
+        "text": "  Running TypeScript ..."
+      },
+      {
+        "type": "stdout",
+        "text": "  Generating static pages using 7 workers (0/8) ..."
+      },
+      {
+        "type": "stdout",
+        "text": "  Generating static pages using 7 workers (2/8) \r"
+      },
+      {
+        "type": "stdout",
+        "text": "  Generating static pages using 7 workers (4/8) \r"
+      },
+      {
+        "type": "stdout",
+        "text": "  Generating static pages using 7 workers (6/8) \r"
+      },
+      {
+        "type": "stdout",
+        "text": "✓ Generating static pages using 7 workers (8/8) in 318ms"
+      },
+      {
+        "type": "stderr",
+        "text": "Build Completed in /vercel/output [22s]"
+      },
+      {
+        "type": "stdout",
+        "text": "Deployment completed"
+      }
+    ],
+    "compileAndTypeStageCompleted": true
+  },
+  "http": {
+    "canonicalRoot": {
+      "success": true,
+      "status": 200,
+      "characters": 49378,
+      "configuredEngineHeading": false
+    },
+    "unauthenticatedHeadStatus": 200,
+    "runUiOrApiAcceptance": false
+  },
+  "sourceSeal": {
+    "inputs": 148,
+    "protectedFunctions": 16,
+    "unrelatedBaselineLeaves": 974,
+    "baselineLeaves": 982
+  },
+  "checks": {
+    "authored": 48,
+    "executed": 0,
+    "approval": "requested",
+    "activeWorkflow": false
+  },
+  "pendingDecisions": {
+    "budgetZeroMeaning": "owner answer pending",
+    "depthOrBudgetActivated": false
+  },
+  "limits": [
+    "No provenance test module or product fixture was executed; these are static/build/delivery results.",
+    "No database, model/provider call, browser or live simulation was started for acceptance.",
+    "Homepage availability does not prove populated run UI, SQL persistence, historical lineage, account isolation or provider behavior.",
+    "No migration, dependency, Auth, production setting, Gateway budget or paid plan changed."
+  ]
+}

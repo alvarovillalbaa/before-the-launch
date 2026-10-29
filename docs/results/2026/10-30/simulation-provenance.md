@@ -3,6 +3,12 @@
 30 October 2026. Prepared against clean personal main
 `387e163b17f6a28ede67fce3c14bd7126392151f`.
 
+Published source:
+[`0dbdc584310e1da9011ae1de40e5d0455bb67caa`](https://github.com/alvarovillalbaa/before-the-launch/commit/0dbdc584310e1da9011ae1de40e5d0455bb67caa).
+Connected GitHub readback matched all 993 remote leaf paths, modes, types and
+blob SHAs without truncation; local main fast-forwarded cleanly. The source
+commit has zero Actions runs and no provenance workflow is active.
+
 ## Finding and repair
 
 The service already falls back to deterministic fake output when Gateway fails.
@@ -83,3 +89,24 @@ Real provider execution, SQL durability/concurrency, browser layout/focus,
 hosted account isolation, durable originals and spend enforcement remain
 unverified. A later build/type/delivery result is separate from behavioral
 acceptance. The complete application and portfolio goal remain open.
+
+## Published build and delivery
+
+Production `dpl_6b37RLX8HZBVmwPZ7oiHAXTh9zu2` reached **READY** at that exact
+source and owns [the canonical URL](https://before-the-launch.vercel.app).
+The bounded hundred-event build read includes source cloning, successful
+compilation, the TypeScript stage, eight static pages and completed deployment.
+The [hosted receipt](simulation-provenance-hosted.json) preserves selected
+events and deployment/source identities; it does not claim complete log coverage.
+
+Connected homepage GET and independent unauthenticated HEAD both returned 200.
+The server-rendered run/provenance flow was not exercised. The homepage read
+did not expose the conditional Configured engine heading; availability is not
+proof of populated historical records, result notices or workflow-status JSON.
+No fixture, API submission, live simulation or browser check was used to create
+that evidence.
+
+The immutable 48-case/fifteen-minute CI scope was requested once after source
+publication and remains approval-pending, inactive and unrun. The separate
+zero-budget question is also unanswered. Subsequent result-only publication
+changes none of the 148 sealed inputs or sixteen protected functions.
