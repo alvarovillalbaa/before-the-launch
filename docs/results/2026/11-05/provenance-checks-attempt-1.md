@@ -1,0 +1,11 @@
+# Provenance check attempt 1 — 47 pass, one service case fails
+
+5 November local / 4 November UTC, 2026. [Run 41936506727](https://github.com/alvarovillalbaa/before-the-launch/actions/runs/41936506727), job `126946190131`, completed **failure**, 2026-11-04T23:47:50Z–2026-11-04T23:48:19Z. Checked source `94b1efb981d0263f6a9401dffbfe1aad9af5922b`, activation `98eff92f1ecc670bc72bcccf6f1ab32663c512d2`. The [machine receipt](provenance-checks-attempt-1.json) retains the complete controller, lossless JSON/TAP/stderr and their hashes.
+
+All original 48 cases executed: **47 passed / one failed**, with retry zero configured. The mixed success/fallback service case at `tests/unit/simulation-provenance-service.test.ts:157` expected the mocked Gateway function twice and observed one call. The actual CLI exited one; JSON records five files/seven suites, with six passing suites and one failing suite. This is not 48-case acceptance. The cause remains subject to service/fixture source diagnosis; no assertion, case or deadline is weakened.
+
+Frozen dependency installation passed on Node 24.21.0/pnpm 10.24.0 with Vitest 4.1.9/Vite 8.1.0/TypeScript 5.9.3. All four full guards passed over 151 application inputs (1,060,542 bytes) and all 998 tracked/index/working leaves, including bundled instructions/results. Only AGENTS authority text differs among the original 148 inputs. Product source, fixtures, dependency versions and original inventories are unchanged.
+
+Owned cleanup passed: the pre-absent identity-captured dependency directory and scratch/tool/report root were removed; final tracked and ignored status is empty. Every command settled with direct exit/close, complete bounded capture and original group absence; only the test CLI returned one. No timeout/signal/forced stop occurred. The retirement edition removes the temporary active workflow and retains its own QA branch as a bookmark. No local install/product execution bypassed Storage Guard.
+
+This mocked DB/SDK and actual React SSR result supplies no SQL durability, browser, hosted access, real-provider/model, depth/budget or market-quality acceptance. Vitest JSON has final rows but no retry/global-error counter; configured retry zero and actual CLI failure are preserved rather than invented attempt metrics.
