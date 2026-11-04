@@ -1,0 +1,32 @@
+# INACTIVE. Bind SOURCE_COMMIT to the reviewed preparation before activation.
+# Active workflow belongs only to the owned QA activation commit, never main HEAD.
+name: Temporary simulation provenance acceptance v2
+on:
+  create:
+permissions:
+  contents: read
+jobs:
+  provenance:
+    if: github.repository == 'alvarovillalbaa/before-the-launch' && github.event.repository.private == false && github.event.ref_type == 'branch' && github.event.ref == 'qa/simulation-provenance-20261105' && github.ref == 'refs/heads/qa/simulation-provenance-20261105'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      SOURCE_COMMIT: APPROVED_SOURCE_COMMIT
+      PROVENANCE_PUBLIC_REPOSITORY: ${{ github.event.repository.private == false }}
+      PROVENANCE_CREATED_REF_TYPE: ${{ github.event.ref_type }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # reviewed v7.0.1
+        with:
+          ref: ${{ env.SOURCE_COMMIT }}
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # reviewed v7.1.0
+        with:
+          node-version: 24.21.0
+          package-manager-cache: false
+      - name: Verify the exact 48 authored unit and SSR cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$SOURCE_COMMIT" =~ ^[0-9a-f]{40}$ ]]
+          test "$(git rev-parse HEAD)" = "$SOURCE_COMMIT"
+          node tests/scripts/run-provenance-checks.mjs --source-commit "$SOURCE_COMMIT"
