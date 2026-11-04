@@ -1,17 +1,18 @@
-import { beforeEach, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
-const harness = vi.hoisted(() => ({ database: null as unknown, generateText: vi.fn() }));
+const harness = vi.hoisted(() => ({ database: null as unknown, generateText: vi.fn(), outboundFetches: [] as string[] }));
 vi.mock("@/lib/server/db/client", () => ({ getDb: () => harness.database }));
 vi.mock("@/lib/server/config/env", () => ({
   getServerEnv: () => ({ AI_GATEWAY_MODEL: "authored-provenance-model" }),
   hasAiGatewayCredentials: () => false,
 }));
-vi.mock("ai", () => ({ generateText: harness.generateText, Output: { object: (value: unknown) => value } }));
+vi.mock("ai", { spy: true });
 vi.mock("drizzle-orm", async (importOriginal) => ({
   ...await importOriginal<typeof import("drizzle-orm")>(),
   eq: (column: unknown, value: unknown) => ({ column, value }),
 }));
 
+import { generateText as sdkGenerateText } from "ai";
 import {
   agentFindings, agentRuns, agentTraceEvents, productProjects, recommendations,
   reports, scoreBreakdowns, simulationRuns,
@@ -98,7 +99,23 @@ function assertBoundOutputs(selected: ReturnType<typeof fixture>) {
   return record;
 }
 
-beforeEach(() => { harness.database = null; harness.generateText.mockReset(); });
+beforeEach(() => {
+  harness.database = null;
+  harness.generateText.mockReset();
+  harness.outboundFetches = [];
+  vi.mocked(sdkGenerateText).mockReset().mockImplementation(harness.generateText);
+  vi.stubGlobal("fetch", async () => {
+    harness.outboundFetches.push("fetch");
+    throw new Error("Authored provenance fixture blocked an unexpected fetch.");
+  });
+});
+afterEach(() => {
+  try {
+    expect(harness.outboundFetches, "Service fixtures must not attempt outbound fetch.").toEqual([]);
+  } finally {
+    vi.unstubAllGlobals();
+  }
+});
 
 it("simulation provenance service: fake execution binds synthetic findings and report outputs without altering deterministic results", async () => {
   const selected = fixture("fake");
@@ -154,7 +171,20 @@ it("simulation provenance service: mixed success and fallback persist separate o
   harness.generateText.mockImplementation(({ prompt }: { prompt: string }) => prompt.includes(personas[0]!.name)
     ? Promise.resolve({ output }) : Promise.reject(new Error("Authored second-persona failure")));
   await executeSimulationRun(runId);
-  expect(harness.generateText).toHaveBeenCalledTimes(2);
+  const diagnostic = {
+    agents: selected.rows(agentRuns).slice(0, 2).map((row) => {
+      const persona = row.personaSnapshot as PersonaSnapshot;
+      return { id: String(row.id).slice(0, 80), status: String(row.status).slice(0, 40),
+        personaId: String(persona.id).slice(0, 80), personaName: String(persona.name).slice(0, 120) };
+    }),
+    fallbacks: selected.rows(agentTraceEvents).filter((row) => row.eventType === "fallback").slice(0, 2)
+      .map((row) => ({ agentRunId: String(row.agentRunId).slice(0, 80), body: String(row.body).slice(0, 500) })),
+    promptPersonas: harness.generateText.mock.calls.slice(0, 2).map(([request]) => {
+      const prompt = (request as { prompt?: unknown } | undefined)?.prompt;
+      return personas.filter((persona) => typeof prompt === "string" && prompt.includes(persona.name)).map((persona) => persona.id);
+    }),
+  };
+  expect(harness.generateText, JSON.stringify(diagnostic)).toHaveBeenCalledTimes(2);
   expect(selected.rows(agentFindings)).toHaveLength(2);
   const boundIds = selected.rows(agentFindings).map((row) => row.id);
   expect(new Set(boundIds).size).toBe(2);

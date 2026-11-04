@@ -5,7 +5,7 @@ import { spawn } from "node:child_process";
 import { gzipSync } from "node:zlib";
 import { createRequire } from "node:module";
 
-const SEAL = "docs/results/2026/11-05/provenance-checks-source.json";
+const SEAL = "docs/results/2026/11-05/provenance-checks-source-attempt-2.json";
 const OLD = "docs/results/2026/10-30/simulation-provenance-source.json";
 const OLD_HASH = "0899cf55fce9420f5e10749759bee7e596202322776c2961292f4179753d7185";
 const ACTIVE = ".github/workflows/provenance-checks-v2.yml";
@@ -25,7 +25,7 @@ const sourceCommit = process.argv[3];
 need(process.argv.length === 4 && process.argv[2] === "--source-commit" && /^[a-f0-9]{40}$/.test(sourceCommit ?? ""), "source_pin_required");
 need(process.version === "v24.21.0" && process.platform === "linux" && process.env.GITHUB_ACTIONS === "true"
   && process.env.GITHUB_REPOSITORY === "alvarovillalbaa/before-the-launch" && process.env.GITHUB_EVENT_NAME === "create"
-  && process.env.GITHUB_REF === "refs/heads/qa/simulation-provenance-20261105" && process.env.PROVENANCE_PUBLIC_REPOSITORY === "true"
+  && process.env.GITHUB_REF === "refs/heads/qa/simulation-provenance-20261105-2" && process.env.PROVENANCE_PUBLIC_REPOSITORY === "true"
   && process.env.PROVENANCE_CREATED_REF_TYPE === "branch", "approved_public_ci_required");
 const repo = fs.realpathSync(process.cwd()), parent = fs.realpathSync(process.env.RUNNER_TEMP ?? "");
 need(path.isAbsolute(parent) && fs.statSync(parent).isDirectory(), "runner_temp_invalid");
@@ -150,7 +150,7 @@ async function guard(label, cleanup = false) {
   const raw = read(SEAL, 262144), pinned = (await run(label + "_seal", "git", ["show", "HEAD:" + SEAL], 10, options))[0];
   need(raw.equals(pinned) && (!report.sealSha256 || hash(raw) === report.sealSha256), "seal_changed"); manifest = JSON.parse(raw); report.sealSha256 = hash(raw);
   need(manifest.schemaVersion === 1 && manifest.kind === "before-launch-provenance-checks-source" && manifest.fileCount === manifest.files.length
-    && JSON.stringify(manifest.historicalExceptions) === '["AGENTS.md"]', "seal_scope_invalid");
+    && JSON.stringify(manifest.historicalExceptions) === '["AGENTS.md","tests/unit/simulation-provenance-service.test.ts"]', "seal_scope_invalid");
   const index = parseGit((await run(label + "_index", "git", ["ls-files", "--stage", "-z"], 10, options))[0], true);
   const tree = parseGit((await run(label + "_tree", "git", ["ls-tree", "-r", "-z", "HEAD"], 10, options))[0], false);
   need(tree.size === manifest.trackedFileCount && index.size === tree.size, "tracked_count_changed");
@@ -174,7 +174,7 @@ async function guard(label, cleanup = false) {
     need(item && item.names.length === count && new Set(item.names).size === count && item.names.every(name => typeof name === "string" && name.length > 0 && name.length <= 1024), "historical_case_names_invalid");
   }
   const changed = historical.source_files.filter(entry => { const { bytes, mode } = trackedFile(entry.path); return entry.mode !== mode || entry.bytes !== bytes.length || entry.sha256 !== hash(bytes); }).map(entry => entry.path);
-  need(changed.every(name => name === "AGENTS.md"), "historical_source_changed");
+  need(changed.every(name => manifest.historicalExceptions.includes(name)), "historical_source_changed");
   Object.assign(row, { passed: true, inputFiles: expected.size, inputBytes: total, trackedFiles: tree.size, fullIndexMatchesHead: true,
     fullWorkingBytesMatchHead: true, historicalFiles: 148, historicalChanged: changed, historicalInventorySha256: OLD_HASH });
 }
