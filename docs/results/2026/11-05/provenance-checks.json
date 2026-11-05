@@ -1,0 +1,1986 @@
+{
+  "schemaVersion": 1,
+  "kind": "before-launch-provenance-checks",
+  "acceptedAttempt": 2,
+  "sourceCommit": "ee12493e4399fd39da084d6bed587afca4dacfc8",
+  "sourceTree": "d64406cc1b60fad2ce4b7827529cc71d7f37e8a5",
+  "activationCommit": "cc314ff8ad61d7951f24dd03152c21a71d9ded61",
+  "activationTree": "8225de0adef6aadf2ccff2c8adf78410ea497d60",
+  "run": {
+    "id": 41937646493,
+    "url": "https://github.com/alvarovillalbaa/before-the-launch/actions/runs/41937646493",
+    "status": "completed",
+    "conclusion": "success",
+    "event": "create",
+    "headSha": "cc314ff8ad61d7951f24dd03152c21a71d9ded61"
+  },
+  "job": {
+    "id": 126950070185,
+    "name": "provenance",
+    "status": "completed",
+    "conclusion": "success",
+    "startedAt": "2026-11-04T23:57:03Z",
+    "completedAt": "2026-11-04T23:57:33Z"
+  },
+  "controller": {
+    "schemaVersion": "before-launch.provenance-checks.v2",
+    "sourceCommit": "ee12493e4399fd39da084d6bed587afca4dacfc8",
+    "status": "passed",
+    "startedAtUtc": "2026-11-04T23:57:11.344Z",
+    "runtime": {
+      "node": "v24.21.0",
+      "platform": "linux",
+      "architecture": "x64",
+      "executableSha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c",
+      "corepackCliSha256": "3655bc798f300951f2070fee411b337d626b0c3ae80c2d24c46ccac4595d4bf9",
+      "pnpm": "10.24.0",
+      "vitestCliSha256": "39db22f579acf5639bbb17a261408debbde03f4692c0c439e77e7f13aeba74d6",
+      "vitest": "4.1.9",
+      "typescript": "5.9.3",
+      "vite": "8.1.0"
+    },
+    "scope": {
+      "files": [
+        {
+          "file": "tests/unit/simulation-provenance.test.ts",
+          "cases": 27
+        },
+        {
+          "file": "tests/unit/simulation-provenance-service.test.ts",
+          "cases": 9
+        },
+        {
+          "file": "tests/unit/simulation-provenance-ui.test.tsx",
+          "cases": 6
+        },
+        {
+          "file": "tests/unit/simulation.test.ts",
+          "cases": 2
+        },
+        {
+          "file": "tests/unit/simulation-context.test.ts",
+          "cases": 4
+        }
+      ],
+      "cases": 48,
+      "maxWorkers": 1,
+      "fileParallelism": false,
+      "retries": 0,
+      "fileIsolation": "Vitest default retained",
+      "browser": false,
+      "appServer": false,
+      "database": false,
+      "realProvider": false
+    },
+    "limits": {
+      "workSeconds": 780,
+      "cleanupSeconds": 60,
+      "finalStdoutSeconds": 2,
+      "jobMinutes": 15,
+      "streamBytes": 524288,
+      "reportBytes": 524288,
+      "vitestJsonBytes": 2097152,
+      "jsonGzipBytes": 131072,
+      "tapGzipBytes": 98304,
+      "testStderrGzipBytes": 32768,
+      "termToKillSeconds": 3,
+      "drainAfterKillSeconds": 3
+    },
+    "commands": [
+      {
+        "label": "before_head",
+        "args": [
+          "git",
+          "rev-parse",
+          "HEAD"
+        ],
+        "allowedExits": [
+          0
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "stop": null,
+        "spawned": true,
+        "exitObserved": true,
+        "closeObserved": true,
+        "originalProcessGroupAbsent": true,
+        "termSent": false,
+        "killSent": false,
+        "streams": [
+          {
+            "name": "stdout",
+            "observedBytes": 41,
+            "capturedBytes": 41,
+            "observedSha256": "6d6fefe344d0f2a775736cd253a5f5796312314afb09661f7ded259b9fd0730e",
+            "capturedSha256": "6d6fefe344d0f2a775736cd253a5f5796312314afb09661f7ded259b9fd0730e",
+            "complete": true
+          },
+          {
+            "name": "stderr",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          }
+        ]
+      },
+      {
+        "label": "before_seal",
+        "args": [
+          "git",
+          "show",
+          "HEAD:docs/results/2026/11-05/provenance-checks-source-attempt-2.json"
+        ],
+        "allowedExits": [
+          0
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "stop": null,
+        "spawned": true,
+        "exitObserved": true,
+        "closeObserved": true,
+        "originalProcessGroupAbsent": true,
+        "termSent": false,
+        "killSent": false,
+        "streams": [
+          {
+            "name": "stdout",
+            "observedBytes": 45194,
+            "capturedBytes": 45194,
+            "observedSha256": "ce4e2a113b2b6f68567e1dc4016b19bf85eadc94caf1cce99c20308c23691ab2",
+            "capturedSha256": "ce4e2a113b2b6f68567e1dc4016b19bf85eadc94caf1cce99c20308c23691ab2",
+            "complete": true
+          },
+          {
+            "name": "stderr",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          }
+        ]
+      },
+      {
+        "label": "before_index",
+        "args": [
+          "git",
+          "ls-files",
+          "--stage",
+          "-z"
+        ],
+        "allowedExits": [
+          0
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "stop": null,
+        "spawned": true,
+        "exitObserved": true,
+        "closeObserved": true,
+        "originalProcessGroupAbsent": true,
+        "termSent": false,
+        "killSent": false,
+        "streams": [
+          {
+            "name": "stdout",
+            "observedBytes": 110308,
+            "capturedBytes": 110308,
+            "observedSha256": "61dd95c8faa85409c32f503b4851974644bd6539b8b3c1630b6b033075d1703d",
+            "capturedSha256": "61dd95c8faa85409c32f503b4851974644bd6539b8b3c1630b6b033075d1703d",
+            "complete": true
+          },
+          {
+            "name": "stderr",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          }
+        ]
+      },
+      {
+        "label": "before_tree",
+        "args": [
+          "git",
+          "ls-tree",
+          "-r",
+          "-z",
+          "HEAD"
+        ],
+        "allowedExits": [
+          0
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "stop": null,
+        "spawned": true,
+        "exitObserved": true,
+        "closeObserved": true,
+        "originalProcessGroupAbsent": true,
+        "termSent": false,
+        "killSent": false,
+        "streams": [
+          {
+            "name": "stdout",
+            "observedBytes": 113311,
+            "capturedBytes": 113311,
+            "observedSha256": "19d9b002c33256066eac17b49c2bdb9ff2c711f2c9c5e064cb21b7141096a8fb",
+            "capturedSha256": "19d9b002c33256066eac17b49c2bdb9ff2c711f2c9c5e064cb21b7141096a8fb",
+            "complete": true
+          },
+          {
+            "name": "stderr",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          }
+        ]
+      },
+      {
+        "label": "before_status",
+        "args": [
+          "git",
+          "status",
+          "--porcelain=v1",
+          "-z",
+          "--untracked-files=all"
+        ],
+        "allowedExits": [
+          0
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "stop": null,
+        "spawned": true,
+        "exitObserved": true,
+        "closeObserved": true,
+        "originalProcessGroupAbsent": true,
+        "termSent": false,
+        "killSent": false,
+        "streams": [
+          {
+            "name": "stdout",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          },
+          {
+            "name": "stderr",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          }
+        ]
+      },
+      {
+        "label": "before_working",
+        "args": [
+          "git",
+          "-c",
+          "core.filemode=true",
+          "diff",
+          "--no-ext-diff",
+          "--no-textconv",
+          "--quiet",
+          "--exit-code",
+          "HEAD",
+          "--"
+        ],
+        "allowedExits": [
+          0
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "stop": null,
+        "spawned": true,
+        "exitObserved": true,
+        "closeObserved": true,
+        "originalProcessGroupAbsent": true,
+        "termSent": false,
+        "killSent": false,
+        "streams": [
+          {
+            "name": "stdout",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          },
+          {
+            "name": "stderr",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          }
+        ]
+      },
+      {
+        "label": "before_ignored",
+        "args": [
+          "git",
+          "status",
+          "--porcelain=v1",
+          "-z",
+          "--ignored=matching",
+          "--untracked-files=normal"
+        ],
+        "allowedExits": [
+          0
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "stop": null,
+        "spawned": true,
+        "exitObserved": true,
+        "closeObserved": true,
+        "originalProcessGroupAbsent": true,
+        "termSent": false,
+        "killSent": false,
+        "streams": [
+          {
+            "name": "stdout",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          },
+          {
+            "name": "stderr",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          }
+        ]
+      },
+      {
+        "label": "prepare_pnpm",
+        "args": [
+          "[node]",
+          "/opt/hostedtoolcache/node/24.21.0/x64/lib/node_modules/corepack/dist/corepack.js",
+          "prepare",
+          "pnpm@10.24.0",
+          "--activate"
+        ],
+        "allowedExits": [
+          0
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "stop": null,
+        "spawned": true,
+        "exitObserved": true,
+        "closeObserved": true,
+        "originalProcessGroupAbsent": true,
+        "termSent": false,
+        "killSent": false,
+        "streams": [
+          {
+            "name": "stdout",
+            "observedBytes": 51,
+            "capturedBytes": 51,
+            "observedSha256": "715c13fae36966c37c2ece18b08dab40260e459a8f5161a6560cfdca93d41f4c",
+            "capturedSha256": "715c13fae36966c37c2ece18b08dab40260e459a8f5161a6560cfdca93d41f4c",
+            "complete": true,
+            "head": "Preparing pnpm@10.24.0 for immediate activation...\n",
+            "tail": "Preparing pnpm@10.24.0 for immediate activation...\n"
+          },
+          {
+            "name": "stderr",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true,
+            "head": "",
+            "tail": ""
+          }
+        ]
+      },
+      {
+        "label": "pnpm_version",
+        "args": [
+          "[node]",
+          "/opt/hostedtoolcache/node/24.21.0/x64/lib/node_modules/corepack/dist/corepack.js",
+          "pnpm",
+          "--version"
+        ],
+        "allowedExits": [
+          0
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "stop": null,
+        "spawned": true,
+        "exitObserved": true,
+        "closeObserved": true,
+        "originalProcessGroupAbsent": true,
+        "termSent": false,
+        "killSent": false,
+        "streams": [
+          {
+            "name": "stdout",
+            "observedBytes": 8,
+            "capturedBytes": 8,
+            "observedSha256": "d57d8c9c1f2bf0cd42f130efec6786ebacc3a3e25d8695ad1ca56216de38faa4",
+            "capturedSha256": "d57d8c9c1f2bf0cd42f130efec6786ebacc3a3e25d8695ad1ca56216de38faa4",
+            "complete": true,
+            "head": "10.24.0\n",
+            "tail": "10.24.0\n"
+          },
+          {
+            "name": "stderr",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true,
+            "head": "",
+            "tail": ""
+          }
+        ]
+      },
+      {
+        "label": "install",
+        "args": [
+          "[node]",
+          "/opt/hostedtoolcache/node/24.21.0/x64/lib/node_modules/corepack/dist/corepack.js",
+          "pnpm",
+          "install",
+          "--frozen-lockfile",
+          "--ignore-scripts",
+          "--store-dir",
+          "[scratch]/pnpm/store"
+        ],
+        "allowedExits": [
+          0
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "stop": null,
+        "spawned": true,
+        "exitObserved": true,
+        "closeObserved": true,
+        "originalProcessGroupAbsent": true,
+        "termSent": false,
+        "killSent": false,
+        "streams": [
+          {
+            "name": "stdout",
+            "observedBytes": 1767,
+            "capturedBytes": 1767,
+            "observedSha256": "d5a3f7d186c9e2706bb36002771abff09d5b538ff12a4246d742e134d4b03994",
+            "capturedSha256": "d5a3f7d186c9e2706bb36002771abff09d5b538ff12a4246d742e134d4b03994",
+            "complete": true,
+            "head": "Lockfile is up to date, resolution step is skipped\nProgress: resolved 1, reused 0, downloaded 0, added 0\nPackages: +1116\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\nProgress: resolved 1116, reused 0, downloaded 48, added 12\nProgress: resolved 1116, reused 0, downloaded 182, added 110\nProgress: resolved 1116, reused 0, downloaded 211, added 128\nProgress: resolved 1116, reused 0, downloaded 251, added 145\nProgress: resolved 1116, reused 0, downloaded 504, added",
+            "tail": ".0\n+ next 16.2.9\n+ next-themes 0.4.6\n+ pdf-parse 2.4.5\n+ pg 8.22.0\n+ radix-ui 1.6.0\n+ react 19.2.4\n+ react-day-picker 10.0.1\n+ react-dom 19.2.4\n+ react-resizable-panels 4.11.2\n+ recharts 3.9.0\n+ shadcn 4.11.0\n+ sonner 2.0.7\n+ tailwind-merge 3.6.0\n+ tw-animate-css 1.4.0\n+ vaul 1.1.2\n+ workflow 4.5.0\n+ zod 4.4.3\n\ndevDependencies:\n+ @playwright/test 1.61.1\n+ @tailwindcss/postcss 4.3.1\n+ @types/node 20.19.43\n+ @types/pg 8.20.0\n+ @types/react 19.2.17\n+ @types/react-dom 19.2.3\n+ @vitejs/plugin-react 5.2.0\n+ @vitest/coverage-v8 4.1.9\n+ drizzle-kit 0.31.10\n+ eslint 9.39.4\n+ eslint-config-next 16.2.9\n+ tailwindcss 4.3.1\n+ tsx 4.22.4\n+ typescript 5.9.3\n+ vitest 4.1.9\n\nDone in 9.3s using pnpm v10.24.0\n"
+          },
+          {
+            "name": "stderr",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true,
+            "head": "",
+            "tail": ""
+          }
+        ]
+      },
+      {
+        "label": "after_install_ignored",
+        "args": [
+          "git",
+          "status",
+          "--porcelain=v1",
+          "-z",
+          "--ignored=matching",
+          "--untracked-files=normal"
+        ],
+        "allowedExits": [
+          0
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "stop": null,
+        "spawned": true,
+        "exitObserved": true,
+        "closeObserved": true,
+        "originalProcessGroupAbsent": true,
+        "termSent": false,
+        "killSent": false,
+        "streams": [
+          {
+            "name": "stdout",
+            "observedBytes": 17,
+            "capturedBytes": 17,
+            "observedSha256": "585c81200a41fe87505db2ccf942ebccd9144967bcc79cfc7ebd795a9982a00a",
+            "capturedSha256": "585c81200a41fe87505db2ccf942ebccd9144967bcc79cfc7ebd795a9982a00a",
+            "complete": true
+          },
+          {
+            "name": "stderr",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          }
+        ]
+      },
+      {
+        "label": "after_install_head",
+        "args": [
+          "git",
+          "rev-parse",
+          "HEAD"
+        ],
+        "allowedExits": [
+          0
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "stop": null,
+        "spawned": true,
+        "exitObserved": true,
+        "closeObserved": true,
+        "originalProcessGroupAbsent": true,
+        "termSent": false,
+        "killSent": false,
+        "streams": [
+          {
+            "name": "stdout",
+            "observedBytes": 41,
+            "capturedBytes": 41,
+            "observedSha256": "6d6fefe344d0f2a775736cd253a5f5796312314afb09661f7ded259b9fd0730e",
+            "capturedSha256": "6d6fefe344d0f2a775736cd253a5f5796312314afb09661f7ded259b9fd0730e",
+            "complete": true
+          },
+          {
+            "name": "stderr",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          }
+        ]
+      },
+      {
+        "label": "after_install_seal",
+        "args": [
+          "git",
+          "show",
+          "HEAD:docs/results/2026/11-05/provenance-checks-source-attempt-2.json"
+        ],
+        "allowedExits": [
+          0
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "stop": null,
+        "spawned": true,
+        "exitObserved": true,
+        "closeObserved": true,
+        "originalProcessGroupAbsent": true,
+        "termSent": false,
+        "killSent": false,
+        "streams": [
+          {
+            "name": "stdout",
+            "observedBytes": 45194,
+            "capturedBytes": 45194,
+            "observedSha256": "ce4e2a113b2b6f68567e1dc4016b19bf85eadc94caf1cce99c20308c23691ab2",
+            "capturedSha256": "ce4e2a113b2b6f68567e1dc4016b19bf85eadc94caf1cce99c20308c23691ab2",
+            "complete": true
+          },
+          {
+            "name": "stderr",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          }
+        ]
+      },
+      {
+        "label": "after_install_index",
+        "args": [
+          "git",
+          "ls-files",
+          "--stage",
+          "-z"
+        ],
+        "allowedExits": [
+          0
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "stop": null,
+        "spawned": true,
+        "exitObserved": true,
+        "closeObserved": true,
+        "originalProcessGroupAbsent": true,
+        "termSent": false,
+        "killSent": false,
+        "streams": [
+          {
+            "name": "stdout",
+            "observedBytes": 110308,
+            "capturedBytes": 110308,
+            "observedSha256": "61dd95c8faa85409c32f503b4851974644bd6539b8b3c1630b6b033075d1703d",
+            "capturedSha256": "61dd95c8faa85409c32f503b4851974644bd6539b8b3c1630b6b033075d1703d",
+            "complete": true
+          },
+          {
+            "name": "stderr",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          }
+        ]
+      },
+      {
+        "label": "after_install_tree",
+        "args": [
+          "git",
+          "ls-tree",
+          "-r",
+          "-z",
+          "HEAD"
+        ],
+        "allowedExits": [
+          0
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "stop": null,
+        "spawned": true,
+        "exitObserved": true,
+        "closeObserved": true,
+        "originalProcessGroupAbsent": true,
+        "termSent": false,
+        "killSent": false,
+        "streams": [
+          {
+            "name": "stdout",
+            "observedBytes": 113311,
+            "capturedBytes": 113311,
+            "observedSha256": "19d9b002c33256066eac17b49c2bdb9ff2c711f2c9c5e064cb21b7141096a8fb",
+            "capturedSha256": "19d9b002c33256066eac17b49c2bdb9ff2c711f2c9c5e064cb21b7141096a8fb",
+            "complete": true
+          },
+          {
+            "name": "stderr",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          }
+        ]
+      },
+      {
+        "label": "after_install_status",
+        "args": [
+          "git",
+          "status",
+          "--porcelain=v1",
+          "-z",
+          "--untracked-files=all"
+        ],
+        "allowedExits": [
+          0
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "stop": null,
+        "spawned": true,
+        "exitObserved": true,
+        "closeObserved": true,
+        "originalProcessGroupAbsent": true,
+        "termSent": false,
+        "killSent": false,
+        "streams": [
+          {
+            "name": "stdout",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          },
+          {
+            "name": "stderr",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          }
+        ]
+      },
+      {
+        "label": "after_install_working",
+        "args": [
+          "git",
+          "-c",
+          "core.filemode=true",
+          "diff",
+          "--no-ext-diff",
+          "--no-textconv",
+          "--quiet",
+          "--exit-code",
+          "HEAD",
+          "--"
+        ],
+        "allowedExits": [
+          0
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "stop": null,
+        "spawned": true,
+        "exitObserved": true,
+        "closeObserved": true,
+        "originalProcessGroupAbsent": true,
+        "termSent": false,
+        "killSent": false,
+        "streams": [
+          {
+            "name": "stdout",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          },
+          {
+            "name": "stderr",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          }
+        ]
+      },
+      {
+        "label": "provenance_tests",
+        "args": [
+          "[node]",
+          "[repository]/node_modules/vitest/vitest.mjs",
+          "run",
+          "tests/unit/simulation-provenance.test.ts",
+          "tests/unit/simulation-provenance-service.test.ts",
+          "tests/unit/simulation-provenance-ui.test.tsx",
+          "tests/unit/simulation.test.ts",
+          "tests/unit/simulation-context.test.ts",
+          "--maxWorkers=1",
+          "--no-file-parallelism",
+          "--retry=0",
+          "--reporter=tap",
+          "--reporter=json",
+          "--outputFile.json=[scratch]/vitest.json"
+        ],
+        "allowedExits": [
+          0,
+          1
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "stop": null,
+        "spawned": true,
+        "exitObserved": true,
+        "closeObserved": true,
+        "originalProcessGroupAbsent": true,
+        "termSent": false,
+        "killSent": false,
+        "streams": [
+          {
+            "name": "stdout",
+            "observedBytes": 6678,
+            "capturedBytes": 6678,
+            "observedSha256": "ee6d203517d6b464596fc472f8c5074b28ace25cba408ec4d956c045e259e19a",
+            "capturedSha256": "ee6d203517d6b464596fc472f8c5074b28ace25cba408ec4d956c045e259e19a",
+            "complete": true,
+            "head": "TAP version 13\n1..5\nok 1 - tests/unit/simulation-context.test.ts # time=15.79ms {\n    1..1\n    ok 1 - persisted simulation target market # time=14.86ms {\n        1..4\n        ok 1 - uses the persisted market for fake findings, context trace, and report without filling missing brief facts # time=10.12ms\n        ok 2 - passes the selected market separately from a conflicting brief market in the Gateway request # time=1.70ms\n        ok 3 - retains the same selected market when a mocked Gateway fail",
+            "tail": " time=0.37ms\n    ok 26 - simulation provenance: absent legacy output binding preserves persona counts but qualifies aggregate origin # time=0.21ms\n    ok 27 - simulation provenance: output binding never mutates its summaries or immutable receipt # time=0.27ms\n}\nok 5 - tests/unit/simulation.test.ts # time=12.60ms {\n    1..1\n    ok 1 - deterministic simulation # time=11.24ms {\n        1..2\n        ok 1 - runs fake agents concurrently and aggregates score components # time=7.98ms\n        ok 2 - retains the selected market in deterministic fake results without rewriting brief facts or evidence # time=2.61ms\n    }\n}\nJSON report written to [scratch]/vitest.json\n"
+          },
+          {
+            "name": "stderr",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true,
+            "head": "",
+            "tail": ""
+          }
+        ]
+      },
+      {
+        "label": "after_ignored",
+        "args": [
+          "git",
+          "status",
+          "--porcelain=v1",
+          "-z",
+          "--ignored=matching",
+          "--untracked-files=normal"
+        ],
+        "allowedExits": [
+          0
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "stop": null,
+        "spawned": true,
+        "exitObserved": true,
+        "closeObserved": true,
+        "originalProcessGroupAbsent": true,
+        "termSent": false,
+        "killSent": false,
+        "streams": [
+          {
+            "name": "stdout",
+            "observedBytes": 17,
+            "capturedBytes": 17,
+            "observedSha256": "585c81200a41fe87505db2ccf942ebccd9144967bcc79cfc7ebd795a9982a00a",
+            "capturedSha256": "585c81200a41fe87505db2ccf942ebccd9144967bcc79cfc7ebd795a9982a00a",
+            "complete": true
+          },
+          {
+            "name": "stderr",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          }
+        ]
+      },
+      {
+        "label": "after_head",
+        "args": [
+          "git",
+          "rev-parse",
+          "HEAD"
+        ],
+        "allowedExits": [
+          0
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "stop": null,
+        "spawned": true,
+        "exitObserved": true,
+        "closeObserved": true,
+        "originalProcessGroupAbsent": true,
+        "termSent": false,
+        "killSent": false,
+        "streams": [
+          {
+            "name": "stdout",
+            "observedBytes": 41,
+            "capturedBytes": 41,
+            "observedSha256": "6d6fefe344d0f2a775736cd253a5f5796312314afb09661f7ded259b9fd0730e",
+            "capturedSha256": "6d6fefe344d0f2a775736cd253a5f5796312314afb09661f7ded259b9fd0730e",
+            "complete": true
+          },
+          {
+            "name": "stderr",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          }
+        ]
+      },
+      {
+        "label": "after_seal",
+        "args": [
+          "git",
+          "show",
+          "HEAD:docs/results/2026/11-05/provenance-checks-source-attempt-2.json"
+        ],
+        "allowedExits": [
+          0
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "stop": null,
+        "spawned": true,
+        "exitObserved": true,
+        "closeObserved": true,
+        "originalProcessGroupAbsent": true,
+        "termSent": false,
+        "killSent": false,
+        "streams": [
+          {
+            "name": "stdout",
+            "observedBytes": 45194,
+            "capturedBytes": 45194,
+            "observedSha256": "ce4e2a113b2b6f68567e1dc4016b19bf85eadc94caf1cce99c20308c23691ab2",
+            "capturedSha256": "ce4e2a113b2b6f68567e1dc4016b19bf85eadc94caf1cce99c20308c23691ab2",
+            "complete": true
+          },
+          {
+            "name": "stderr",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          }
+        ]
+      },
+      {
+        "label": "after_index",
+        "args": [
+          "git",
+          "ls-files",
+          "--stage",
+          "-z"
+        ],
+        "allowedExits": [
+          0
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "stop": null,
+        "spawned": true,
+        "exitObserved": true,
+        "closeObserved": true,
+        "originalProcessGroupAbsent": true,
+        "termSent": false,
+        "killSent": false,
+        "streams": [
+          {
+            "name": "stdout",
+            "observedBytes": 110308,
+            "capturedBytes": 110308,
+            "observedSha256": "61dd95c8faa85409c32f503b4851974644bd6539b8b3c1630b6b033075d1703d",
+            "capturedSha256": "61dd95c8faa85409c32f503b4851974644bd6539b8b3c1630b6b033075d1703d",
+            "complete": true
+          },
+          {
+            "name": "stderr",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          }
+        ]
+      },
+      {
+        "label": "after_tree",
+        "args": [
+          "git",
+          "ls-tree",
+          "-r",
+          "-z",
+          "HEAD"
+        ],
+        "allowedExits": [
+          0
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "stop": null,
+        "spawned": true,
+        "exitObserved": true,
+        "closeObserved": true,
+        "originalProcessGroupAbsent": true,
+        "termSent": false,
+        "killSent": false,
+        "streams": [
+          {
+            "name": "stdout",
+            "observedBytes": 113311,
+            "capturedBytes": 113311,
+            "observedSha256": "19d9b002c33256066eac17b49c2bdb9ff2c711f2c9c5e064cb21b7141096a8fb",
+            "capturedSha256": "19d9b002c33256066eac17b49c2bdb9ff2c711f2c9c5e064cb21b7141096a8fb",
+            "complete": true
+          },
+          {
+            "name": "stderr",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          }
+        ]
+      },
+      {
+        "label": "after_status",
+        "args": [
+          "git",
+          "status",
+          "--porcelain=v1",
+          "-z",
+          "--untracked-files=all"
+        ],
+        "allowedExits": [
+          0
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "stop": null,
+        "spawned": true,
+        "exitObserved": true,
+        "closeObserved": true,
+        "originalProcessGroupAbsent": true,
+        "termSent": false,
+        "killSent": false,
+        "streams": [
+          {
+            "name": "stdout",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          },
+          {
+            "name": "stderr",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          }
+        ]
+      },
+      {
+        "label": "after_working",
+        "args": [
+          "git",
+          "-c",
+          "core.filemode=true",
+          "diff",
+          "--no-ext-diff",
+          "--no-textconv",
+          "--quiet",
+          "--exit-code",
+          "HEAD",
+          "--"
+        ],
+        "allowedExits": [
+          0
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "stop": null,
+        "spawned": true,
+        "exitObserved": true,
+        "closeObserved": true,
+        "originalProcessGroupAbsent": true,
+        "termSent": false,
+        "killSent": false,
+        "streams": [
+          {
+            "name": "stdout",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          },
+          {
+            "name": "stderr",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          }
+        ]
+      },
+      {
+        "label": "after_output_cleanup_head",
+        "args": [
+          "git",
+          "rev-parse",
+          "HEAD"
+        ],
+        "allowedExits": [
+          0
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "stop": null,
+        "spawned": true,
+        "exitObserved": true,
+        "closeObserved": true,
+        "originalProcessGroupAbsent": true,
+        "termSent": false,
+        "killSent": false,
+        "streams": [
+          {
+            "name": "stdout",
+            "observedBytes": 41,
+            "capturedBytes": 41,
+            "observedSha256": "6d6fefe344d0f2a775736cd253a5f5796312314afb09661f7ded259b9fd0730e",
+            "capturedSha256": "6d6fefe344d0f2a775736cd253a5f5796312314afb09661f7ded259b9fd0730e",
+            "complete": true
+          },
+          {
+            "name": "stderr",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          }
+        ]
+      },
+      {
+        "label": "after_output_cleanup_seal",
+        "args": [
+          "git",
+          "show",
+          "HEAD:docs/results/2026/11-05/provenance-checks-source-attempt-2.json"
+        ],
+        "allowedExits": [
+          0
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "stop": null,
+        "spawned": true,
+        "exitObserved": true,
+        "closeObserved": true,
+        "originalProcessGroupAbsent": true,
+        "termSent": false,
+        "killSent": false,
+        "streams": [
+          {
+            "name": "stdout",
+            "observedBytes": 45194,
+            "capturedBytes": 45194,
+            "observedSha256": "ce4e2a113b2b6f68567e1dc4016b19bf85eadc94caf1cce99c20308c23691ab2",
+            "capturedSha256": "ce4e2a113b2b6f68567e1dc4016b19bf85eadc94caf1cce99c20308c23691ab2",
+            "complete": true
+          },
+          {
+            "name": "stderr",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          }
+        ]
+      },
+      {
+        "label": "after_output_cleanup_index",
+        "args": [
+          "git",
+          "ls-files",
+          "--stage",
+          "-z"
+        ],
+        "allowedExits": [
+          0
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "stop": null,
+        "spawned": true,
+        "exitObserved": true,
+        "closeObserved": true,
+        "originalProcessGroupAbsent": true,
+        "termSent": false,
+        "killSent": false,
+        "streams": [
+          {
+            "name": "stdout",
+            "observedBytes": 110308,
+            "capturedBytes": 110308,
+            "observedSha256": "61dd95c8faa85409c32f503b4851974644bd6539b8b3c1630b6b033075d1703d",
+            "capturedSha256": "61dd95c8faa85409c32f503b4851974644bd6539b8b3c1630b6b033075d1703d",
+            "complete": true
+          },
+          {
+            "name": "stderr",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          }
+        ]
+      },
+      {
+        "label": "after_output_cleanup_tree",
+        "args": [
+          "git",
+          "ls-tree",
+          "-r",
+          "-z",
+          "HEAD"
+        ],
+        "allowedExits": [
+          0
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "stop": null,
+        "spawned": true,
+        "exitObserved": true,
+        "closeObserved": true,
+        "originalProcessGroupAbsent": true,
+        "termSent": false,
+        "killSent": false,
+        "streams": [
+          {
+            "name": "stdout",
+            "observedBytes": 113311,
+            "capturedBytes": 113311,
+            "observedSha256": "19d9b002c33256066eac17b49c2bdb9ff2c711f2c9c5e064cb21b7141096a8fb",
+            "capturedSha256": "19d9b002c33256066eac17b49c2bdb9ff2c711f2c9c5e064cb21b7141096a8fb",
+            "complete": true
+          },
+          {
+            "name": "stderr",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          }
+        ]
+      },
+      {
+        "label": "after_output_cleanup_status",
+        "args": [
+          "git",
+          "status",
+          "--porcelain=v1",
+          "-z",
+          "--untracked-files=all"
+        ],
+        "allowedExits": [
+          0
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "stop": null,
+        "spawned": true,
+        "exitObserved": true,
+        "closeObserved": true,
+        "originalProcessGroupAbsent": true,
+        "termSent": false,
+        "killSent": false,
+        "streams": [
+          {
+            "name": "stdout",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          },
+          {
+            "name": "stderr",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          }
+        ]
+      },
+      {
+        "label": "after_output_cleanup_working",
+        "args": [
+          "git",
+          "-c",
+          "core.filemode=true",
+          "diff",
+          "--no-ext-diff",
+          "--no-textconv",
+          "--quiet",
+          "--exit-code",
+          "HEAD",
+          "--"
+        ],
+        "allowedExits": [
+          0
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "stop": null,
+        "spawned": true,
+        "exitObserved": true,
+        "closeObserved": true,
+        "originalProcessGroupAbsent": true,
+        "termSent": false,
+        "killSent": false,
+        "streams": [
+          {
+            "name": "stdout",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          },
+          {
+            "name": "stderr",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          }
+        ]
+      },
+      {
+        "label": "final_ignored",
+        "args": [
+          "git",
+          "status",
+          "--porcelain=v1",
+          "-z",
+          "--ignored=matching",
+          "--untracked-files=all"
+        ],
+        "allowedExits": [
+          0
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "stop": null,
+        "spawned": true,
+        "exitObserved": true,
+        "closeObserved": true,
+        "originalProcessGroupAbsent": true,
+        "termSent": false,
+        "killSent": false,
+        "streams": [
+          {
+            "name": "stdout",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          },
+          {
+            "name": "stderr",
+            "observedBytes": 0,
+            "capturedBytes": 0,
+            "observedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "capturedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "complete": true
+          }
+        ]
+      }
+    ],
+    "guards": [
+      {
+        "label": "before",
+        "passed": true,
+        "inputFiles": 151,
+        "inputBytes": 1063335,
+        "trackedFiles": 1001,
+        "fullIndexMatchesHead": true,
+        "fullWorkingBytesMatchHead": true,
+        "historicalFiles": 148,
+        "historicalChanged": [
+          "AGENTS.md",
+          "tests/unit/simulation-provenance-service.test.ts"
+        ],
+        "historicalInventorySha256": "0899cf55fce9420f5e10749759bee7e596202322776c2961292f4179753d7185"
+      },
+      {
+        "label": "after_install",
+        "passed": true,
+        "inputFiles": 151,
+        "inputBytes": 1063335,
+        "trackedFiles": 1001,
+        "fullIndexMatchesHead": true,
+        "fullWorkingBytesMatchHead": true,
+        "historicalFiles": 148,
+        "historicalChanged": [
+          "AGENTS.md",
+          "tests/unit/simulation-provenance-service.test.ts"
+        ],
+        "historicalInventorySha256": "0899cf55fce9420f5e10749759bee7e596202322776c2961292f4179753d7185"
+      },
+      {
+        "label": "after",
+        "passed": true,
+        "inputFiles": 151,
+        "inputBytes": 1063335,
+        "trackedFiles": 1001,
+        "fullIndexMatchesHead": true,
+        "fullWorkingBytesMatchHead": true,
+        "historicalFiles": 148,
+        "historicalChanged": [
+          "AGENTS.md",
+          "tests/unit/simulation-provenance-service.test.ts"
+        ],
+        "historicalInventorySha256": "0899cf55fce9420f5e10749759bee7e596202322776c2961292f4179753d7185"
+      },
+      {
+        "label": "after_output_cleanup",
+        "passed": true,
+        "inputFiles": 151,
+        "inputBytes": 1063335,
+        "trackedFiles": 1001,
+        "fullIndexMatchesHead": true,
+        "fullWorkingBytesMatchHead": true,
+        "historicalFiles": 148,
+        "historicalChanged": [
+          "AGENTS.md",
+          "tests/unit/simulation-provenance-service.test.ts"
+        ],
+        "historicalInventorySha256": "0899cf55fce9420f5e10749759bee7e596202322776c2961292f4179753d7185"
+      }
+    ],
+    "generated": [
+      {
+        "path": "node_modules",
+        "dev": 2049,
+        "ino": 9180432,
+        "preAbsent": true,
+        "removed": true
+      }
+    ],
+    "ignoredOutput": [
+      {
+        "label": "before",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "recordCount": 0,
+        "rows": [],
+        "truncated": false
+      },
+      {
+        "label": "after_install",
+        "bytes": 17,
+        "sha256": "585c81200a41fe87505db2ccf942ebccd9144967bcc79cfc7ebd795a9982a00a",
+        "recordCount": 1,
+        "rows": [
+          {
+            "status": "!!",
+            "path": "node_modules/",
+            "pathBytes": 13,
+            "truncated": false
+          }
+        ],
+        "truncated": false
+      },
+      {
+        "label": "after",
+        "bytes": 17,
+        "sha256": "585c81200a41fe87505db2ccf942ebccd9144967bcc79cfc7ebd795a9982a00a",
+        "recordCount": 1,
+        "rows": [
+          {
+            "status": "!!",
+            "path": "node_modules/",
+            "pathBytes": 13,
+            "truncated": false
+          }
+        ],
+        "truncated": false
+      },
+      {
+        "label": "final",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "recordCount": 0,
+        "rows": [],
+        "truncated": false
+      }
+    ],
+    "errors": [],
+    "proofLimits": [
+      "The 48 authored cases use fake/mocked DB and AI boundaries, actual pure/service source and React server rendering; no database, app server, browser or real provider is run.",
+      "Vitest JSON exposes final outcomes, not retry/global-error counters. One sealed command with retry zero and no repeats, exact unique final rows, and actual CLI exit zero are required; no attempt counters are fabricated.",
+      "Direct child exit/close and original process-group absence are observed; separately detached descendant sessions are not independently inventoried.",
+      "Dependency/tool registry access is part of setup, not a network sandbox. Userspace deadlines cannot interrupt blocked kernel filesystem calls; executable hashes do not inventory dynamic libraries."
+    ],
+    "sealSha256": "ce4e2a113b2b6f68567e1dc4016b19bf85eadc94caf1cce99c20308c23691ab2",
+    "testStreams": [
+      {
+        "name": "stdout",
+        "encoding": "gzip-base64",
+        "bytes": 6678,
+        "sha256": "ee6d203517d6b464596fc472f8c5074b28ace25cba408ec4d956c045e259e19a",
+        "compressedBytes": 2115,
+        "data": "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"
+      },
+      {
+        "name": "stderr",
+        "encoding": "gzip-base64",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "compressedBytes": 20,
+        "data": "H4sIAAAAAAAAAwMAAAAAAAAAAAA="
+      }
+    ],
+    "results": {
+      "raw": {
+        "encoding": "gzip-base64",
+        "bytes": 17968,
+        "sha256": "969efa7b9d4c4035ce7faa651f7765a8efe3821d09499e2b5acdbfeeef5bb8fc",
+        "compressedBytes": 2942,
+        "data": "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"
+      },
+      "accepted": true,
+      "files": [
+        {
+          "file": "tests/unit/simulation-context.test.ts",
+          "status": "passed",
+          "message": "",
+          "cases": 4
+        },
+        {
+          "file": "tests/unit/simulation-provenance-service.test.ts",
+          "status": "passed",
+          "message": "",
+          "cases": 9
+        },
+        {
+          "file": "tests/unit/simulation-provenance-ui.test.tsx",
+          "status": "passed",
+          "message": "",
+          "cases": 6
+        },
+        {
+          "file": "tests/unit/simulation-provenance.test.ts",
+          "status": "passed",
+          "message": "",
+          "cases": 27
+        },
+        {
+          "file": "tests/unit/simulation.test.ts",
+          "status": "passed",
+          "message": "",
+          "cases": 2
+        }
+      ],
+      "cases": [
+        {
+          "file": "tests/unit/simulation-context.test.ts",
+          "name": "persisted simulation target market uses the persisted market for fake findings, context trace, and report without filling missing brief facts",
+          "status": "passed",
+          "durationMs": 10.124380999999971,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-context.test.ts",
+          "name": "persisted simulation target market passes the selected market separately from a conflicting brief market in the Gateway request",
+          "status": "passed",
+          "durationMs": 1.7034509999999727,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-context.test.ts",
+          "name": "persisted simulation target market retains the same selected market when a mocked Gateway failure falls back to fake output",
+          "status": "passed",
+          "durationMs": 1.3144469999999728,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-context.test.ts",
+          "name": "persisted simulation target market captures the persisted market before later asynchronous work can change the loaded record",
+          "status": "passed",
+          "durationMs": 1.1547299999999723,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance-service.test.ts",
+          "name": "simulation provenance service: fake execution binds synthetic findings and report outputs without altering deterministic results",
+          "status": "passed",
+          "durationMs": 13.275963000000047,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance-service.test.ts",
+          "name": "simulation provenance service: successful mocked Gateway output is bound to its saved finding and aggregate outputs",
+          "status": "passed",
+          "durationMs": 5.117063000000144,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance-service.test.ts",
+          "name": "simulation provenance service: Gateway failure keeps fallback behavior while qualifying the exact synthetic finding and report",
+          "status": "passed",
+          "durationMs": 2.4445439999999508,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance-service.test.ts",
+          "name": "simulation provenance service: mixed success and fallback persist separate origins with one correctly bound report composition",
+          "status": "passed",
+          "durationMs": 3.0236030000000937,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance-service.test.ts",
+          "name": "simulation provenance service: historical Gateway flags and unbound fallback traces remain unknown without rewriting saved numerical outputs",
+          "status": "passed",
+          "durationMs": 1.0693320000000313,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance-service.test.ts",
+          "name": "simulation provenance service: an older selected score or report cannot borrow a newer attempt aggregate attribution",
+          "status": "passed",
+          "durationMs": 1.9326710000000276,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance-service.test.ts",
+          "name": "simulation provenance service: first selected historical findings cannot inherit current report lineage despite valid per-finding stamps",
+          "status": "passed",
+          "durationMs": 1.5581320000001142,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance-service.test.ts",
+          "name": "simulation provenance service: unfinished agents stay pending and absent runs stay absent",
+          "status": "passed",
+          "durationMs": 0.6503920000000107,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance-service.test.ts",
+          "name": "simulation provenance service: asynchronous changes to the loaded engine cannot relabel an already captured execution attempt",
+          "status": "passed",
+          "durationMs": 1.4781040000000303,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance-ui.test.tsx",
+          "name": "provenance UI: mixed findings retain separate Gateway and synthetic counts in a labeled notice",
+          "status": "passed",
+          "durationMs": 30.520539999999983,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance-ui.test.tsx",
+          "name": "provenance UI: fake and fallback cohorts remain explicitly synthetic after matched output linkage",
+          "status": "passed",
+          "durationMs": 8.034879000000046,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance-ui.test.tsx",
+          "name": "provenance UI: a pending cohort names missing findings without claiming completed Gateway output",
+          "status": "passed",
+          "durationMs": 3.125953000000038,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance-ui.test.tsx",
+          "name": "provenance UI: positive Gateway counts do not promote an unbound aggregate or report",
+          "status": "passed",
+          "durationMs": 2.533450000000016,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance-ui.test.tsx",
+          "name": "provenance UI: every persona origin exposes its visible label and full qualification",
+          "status": "passed",
+          "durationMs": 6.452490999999952,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance-ui.test.tsx",
+          "name": "provenance UI: authored markup stays escaped text without mutating provenance inputs",
+          "status": "passed",
+          "durationMs": 2.7269000000000005,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance.test.ts",
+          "name": "simulation provenance: a selected finding needs its own matching Gateway judgment stamp",
+          "status": "passed",
+          "durationMs": 2.8900040000000047,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance.test.ts",
+          "name": "simulation provenance: explicitly bound fake findings stay synthetic",
+          "status": "passed",
+          "durationMs": 0.3161790000000053,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance.test.ts",
+          "name": "simulation provenance: a bound Gateway failure is distinguished from a Gateway judgment",
+          "status": "passed",
+          "durationMs": 0.4094930000000261,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance.test.ts",
+          "name": "simulation provenance: configured Gateway alone never establishes a completed result origin",
+          "status": "passed",
+          "durationMs": 0.25929299999998534,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance.test.ts",
+          "name": "simulation provenance: historical fake-engine findings retain qualified synthetic provenance",
+          "status": "passed",
+          "durationMs": 0.32734000000002084,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance.test.ts",
+          "name": "simulation provenance: an unbound historical fallback event does not identify the selected finding",
+          "status": "passed",
+          "durationMs": 0.2470299999999952,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance.test.ts",
+          "name": "simulation provenance: judgments attached to another finding cannot promote this finding",
+          "status": "passed",
+          "durationMs": 0.2203399999999931,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance.test.ts",
+          "name": "simulation provenance: selected finding proof is not replaced by an unbound fallback from another attempt",
+          "status": "passed",
+          "durationMs": 0.20335900000000606,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance.test.ts",
+          "name": "simulation provenance: duplicate matching stamps are ambiguous even when their values agree",
+          "status": "passed",
+          "durationMs": 0.28943900000001577,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance.test.ts",
+          "name": "simulation provenance: conflicting selected-finding origins are never resolved by event order",
+          "status": "passed",
+          "durationMs": 0.33290999999999826,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance.test.ts",
+          "name": "simulation provenance: malformed versions origins and configured-engine contradictions reject positive attribution",
+          "status": "passed",
+          "durationMs": 0.5774350000000084,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance.test.ts",
+          "name": "simulation provenance: malformed unbound origin records cannot piggyback on valid selected-finding proof",
+          "status": "passed",
+          "durationMs": 0.25438400000001593,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance.test.ts",
+          "name": "simulation provenance: absent findings remain pending regardless of stale judgment events",
+          "status": "passed",
+          "durationMs": 0.12337999999999738,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance.test.ts",
+          "name": "simulation provenance: malformed finding results cannot inherit a positive engine label",
+          "status": "passed",
+          "durationMs": 0.12810900000002334,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance.test.ts",
+          "name": "simulation provenance: unknown historical engine names do not become Gateway evidence",
+          "status": "passed",
+          "durationMs": 0.1386980000000051,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance.test.ts",
+          "name": "simulation provenance: classification leaves scores evidence and event metadata unchanged",
+          "status": "passed",
+          "durationMs": 0.2914429999999868,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance.test.ts",
+          "name": "simulation provenance: a complete Gateway cohort counts every independently derived judgment",
+          "status": "passed",
+          "durationMs": 0.3017820000000029,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance.test.ts",
+          "name": "simulation provenance: explicit fake and Gateway fallback findings are both synthetic without collapsing their counts",
+          "status": "passed",
+          "durationMs": 0.2696430000000021,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance.test.ts",
+          "name": "simulation provenance: mixed Gateway and fallback output cannot be advertised as all Gateway",
+          "status": "passed",
+          "durationMs": 0.3107789999999966,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance.test.ts",
+          "name": "simulation provenance: unknown and pending findings remain visible in aggregate accounting",
+          "status": "passed",
+          "durationMs": 0.21607199999999693,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance.test.ts",
+          "name": "simulation provenance: an empty cohort is pending rather than evidence of successful Gateway execution",
+          "status": "passed",
+          "durationMs": 0.22060100000001626,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance.test.ts",
+          "name": "simulation provenance: exported Markdown retains the derived origin label and its qualification",
+          "status": "passed",
+          "durationMs": 0.46145900000001916,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance.test.ts",
+          "name": "simulation provenance: aggregate binding accepts only the exact output identities with order-independent finding membership",
+          "status": "passed",
+          "durationMs": 0.39879300000001194,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance.test.ts",
+          "name": "simulation provenance: missing duplicated or mismatched selected outputs cannot borrow another attempt origin",
+          "status": "passed",
+          "durationMs": 0.5132659999999873,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance.test.ts",
+          "name": "simulation provenance: output identities alone do not validate a contradictory recorded summary",
+          "status": "passed",
+          "durationMs": 0.37143199999999865,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance.test.ts",
+          "name": "simulation provenance: absent legacy output binding preserves persona counts but qualifies aggregate origin",
+          "status": "passed",
+          "durationMs": 0.21226500000000215,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation-provenance.test.ts",
+          "name": "simulation provenance: output binding never mutates its summaries or immutable receipt",
+          "status": "passed",
+          "durationMs": 0.26554400000000555,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation.test.ts",
+          "name": "deterministic simulation runs fake agents concurrently and aggregates score components",
+          "status": "passed",
+          "durationMs": 7.981340000000046,
+          "failureMessages": []
+        },
+        {
+          "file": "tests/unit/simulation.test.ts",
+          "name": "deterministic simulation retains the selected market in deterministic fake results without rewriting brief facts or evidence",
+          "status": "passed",
+          "durationMs": 2.606903999999986,
+          "failureMessages": []
+        }
+      ],
+      "totals": {
+        "numTotalTests": 48,
+        "numPassedTests": 48,
+        "numFailedTests": 0,
+        "numPendingTests": 0,
+        "numTodoTests": 0,
+        "numTotalTestSuites": 7,
+        "numPassedTestSuites": 7,
+        "numFailedTestSuites": 0,
+        "numPendingTestSuites": 0
+      },
+      "success": true,
+      "unorderedIdentitySet": true
+    },
+    "cleanup": "passed",
+    "interrupted": false,
+    "completedAtUtc": "2026-11-04T23:57:30.682Z"
+  },
+  "retainedFailure": "docs/results/2026/11-05/provenance-checks-attempt-1.json",
+  "classification": {
+    "cases": 48,
+    "passed": 48,
+    "failed": 0,
+    "pending": 0,
+    "todo": 0,
+    "files": 5,
+    "suites": 7,
+    "retriesConfigured": 0,
+    "actualCliExit": 0,
+    "unhandledErrorPolicy": "Vitest default fail behavior; JSON exposes no independent global-error counter.",
+    "attemptEvidence": "One sealed Vitest invocation, immutable zero-retry configuration and exact unique final rows; JSON exposes no attempt counter.",
+    "accepted": true,
+    "cleanup": "passed"
+  },
+  "fixtureRepair": {
+    "change": "Supported auto-spy module with static SDK export prebound to the original authored stub, stronger global-fetch rejection/assertion/restoration and bounded failure diagnostics; all original case names/body assertions retained.",
+    "productionCodeChanged": false,
+    "dependencyChanged": false,
+    "originalException": "Not recorded in the original failure. Pinned Vitest source explicitly identifies the matching concurrent manual-mock import pattern as unsupported; the repaired boundary passed."
+  },
+  "publicationBoundary": {
+    "laterStatusDocuments": [
+      "README.md",
+      "docs/proposals/provenance-checks-v2.md"
+    ],
+    "testedInputs": 151,
+    "unchangedTestedInputs": 149,
+    "activeWorkflowAtMainHead": false,
+    "qaBranches": "Retain the first at its own failure retirement; advance the second to the final receipt/publication edition with no active workflow."
+  },
+  "proofLimits": [
+    "The 48 authored cases use fake/mocked DB and AI boundaries, actual pure/service source and React server rendering; no database, app server, browser or real provider is run.",
+    "Vitest JSON exposes final outcomes, not retry/global-error counters. One sealed command with retry zero and no repeats, exact unique final rows, and actual CLI exit zero are required; no attempt counters are fabricated.",
+    "Direct child exit/close and original process-group absence are observed; separately detached descendant sessions are not independently inventoried.",
+    "Dependency/tool registry access is part of setup, not a network sandbox. Userspace deadlines cannot interrupt blocked kernel filesystem calls; executable hashes do not inventory dynamic libraries.",
+    "Mocked service and React SSR evidence does not establish SQL durability/concurrency, hosted access isolation, Next/browser rendering, real-provider/model/market behavior or spend/depth enforcement.",
+    "The initial 47-pass/one-fail outcome remains separate from this pass; the exact caught exception was not recovered.",
+    "Later status documents do not relabel the immutable checked source. Vercel READY remains deployment metadata."
+  ]
+}

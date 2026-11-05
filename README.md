@@ -44,6 +44,15 @@ The app works without AI credentials. In that mode, simulations use deterministi
 synthetic demo output and Gateway fallbacks in results, persona rows and reports.
 The configured engine alone does not establish how each judgment was produced.
 
+The [48 provenance checks](docs/results/2026/11-05/provenance-checks.md) passed
+against `ee12493e4399fd39da084d6bed587afca4dacfc8` in one invocation configured
+with zero retries: five files, seven suites, actual CLI exit zero and verified
+source guards/owned cleanup. These mocked-service, pure-helper and React SSR
+checks establish no SQL durability, hosted access isolation, real provider
+behavior/cost, browser interaction or budget enforcement. The
+[scope and preserved first failure](docs/proposals/provenance-checks-v2.md)
+retain the evidence and its limits.
+
 To use AI Gateway, set one of:
 
 ```bash

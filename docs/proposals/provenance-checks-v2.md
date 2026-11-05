@@ -1,4 +1,27 @@
-# Execute the prepared 48 provenance checks
+# Provenance checks — 48 passed
+
+5 November 2026 local. [Attempt 2's canonical receipt](../results/2026/11-05/provenance-checks.md)
+and [machine result](../results/2026/11-05/provenance-checks.json) record **48 of
+48 passed** in [run 41937646493](https://github.com/alvarovillalbaa/before-the-launch/actions/runs/41937646493),
+job `126950070185`. The immutable checked source was
+`ee12493e4399fd39da084d6bed587afca4dacfc8`, tree
+`d64406cc1b60fad2ce4b7827529cc71d7f37e8a5`; activation was
+`cc314ff8ad61d7951f24dd03152c21a71d9ded61` on the owned QA branch.
+
+All five files and seven suites passed. The one invocation configured retry
+zero exited zero with the default unhandled-error failure policy; the JSON has
+48 unique passing final outcomes, not a separately observed attempt counter.
+The mixed case retained its two-call assertion, and all nine service cases
+passed the no-fetch guard. All 32 commands settled normally with complete
+bounded capture; four full source guards passed over 151 application inputs /
+1,063,335 bytes and all 1,001 tracked leaves. Owned dependency/scratch cleanup
+passed and final ignored output was empty.
+
+The first failure and its unobserved exact exception remain preserved below.
+Temporary workflow retirement is pending final publication; main never hosted
+the active copy. This later status edition changes only README and this proposal
+among the 151 checked inputs: the other 149, including product, fixtures,
+controller and lock, remain byte-identical. Reproduce the immutable source above.
 
 5 November 2026. Preparation began at fresh clean local/connected main
 `56c277a466e8aeb0c98a20f7890078e57cf88003`: all 148 original fingerprints
@@ -9,7 +32,7 @@ matched the [immutable source ledger](../results/2026/10-30/simulation-provenanc
 The mixed success/fallback service case expected two mocked Gateway calls and
 observed one. Four full source guards and owned cleanup passed. The original
 failure and workflow retirement are published at
-`5cbb96e494c7af24fe1809703ff05d4ab7c082a5`. Attempt 2 is unexecuted.
+`5cbb96e494c7af24fe1809703ff05d4ab7c082a5`. Attempt 2 passed as recorded above.
 
 The fixture used a manual AI SDK mock around the producer's concurrent dynamic
 imports. The [locked Vitest manual-mock loader](https://github.com/vitest-dev/vitest/blob/v4.1.9/packages/vitest/src/runtime/moduleRunner/moduleMocker.ts#L211)
@@ -48,10 +71,11 @@ lazy. The six UI cases render the actual notices with React server rendering
 and inspect their HTML; they do not exercise Next navigation, hydration, a
 browser or accessibility interactions. Preserve Vitest's per-file isolation.
 
-A new ledger at `docs/results/2026/11-05/provenance-checks-source-attempt-2.json` covers
-151 current application inputs: the original 148 plus this proposal, the
-controller and its inactive workflow example. Only AGENTS authority text and
-the service fixture's mock/diagnostic boundary differ among the original 148.
+The checked ledger at `docs/results/2026/11-05/provenance-checks-source-attempt-2.json` covers
+151 application inputs at the immutable checked source: the original 148 plus
+this proposal, the controller and its inactive workflow example. In that source,
+only AGENTS authority text and the service fixture's mock/diagnostic boundary
+differed among the original 148.
 The first source edition remains immutable. The old ledger's exact bytes and five-file
 27/9/6/2/4 full-name set remain protected. Full HEAD/index/mode/working-byte
 guards additionally cover every tracked leaf, including bundled `.agents/`
@@ -111,6 +135,6 @@ Storage Guard now reports **21.8 GiB free / 34.0 GiB required**, exit two. No
 local install, build, server, browser, database or product test will bypass that
 reserve. The tagged [Next 16.2.9 server/client guide](https://github.com/vercel/next.js/blob/v16.2.9/docs/01-app/01-getting-started/05-server-and-client-components.mdx)
 was read because local Next guides are absent; the existing render boundary is
-unchanged. Passing these cases would not establish SQL durability/concurrency,
+unchanged. These passing cases do not establish SQL durability/concurrency,
 hosted access isolation, provider behavior/cost, real market reactions, depth/
 budget enforcement, browser interaction or full product/portfolio completion.
