@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "kind": "before-launch-provenance-checks-publication",
+  "observedAtUtc": "2026-11-05T00:02:32Z",
+  "repository": "alvarovillalbaa/before-the-launch",
+  "acceptedRun": {
+    "id": 41937646493,
+    "job": 126950070185,
+    "source": "ee12493e4399fd39da084d6bed587afca4dacfc8",
+    "sourceTree": "d64406cc1b60fad2ce4b7827529cc71d7f37e8a5",
+    "cases": 48,
+    "retriesConfigured": 0,
+    "actualCliExit": 0
+  },
+  "receiptEdition": {
+    "commit": "7f890c1883e219125c52b62fe23cb428eeb9cfb0",
+    "tree": "665e8c62f3e1f3ecf77a2212d024fbbd32ff5544",
+    "trackedLeaves": 1003,
+    "remoteTreeComplete": true,
+    "nativeHeadIndexAndAllWorkingLeavesMatch": true,
+    "clean": true,
+    "ignoredStatusEmpty": true,
+    "activeWorkflowsAbsent": true
+  },
+  "statusOnlyDifferencesFromCheckedInputs": [
+    "README.md",
+    "docs/proposals/provenance-checks-v2.md"
+  ],
+  "checkedInputs": {
+    "total": 151,
+    "unchanged": 149,
+    "bytes": 1063335
+  },
+  "observedRefs": [
+    {
+      "branch": "main",
+      "sha": "7f890c1883e219125c52b62fe23cb428eeb9cfb0"
+    },
+    {
+      "branch": "qa/simulation-provenance-20261105",
+      "sha": "5cbb96e494c7af24fe1809703ff05d4ab7c082a5"
+    },
+    {
+      "branch": "qa/simulation-provenance-20261105-2",
+      "sha": "7f890c1883e219125c52b62fe23cb428eeb9cfb0"
+    }
+  ],
+  "workflowRetirement": {
+    "path": ".github/workflows/provenance-checks-v2.yml",
+    "absentAtReceiptEdition": true,
+    "qaBranches": "First remains at its failed-attempt retirement. Second advances once more with this publication file, with no active workflow. Neither branch is deleted.",
+    "historicalManualDispatchExample": "Preserved inactive outside workflow discovery."
+  },
+  "hosting": {
+    "observedAtUtc": "2026-11-05T00:00:42Z",
+    "id": "dpl_yToBHZ73DbzZj5KTG2Jpp5UHYgwY",
+    "url": "before-the-launch-qkpzqaa7y-my-team-4f230354.vercel.app",
+    "canonicalAlias": "before-the-launch.vercel.app",
+    "state": "READY",
+    "target": "production",
+    "sourceCommit": "ee12493e4399fd39da084d6bed587afca4dacfc8",
+    "project": {
+      "id": "prj_rSuzr7pJuiPUjPnyxqQ0ALiLk2AA",
+      "name": "before-the-launch",
+      "framework": "nextjs"
+    },
+    "scope": "READY production metadata at the exact checked source. This precedes the two receipt-only editions and is not hosted DB/Auth/browser/provider acceptance. Final exact-head production metadata is verified separately in the portfolio handoff."
+  },
+  "finalPublicationEdition": {
+    "change": "Only this additional publication file follows receiptEdition. Its commit SHA and full tree are resolved from Git history, avoiding a self-referential file hash.",
+    "expectedLeaves": 1004,
+    "repeatTests": false
+  },
+  "proofLimits": [
+    "All 48 cases exercised actual helpers/services/SSR with authored data and mocked DB/SDK boundaries; they establish no SQL durability, browser interaction, hosted access isolation, provider quality, market observation or spending/depth enforcement.",
+    "The original 47-pass/one-fail result and its source remain immutable. The exact caught exception was not recorded; the supported SDK-spy fixture preserves every original body assertion and passed.",
+    "Vitest JSON reports final rows but no independent retry or unhandled-error counter. Sealed retry-zero configuration, one direct invocation, exact unique rows and actual CLI exit zero remain the evidence.",
+    "No local install/build/product test/server/database/browser bypassed Storage Guard; no new account, real provider/model call or paid enrollment was performed."
+  ]
+}
