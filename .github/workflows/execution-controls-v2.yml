@@ -1,0 +1,40 @@
+# INACTIVE. SOURCE_COMMIT must identify the finished reviewed source without an active workflow.
+# The activation commit and branch are task-owned; retire the workflow after checks.
+name: Temporary execution controls acceptance
+on:
+  create:
+permissions:
+  contents: read
+jobs:
+  execution-controls:
+    if: github.repository == 'alvarovillalbaa/before-the-launch' && github.event.repository.private == false && github.event.ref_type == 'branch' && github.event.ref == 'qa/execution-controls-20261105-4' && github.ref == 'refs/heads/qa/execution-controls-20261105-4'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: before_launch_execution_ci
+          POSTGRES_USER: execution_ci
+          POSTGRES_PASSWORD: disposable_ci_only
+        ports: ['54329:5432']
+        options: >-
+          --health-cmd "pg_isready -U execution_ci -d before_launch_execution_ci"
+          --health-interval 5s --health-timeout 5s --health-retries 12
+    env:
+      SOURCE_COMMIT: 5e19971d514990e03d780eeb533314e6fe9fe186
+      EXECUTION_CONTROLS_PUBLIC_REPOSITORY: ${{ github.event.repository.private == false }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.SOURCE_COMMIT }}
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24.21.0
+          package-manager-cache: false
+      - name: Verify private admission, execution controls, PostgreSQL and six browser cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          node tests/scripts/run-execution-controls.mjs --source-commit "$SOURCE_COMMIT"
