@@ -173,23 +173,35 @@ function expectedFromSource() {
     const item = fs.lstatSync(file); need(item.isFile() && !item.isSymbolicLink() && item.size <= 262_144, "test_source_type_or_bound");
     const source = ts.createSourceFile(file, fs.readFileSync(file, "utf8"), ts.ScriptTarget.Latest, true, file.endsWith(".tsx") ? ts.ScriptKind.TSX : ts.ScriptKind.TS);
     need(source.parseDiagnostics.length === 0, "test_source_parse_failed");
-    const cases = [], title = node => { need(node && (ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node)) && node.text.trim() === node.text && node.text.length > 0 && node.text.length <= 2048, "dynamic_test_title"); return node.text; };
-    const parts = node => ts.isIdentifier(node) ? [node.text] : ts.isPropertyAccessExpression(node) ? [...(parts(node.expression) ?? []), node.name.text] : null;
+    const sourceNeed = (value, code, node) => {
+      if (value) return;
+      const position = source.getLineAndCharacterOfPosition(node?.getStart(source) ?? 0);
+      report.sourceInventoryDiagnostic = { code, file, line: position.line + 1, column: position.character + 1,
+        syntaxKind: node ? ts.SyntaxKind[node.kind] : "missing" };
+      throw new Error(code);
+    };
+    const cases = [], title = node => { sourceNeed(node && (ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node)) && node.text.trim() === node.text && node.text.length > 0 && node.text.length <= 2048, "dynamic_test_title", node); return node.text; };
+    const parts = node => {
+      if (ts.isIdentifier(node)) return [node.text];
+      if (!ts.isPropertyAccessExpression(node)) return null;
+      const receiver = parts(node.expression);
+      return receiver ? [...receiver, node.name.text] : null;
+    };
     function visit(node, suites = []) {
       if (ts.isCallExpression(node)) {
         const call = parts(node.expression);
         if (call && ["it", "test", "describe"].includes(call[0])) {
-          need(!call.some(part => ["only", "skip", "todo", "each", "skipIf", "runIf", "fails", "concurrent"].includes(part)), "unsupported_test_modifier");
+          sourceNeed(!call.some(part => ["only", "skip", "todo", "each", "skipIf", "runIf", "fails", "concurrent"].includes(part)), "unsupported_test_modifier", node);
           const suite = call[0] === "describe" || (call[0] === "test" && call[1] === "describe");
           const test = (call[0] === "it" || call[0] === "test") && call.length === 1;
           if (suite) {
-            need((call[0] === "describe" && (call.length === 1 || call.length === 2 && call[1] === "sequential")) || (call[0] === "test" && (call.length === 2 || call.length === 3 && call[2] === "sequential")), "unsupported_suite_modifier");
+            sourceNeed((call[0] === "describe" && (call.length === 1 || call.length === 2 && call[1] === "sequential")) || (call[0] === "test" && (call.length === 2 || call.length === 3 && call[2] === "sequential")), "unsupported_suite_modifier", node);
             const name = title(node.arguments[0]), callback = node.arguments[1];
-            need(callback && (ts.isArrowFunction(callback) || ts.isFunctionExpression(callback)), "dynamic_suite_callback");
+            sourceNeed(callback && (ts.isArrowFunction(callback) || ts.isFunctionExpression(callback)), "dynamic_suite_callback", node);
             visit(callback.body, [...suites, name]); return;
           }
           if (test) { const name = title(node.arguments[0]); cases.push({ title: name, fullName: [...suites, name].join(" ") }); return; }
-          need(["beforeAll", "afterAll", "beforeEach", "afterEach", "use", "setTimeout"].includes(call[1]), "unsupported_test_call");
+          sourceNeed(["beforeAll", "afterAll", "beforeEach", "afterEach", "use", "setTimeout"].includes(call[1]), "unsupported_test_call", node);
         }
       }
       ts.forEachChild(node, child => visit(child, suites));
