@@ -125,12 +125,14 @@ results, cleanup limits and final hosting identities separately.
 
 The finished authored scope is 116 unit/SSR cases (including all original 48
 provenance identities), 15 disposable-PostgreSQL cases and six desktop/narrow
-touch browser cases: **137 cases; full acceptance remains pending**. The controller derives
+touch browser cases: **137 cases, accepted against source `9dc50d2c48bcd137eede279d661104e6be0542b1`**. The controller derives
 their exact file/title identities from the sealed source AST and requires actual
 CLI exit zero, no retries, all expected outcomes, matching source bytes and
 verified owned cleanup. It also runs Next type generation, TypeScript checking,
 a production build and a client-asset scan for the authored operator fixture.
 These checks use no production key, provider/model request or production data.
+The [accepted receipt](../results/2026/11-05/execution-controls.md) preserves the
+five preceding failures and the separate production environment-permission gate.
 
 The browser failure in attempt four exposed Next 16.2.9's loopback URL
 normalization. Same-origin writes now compare a canonical HTTP(S) Origin with

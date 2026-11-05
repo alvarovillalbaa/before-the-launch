@@ -56,7 +56,10 @@ They retain the complete chosen cohort. Demo scores stay deterministic at every
 depth. Run pages show completed/failed/unexecuted coverage, outstanding estimated
 reservations, known charges, unknown charges and finite stop reasons. The
 [execution contract](docs/proposals/execution-controls-v2.md) separates this
-new scope from historical verification; its focused checks are pending.
+new scope from historical verification. Its [137 focused checks](docs/results/2026/11-05/execution-controls.md)
+passed with disposable PostgreSQL and the production build over local HTTPS.
+Deployment is pending: Vercel rejected the required production environment write
+with 403. Hosted persistence and real model charges remain unverified.
 
 [Result provenance](docs/simulation-provenance.md) distinguishes Gateway output,
 synthetic demo output and Gateway fallbacks in results, persona rows and reports.
