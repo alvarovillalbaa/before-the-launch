@@ -75,6 +75,6 @@
     "All 48 cases exercised actual helpers/services/SSR with authored data and mocked DB/SDK boundaries; they establish no SQL durability, browser interaction, hosted access isolation, provider quality, market observation or spending/depth enforcement.",
     "The original 47-pass/one-fail result and its source remain immutable. The exact caught exception was not recorded; the supported SDK-spy fixture preserves every original body assertion and passed.",
     "Vitest JSON reports final rows but no independent retry or unhandled-error counter. Sealed retry-zero configuration, one direct invocation, exact unique rows and actual CLI exit zero remain the evidence.",
-    "No local install/build/product test/server/database/browser bypassed Storage Guard; no new account, real provider/model call or paid enrollment was performed."
+    "Local installs/builds/product tests/servers/databases/browsers stayed blocked by Storage Guard; no new account or paid enrollment occurred. The accepted run prebound SDK calls to authored stubs and asserted zero global-fetch attempts in its service fixture. No comprehensive network audit exists for the original failed attempt."
   ]
 }
