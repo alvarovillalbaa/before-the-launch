@@ -40,7 +40,7 @@ import {
 } from "@/lib/server/services/simulation-service";
 import type { AgentResult } from "@/lib/shared/schemas";
 
-type Row = Record<string, unknown>;
+type Row = Record<string, unknown> & { agentRunId?: unknown };
 const runId = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
 const projectId = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb";
 const oldScoreId = "cccccccc-cccc-4ccc-8ccc-cccccccccccc";

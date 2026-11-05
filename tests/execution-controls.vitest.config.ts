@@ -7,7 +7,7 @@ export default defineConfig({
   test: {
     environment: "node", globals: true,
     include: ["tests/unit/**/*.test.ts", "tests/unit/**/*.test.tsx", "tests/integration/execution-controls.test.ts"],
-    fileParallelism: false, maxWorkers: 1, retry: 0, forbidOnly: true,
+    fileParallelism: false, maxWorkers: 1, retry: 0, allowOnly: false,
     testTimeout: 20_000, hookTimeout: 30_000,
   },
 });
