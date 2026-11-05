@@ -28,7 +28,7 @@ Open `http://localhost:3000`.
 
 The workspace requires `OPERATOR_ACCESS_KEY` in the server environment. Use a
 cryptographically random 32-byte key, keep it private, and enter it at `/login`.
-An empty or weak key leaves access closed. Rotating the key revokes existing
+An empty or too-short key leaves access closed. Rotating the key revokes existing
 sessions and queued paid authorizations. This is a single-operator workspace;
 it does not provide separate user accounts or membership permissions.
 

@@ -28,7 +28,7 @@ The setup script:
 Important local variables:
 
 - `DATABASE_URL`: Postgres connection string.
-- `OPERATOR_ACCESS_KEY`: private random 32-byte key; enter it at `/login`. Missing or weak keys leave workspace access closed. Never commit this key.
+- `OPERATOR_ACCESS_KEY`: private random 32-byte key; enter it at `/login`. Missing or too-short keys leave workspace access closed. Never commit this key.
 - `LOCAL_STORAGE_DIR`: local file storage path.
 - `SIMULATION_ENGINE`: legacy environment setting; the explicit per-run engine now controls execution.
 - `AI_GATEWAY_API_KEY`: optional AI Gateway key.

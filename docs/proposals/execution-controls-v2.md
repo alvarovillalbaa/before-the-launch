@@ -139,3 +139,20 @@ Host, protocol mismatches and forwarded-host substitutions remain denied.
 The added regression covers the normalized URL case without broadening
 localhost/127.0.0.1 origins. Earlier failed request headers were not captured;
 the next browser result is required to verify this integration repair.
+
+Attempt five verified that repair, including cross-origin denial, desktop run
+persistence/replay and narrow touch persistence. It did not reach full browser
+acceptance or verified cleanup. Subsequent checks serve the existing production
+build with `next start`, through an owned loopback HTTPS proxy and a disposable,
+scratch-only self-signed certificate. The browser accepts that authored fixture
+certificate only in this exact local profile; no OS trust store, public TLS,
+hosting key or production data is changed. Secure cookies remain enabled and
+are checked as such. Certificate/key values are never committed or logged.
+
+This removes a source-supported dev-shutdown path rather than relaxing cleanup:
+Next 16.2.9's [detached telemetry worker](https://github.com/vercel/next.js/blob/v16.2.9/packages/next/src/telemetry/detached-flush.ts#L23)
+loads development config; locked Workflow's [Next integration](https://github.com/vercel/workflow/blob/48a19d948a1d3c0da5248a5aa10c4caa3d49b46a/packages/next/src/index.ts#L310)
+enables its watcher in development and skips initial building in production-server
+phase. Attempt five did not capture the actual writer PID. Final source,
+original process-group and generated-output guards remain mandatory; no
+unobserved detached-session cleanup is inferred from them.

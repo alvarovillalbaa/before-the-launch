@@ -1,7 +1,7 @@
 import { expect, test, type BrowserContext, type Page } from "@playwright/test";
 
 // Actual app + disposable PostgreSQL, authored data and free runs only. No model mocking.
-const ORIGIN = "http://127.0.0.1:3100";
+const ORIGIN = "https://127.0.0.1:3100";
 const DATABASE = "postgres://execution_ci:disposable_ci_only@127.0.0.1:54329/before_launch_execution_ci";
 const externalRequests = new WeakMap<BrowserContext, string[]>();
 
@@ -104,7 +104,7 @@ test("desktop operator login protects workspace reads and rejects cross-origin w
   const session = cookies.find((cookie) => cookie.name === "btl_operator");
   expect(session?.httpOnly).toBe(true);
   expect(session?.sameSite).toBe("Strict");
-  expect(session?.secure).toBe(false); // This owned CI server uses development HTTP.
+  expect(session?.secure).toBe(true); // Actual production server through the owned HTTPS fixture.
   const forbidden = await page.request.post(`${ORIGIN}/api/runs`, { headers: { Origin: "https://authored.invalid" }, data: {} });
   expect(forbidden.status()).toBe(403);
 });
@@ -121,7 +121,7 @@ test("desktop setup retains Standard free defaults and rejects an empty selected
   let creations = 0;
   page.on("request", (request) => { if (request.url() === `${ORIGIN}/api/runs` && request.method() === "POST") creations++; });
   await page.getByRole("button", { name: "Create simulation run", exact: true }).click();
-  await expect(page.getByRole("alert")).toContainText("select between 1 and 10 personas");
+  await expect(page.getByRole("form", { name: "Simulation setup", exact: true }).getByRole("alert")).toContainText("select between 1 and 10 personas");
   await expect(page.getByLabel("Target market", { exact: true })).toHaveValue("Retained authored audience");
   expect(creations).toBe(0);
 });
@@ -135,17 +135,17 @@ test("desktop Gateway requires exact positive USD and stays unavailable without 
   await expect(page.locator("#simulation-budget-help")).toContainText("not a hard billing cap");
   await budget.fill("0.001");
   await page.getByRole("button", { name: "Create simulation run", exact: true }).click();
-  await expect(page.getByRole("alert")).toContainText("at most two decimal places");
+  await expect(page.getByRole("form", { name: "Simulation setup", exact: true }).getByRole("alert")).toContainText("at most two decimal places");
   await budget.fill("0");
   await page.getByRole("button", { name: "Create simulation run", exact: true }).click();
-  await expect(page.getByRole("alert")).toContainText("Gateway requires an estimated spending target");
+  await expect(page.getByRole("form", { name: "Simulation setup", exact: true }).getByRole("alert")).toContainText("Gateway requires an estimated spending target");
   await budget.fill("1.25");
   const response = page.waitForResponse((value) => value.url() === `${ORIGIN}/api/runs` && value.request().method() === "POST");
   await page.getByRole("button", { name: "Create simulation run", exact: true }).click();
   const refused = await response;
   expect(refused.status()).toBe(503);
   expect(refused.request().postDataJSON()).toMatchObject({ engine: "gateway", budgetLimitCents: 125, agentCount: 1, depth: "standard" });
-  await expect(page.getByRole("alert")).toBeVisible();
+  await expect(page.getByRole("form", { name: "Simulation setup", exact: true }).getByRole("alert")).toBeVisible();
   await expect(page.getByLabel("Engine", { exact: true })).toHaveValue("gateway");
   await expect(budget).toHaveValue("1.25");
   await expect(page).toHaveURL(/\?tab=setup$/);
@@ -212,7 +212,7 @@ test.describe("narrow touch execution controls", () => {
       else await route.continue();
     });
     await page.getByRole("button", { name: "Create simulation run", exact: true }).tap();
-    await expect(page.getByRole("alert")).toContainText("same request ID");
+    await expect(page.getByRole("form", { name: "Simulation setup", exact: true }).getByRole("alert")).toContainText("same request ID");
     await expect(page.getByLabel("Target market", { exact: true })).toHaveValue("Authored bookshop market");
     await expect(page.getByLabel("Target market", { exact: true })).toBeDisabled();
     await page.getByRole("button", { name: "Retry same creation request", exact: true }).tap();

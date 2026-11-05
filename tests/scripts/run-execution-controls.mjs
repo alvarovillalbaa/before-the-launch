@@ -1,9 +1,11 @@
 import fs from "node:fs";
 import path from "node:path";
-import { createHash, randomUUID } from "node:crypto";
+import { createHash, randomUUID, X509Certificate } from "node:crypto";
 import { spawn } from "node:child_process";
 import { createRequire } from "node:module";
 import { gzipSync } from "node:zlib";
+import https from "node:https";
+import net from "node:net";
 
 const sourceCommit = process.argv[3];
 const need = (value, code) => { if (!value) throw new Error(code); };
@@ -17,7 +19,7 @@ need(process.version === "v24.21.0" && process.platform === "linux" && process.e
 const repo = fs.realpathSync(process.cwd()), parent = fs.realpathSync(process.env.RUNNER_TEMP);
 const root = fs.mkdtempSync(path.join(parent, "btl-execution-")), identity = fs.lstatSync(root), nonce = randomUUID();
 fs.writeFileSync(path.join(root, "owner"), nonce, { flag: "wx", mode: 0o600 });
-for (const name of ["tmp", "cache", "config", "corepack", "pnpm", "browser-output", "storage"]) fs.mkdirSync(path.join(root, name), { mode: 0o700 });
+for (const name of ["tmp", "cache", "config", "corepack", "pnpm", "browser-output", "storage", "tls"]) fs.mkdirSync(path.join(root, name), { mode: 0o700 });
 const fixtureKey = "authored-execution-controls-operator-key-ci-only";
 const database = "postgres://execution_ci:disposable_ci_only@127.0.0.1:54329/before_launch_execution_ci";
 const env = { PATH: process.env.PATH, HOME: process.env.HOME, LANG: "C.UTF-8", TZ: "UTC", CI: "true", NO_COLOR: "1",
@@ -32,9 +34,10 @@ const env = { PATH: process.env.PATH, HOME: process.env.HOME, LANG: "C.UTF-8", T
   AI_GATEWAY_API_KEY: "", VERCEL_OIDC_TOKEN: "", BLOB_READ_WRITE_TOKEN: "", OPENAI_API_KEY: "", ANTHROPIC_API_KEY: "", VERCEL: "" };
 const report = { schemaVersion: "before-launch.execution-controls.v2", sourceCommit, status: "failed", startedAtUtc: new Date().toISOString(),
   runtime: { node: process.version, platform: process.platform, architecture: process.arch }, commands: [], guards: [], generated: [], errors: [],
-  scope: { actualPostgreSQL: true, authoredOperator: true, actualBrowser: true, realModelCalls: false, productionData: false, retries: 0, workers: 1 },
+  scope: { actualPostgreSQL: true, authoredOperator: true, actualBrowser: true, productionHTTPSLoopback: true,
+    authoredSelfSignedCertificate: true, hostedProduction: false, realModelCalls: false, productionData: false, retries: 0, workers: 1 },
   proofLimits: ["Provider execution/cost receipts are authored SDK fixtures. No real provider quality, routing, price or charge is verified.",
-    "The browser uses the actual development HTTP server and disposable PostgreSQL. A separate production build and client-secret scan do not prove hosted operator configuration or persistence.",
+    "The browser uses the actual production next start server behind an owned HTTPS loopback proxy and disposable PostgreSQL. The scratch-only self-signed certificate is ignored only by this exact-loopback fixture; this does not prove public TLS, hosted operator configuration or persistence.",
     "Original command process groups and owned generated paths are checked. Unrelated/detached sessions and system packages installed on the disposable runner are not inventoried.",
     "GitHub owns the PostgreSQL service and runner teardown after the job. This controller closes app/test pools but does not claim independently observed platform teardown.",
     "The global watchdog stops original owned groups before attempting a failed receipt; userspace timers cannot interrupt a blocked kernel filesystem operation.",
@@ -42,7 +45,7 @@ const report = { schemaVersion: "before-launch.execution-controls.v2", sourceCom
 const generated = ["node_modules", ".next", ".swc", "next-env.d.ts", "tsconfig.tsbuildinfo", "app/.well-known/workflow"];
 const snapshots = new Map(), children = new Set();
 const workEnd = Date.now() + 1_020_000;
-let cleanupEnd = workEnd + 90_000, interrupted = false, server = null, sourceTree, generatedPreAbsent = false, expectedCases, unitCommand, browserCommand;
+let cleanupEnd = workEnd + 90_000, interrupted = false, server = null, proxyServer = null, sourceTree, generatedPreAbsent = false, expectedCases, unitCommand, browserCommand;
 let globalExpired = false, emitted = false, emergencyTimer;
 const clean = (value, max = 3000) => String(value ?? "").replaceAll(root, "[scratch]").replaceAll(repo, "[repository]").replaceAll(fixtureKey, "[authored operator key]").replace(/\x1b\[[0-?]*[ -/]*[@-~]/g, "").slice(0, max);
 const owner = () => { const item = fs.lstatSync(root); need(item.isDirectory() && !item.isSymbolicLink() && item.dev === identity.dev && item.ino === identity.ino && fs.readFileSync(path.join(root, "owner"), "utf8") === nonce, "scratch_identity_changed"); };
@@ -71,17 +74,18 @@ function remainingGroupSnapshot(pgid) {
   } catch { return { kind: "linux-proc-unavailable", members, examined, limited: true, elapsedMs: Date.now() - started }; }
 }
 const handlers = new Map(["SIGINT", "SIGTERM", "SIGHUP"].map(signal => {
-  const handler = () => { interrupted = true; for (const child of children) child.stop("interrupted"); };
+  const handler = () => { interrupted = true; proxyServer?.stop("interrupted"); for (const child of children) if (child !== proxyServer) child.stop("interrupted"); };
   process.on(signal, handler); return [signal, handler];
 }));
 const terminal = setTimeout(() => {
   globalExpired = true; interrupted = true; report.errors.push("controller_global_deadline");
-  for (const child of children) child.stop("global_deadline");
+  proxyServer?.stop("global_deadline");
+  for (const child of children) if (child !== proxyServer) child.stop("global_deadline");
   // Allow original owned groups their TERM/KILL/drain window before a failed receipt.
   emergencyTimer = setTimeout(() => emitReport(), 6_500);
 }, Math.max(1, workEnd + 90_000 - Date.now()));
 
-function start(label, executable, args, seconds, { cleanup = false } = {}) {
+function start(label, executable, args, seconds, { cleanup = false, privateOutput = false } = {}) {
   owner(); need(cleanup || !interrupted, "interrupted_before_command");
   const remaining = (cleanup ? cleanupEnd : workEnd) - Date.now() - 6_000;
   need(remaining > 0 && !globalExpired, "command_budget_exhausted");
@@ -131,7 +135,8 @@ function start(label, executable, args, seconds, { cleanup = false } = {}) {
       const processGroupAbsent = child.pid ? absent(child.pid) : true;
       ownershipReleased = exited && closed && processGroupAbsent;
       const row = { label, args: [executable === process.execPath ? "[node]" : executable, ...args.map(arg => clean(arg, 250))], exitCode: exit, signal, stop: reason, exitObserved: exited, closeObserved: closed, processGroupAbsent, naturalExitGrace, remainingGroup,
-        streams: output.map((bytes, i) => ({ name: i ? "stderr" : "stdout", bytes: counts[i], capturedBytes: bytes.length, sha256: hash(bytes), complete: closed && counts[i] === bytes.length, head: clean(bytes.toString(), 1200), tail: clean(bytes.subarray(-3500).toString(), 3500) })) };
+        streams: output.map((bytes, i) => ({ name: i ? "stderr" : "stdout", bytes: counts[i], capturedBytes: bytes.length, sha256: hash(bytes), complete: closed && counts[i] === bytes.length,
+          ...(privateOutput ? { privateOutputOmitted: true } : { head: clean(bytes.toString(), 1200), tail: clean(bytes.subarray(-3500).toString(), 3500) }) })) };
       report.commands.push(row);
       if (label === "unit_and_postgresql") unitCommand = row;
       if (label === "browser") browserCommand = row;
@@ -145,6 +150,30 @@ function start(label, executable, args, seconds, { cleanup = false } = {}) {
   children.add(handle); return handle;
 }
 const run = async (label, executable, args, seconds, allowed, options) => start(label, executable, args, seconds, options).finish(allowed);
+
+async function requireFreePort(port) {
+  await new Promise((resolve, reject) => {
+    const probe = net.createServer();
+    const timer = setTimeout(() => { probe.close(); reject(new Error("loopback_port_probe_timeout")); }, 3_000);
+    probe.once("error", () => { clearTimeout(timer); reject(new Error("loopback_port_not_free")); });
+    probe.listen(port, "127.0.0.1", () => probe.close(error => { clearTimeout(timer); error ? reject(new Error("loopback_port_probe_close_failed")) : resolve(); }));
+  });
+}
+function httpsReady(fingerprint) {
+  return new Promise(resolve => {
+    let settled = false, timer;
+    const finish = value => { if (settled) return; settled = true; clearTimeout(timer); request.destroy(); resolve(value); };
+    const request = https.get({ hostname: "127.0.0.1", port: 3100, path: "/login", rejectUnauthorized: false, agent: false }, response => {
+      const sameCertificate = response.socket.getPeerCertificate().fingerprint256 === fingerprint;
+      let bytes = 0;
+      response.on("data", chunk => { bytes += chunk.length; if (bytes > 262_144) { response.destroy(); finish(false); } });
+      response.once("error", () => finish(false));
+      response.once("end", () => finish(sameCertificate && response.statusCode === 200));
+    });
+    timer = setTimeout(() => finish(false), 3_000);
+    request.once("error", () => finish(false));
+  });
+}
 
 async function guard(label, cleanup = false) {
   const row = { label, passed: false }; report.guards.push(row);
@@ -310,11 +339,25 @@ try {
   report.clientSecretScan = { passed: true, files: staticFiles, keyKind: "authored disposable fixture" };
   captureGenerated(); await guard("after_build");
   await run("install_chromium", process.execPath, [cli("@playwright/test/cli.js"), "install", "--with-deps", "chromium"], 180);
-  env.NODE_ENV = "development";
-  server = start("development_server", process.execPath, [cli("next/dist/bin/next"), "dev", "--hostname", "127.0.0.1", "--port", "3100"], 360);
+  env.NODE_ENV = "production";
+  await requireFreePort(3100); await requireFreePort(3101);
+  await run("openssl_version", "openssl", ["version"], 10);
+  const certificate = path.join(root, "tls", "cert.pem"), key = path.join(root, "tls", "key.pem");
+  await run("generate_https_fixture", "openssl", ["req", "-x509", "-newkey", "rsa:2048", "-sha256", "-nodes", "-days", "1",
+    "-subj", "/CN=127.0.0.1", "-addext", "subjectAltName=IP:127.0.0.1,DNS:localhost", "-keyout", key, "-out", certificate], 30, [0], { privateOutput: true });
+  for (const file of [certificate, key]) {
+    const item = fs.lstatSync(file); need(item.isFile() && !item.isSymbolicLink() && item.size > 0 && item.size <= 16_384, "tls_fixture_file_invalid");
+    fs.chmodSync(file, 0o600);
+  }
+  const certificateBytes = fs.readFileSync(certificate), fingerprint = new X509Certificate(certificateBytes).fingerprint256;
+  report.httpsFixture = { portsPreAbsent: [3100, 3101], certificateSha256: hash(certificateBytes), certificateBytes: certificateBytes.length,
+    privateKey: "scratch-only owner-readable; never retained", upstream: "http://127.0.0.1:3101", browserOrigin: "https://127.0.0.1:3100" };
+  server = start("production_server", process.execPath, [cli("next/dist/bin/next"), "start", "--hostname", "127.0.0.1", "--port", "3101"], 360);
+  proxyServer = start("https_proxy", process.execPath, ["tests/scripts/execution-controls-https-proxy.mjs", "--root", root], 360);
   const readyEnd = Math.min(workEnd, Date.now() + 90_000); let ready = false;
-  while (Date.now() < readyEnd) { try { const response = await fetch("http://127.0.0.1:3100/login", { signal: AbortSignal.timeout(3000) }); if (response.ok) { ready = true; break; } } catch {} await new Promise(resolve => setTimeout(resolve, 500)); }
+  while (!interrupted && Date.now() < readyEnd) { try { if (await httpsReady(fingerprint)) { ready = true; break; } } catch {} await new Promise(resolve => setTimeout(resolve, 500)); }
   need(ready, "server_not_ready");
+  report.httpsFixture.actualPeerCertificateMatched = true;
   await run("browser", process.execPath, [cli("@playwright/test/cli.js"), "test", "--config", "tests/execution-controls.playwright.config.ts"], 300, [0, 1]);
   captureBrowser();
 } catch (error) { report.errors.push(/^[a-z0-9_]+$/.test(error.message) ? error.message : "controller_error"); }
@@ -322,14 +365,15 @@ finally {
   cleanupEnd = Math.min(Date.now() + 90_000, workEnd + 90_000);
   if (!report.unit && fs.existsSync(path.join(root, "unit.json"))) try { captureUnit(); } catch (error) { report.errors.push(error.message); }
   if (!report.browser && fs.existsSync(path.join(root, "browser.json"))) try { captureBrowser(); } catch (error) { report.errors.push(error.message); }
-  if (server) {
-    server.stop("owned_server_shutdown");
-    try { await server.finish([0, 143, null]); }
+  for (const [label, ownedServer] of [["https_proxy", proxyServer], ["production_server", server]]) {
+    if (!ownedServer) continue;
+    ownedServer.stop("owned_server_shutdown");
+    try { await ownedServer.finish([0, 143, null]); }
     catch {
-      const row = report.commands.find(row => row.label === "development_server");
+      const row = report.commands.find(row => row.label === label);
       if (!(row?.exitObserved && row.closeObserved && row.processGroupAbsent && row.stop === "owned_server_shutdown"
         && (row.exitCode === 0 || row.exitCode === 143 || ["SIGTERM", "SIGKILL"].includes(row.signal))
-        && row.streams.every(stream => stream.complete))) report.errors.push("server_cleanup_unverified");
+        && row.streams.every(stream => stream.complete))) report.errors.push(label + "_cleanup_unverified");
     }
   }
   for (const child of children) {
