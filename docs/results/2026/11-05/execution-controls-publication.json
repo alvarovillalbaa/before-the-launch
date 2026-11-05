@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "kind": "before-launch-execution-controls-publication",
+  "repository": "alvarovillalbaa/before-the-launch",
+  "observedAtUtc": "2026-11-05T01:57:47Z",
+  "acceptedSource": {
+    "commit": "9dc50d2c48bcd137eede279d661104e6be0542b1",
+    "tree": "f6a1b30f7e19781e1fefbb354b68fb003e57e6b4",
+    "cases": 137,
+    "runId": 41950570069,
+    "jobId": 126993266026,
+    "receipt": "execution-controls.json",
+    "summary": "execution-controls.md"
+  },
+  "receiptBearingCommit": {
+    "commit": "3a58eda2ad5b5e02929345307c359c63f22020a2",
+    "tree": "3439b373034a700ba905e093367d80912cc23241",
+    "remoteTree": {
+      "sha": "3439b373034a700ba905e093367d80912cc23241",
+      "truncated": false,
+      "leaves": 1046,
+      "activeWorkflowFiles": []
+    },
+    "changedSinceAccepted": [
+      "README.md",
+      "docs/proposals/execution-controls-v2.md",
+      "docs/results/2026/11-05/execution-controls.json",
+      "docs/results/2026/11-05/execution-controls.md"
+    ],
+    "applicationTestsLockAndOtherBytesUnchanged": true
+  },
+  "pullRequest": {
+    "number": 1,
+    "url": "https://github.com/alvarovillalbaa/before-the-launch/pull/1",
+    "draft": true,
+    "state": "open",
+    "merged": false,
+    "head": "3a58eda2ad5b5e02929345307c359c63f22020a2",
+    "base": "df76d41012399174c338a67626cb85a723e4737e"
+  },
+  "refsAtReadback": [
+    {
+      "branch": "qa/execution-controls-20261105",
+      "sha": "01138a1e079137d6af162d7aa1856489d9027ca7"
+    },
+    {
+      "branch": "qa/execution-controls-20261105-2",
+      "sha": "8ddd35202f2ad1d1f53b433a574bfd62b4d9c0d3"
+    },
+    {
+      "branch": "qa/execution-controls-20261105-3",
+      "sha": "5e19971d514990e03d780eeb533314e6fe9fe186"
+    },
+    {
+      "branch": "qa/execution-controls-20261105-4",
+      "sha": "8d30e8a897c4ee80fbb3cbfa14d12b584c5c89f5"
+    },
+    {
+      "branch": "qa/execution-controls-20261105-5",
+      "sha": "9dc50d2c48bcd137eede279d661104e6be0542b1"
+    },
+    {
+      "branch": "qa/execution-controls-20261105-6",
+      "sha": "3a58eda2ad5b5e02929345307c359c63f22020a2"
+    },
+    {
+      "branch": "work/execution-controls-20261105",
+      "sha": "3a58eda2ad5b5e02929345307c359c63f22020a2"
+    },
+    {
+      "branch": "main",
+      "sha": "df76d41012399174c338a67626cb85a723e4737e"
+    }
+  ],
+  "retiredTemporaryWorkflows": {
+    "count": 6,
+    "activeWorkflowPath": ".github/workflows/execution-controls-v2.yml",
+    "activeFilesInReceiptTree": [],
+    "ownedBranchesPreserved": true,
+    "forceUpdatesUsed": false
+  },
+  "publicationFollowup": {
+    "purpose": "Add this readback record only; no application/test/dependency change or new test run.",
+    "selfCommitNotEncoded": true
+  },
+  "production": {
+    "state": "pending-production-environment-permission",
+    "main": "df76d41012399174c338a67626cb85a723e4737e",
+    "lastDeploymentObservationUtc": "2026-11-05T01:50:22Z",
+    "deploymentId": "dpl_F4nYK7HdqTm3fA445fSVhUoNFgqK",
+    "deploymentCommit": "df76d41012399174c338a67626cb85a723e4737e",
+    "deploymentState": "READY",
+    "canonicalAlias": "before-the-launch.vercel.app",
+    "newSourceMerged": false,
+    "newSourceDeployed": false,
+    "requiredKey": "OPERATOR_ACCESS_KEY",
+    "candidateKeyPreparedPrivately": true,
+    "candidateMode": "0600",
+    "keyValueAndLocalPathRetainedHere": false,
+    "createOnlySensitiveWrite": "403 forbidden: additional permissions required",
+    "existingValuesReadOrOverwritten": false,
+    "cliAvailable": false,
+    "supportedBrowserError": "Cannot read properties of undefined (reading 'timeoutMs')"
+  },
+  "proofLimits": [
+    "This is GitHub/source/publication proof and disposable-loopback acceptance, not new production release or hosted persistence proof.",
+    "READY describes the unchanged previous production release, not this candidate.",
+    "No real model/provider/billing behavior or hard spending ceiling was verified.",
+    "All five preceding failed outcomes and the unverified cleanup of attempt five remain immutable.",
+    "The portfolio goal remains active and unfinished; the four non-priority projects remain deferred."
+  ]
+}
