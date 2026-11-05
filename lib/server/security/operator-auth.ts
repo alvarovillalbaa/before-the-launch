@@ -118,8 +118,15 @@ export function verifyPaidSimulationAdmission(scope: PaidSimulationScope, grant:
 export function isSameOriginWrite(request: Request) {
   if (["GET", "HEAD", "OPTIONS"].includes(request.method.toUpperCase())) return true;
   const origin = request.headers.get("origin");
-  if (!origin || origin === "null") return false;
-  try { return origin === new URL(request.url).origin; } catch { return false; }
+  const host = request.headers.get("host");
+  if (!origin || origin === "null" || !host || host.length > 320 || /[\s,\\/@?#%]/.test(host)) return false;
+  try {
+    const source = new URL(origin), target = new URL(request.url);
+    if (!["http:", "https:"].includes(source.protocol) || !["http:", "https:"].includes(target.protocol) || origin !== source.origin) return false;
+    // NextURL normalizes loopback hosts to localhost. The incoming Host remains
+    // the HTTP authority; forwarded host headers do not grant origin authority.
+    return origin === new URL(`${target.protocol}//${host}`).origin;
+  } catch { return false; }
 }
 
 export function safeReturnPath(value: string | null | undefined) {

@@ -27,7 +27,7 @@ const id = "00000000-0000-4000-8000-000000000001";
 const runContext = { params: Promise.resolve({ runId: id }) };
 const sourceContext = { params: Promise.resolve({ sourceId: id }) };
 function request(path: string, method: string, { cookie, origin = base, body }: { cookie?: string; origin?: string; body?: string } = {}) {
-  return new Request(base + path, { method, headers: { ...(origin ? { origin } : {}), ...(cookie ? { cookie: `${OPERATOR_COOKIE}=${cookie}` } : {}) }, ...(body !== undefined ? { body } : {}) });
+  return new Request(base + path, { method, headers: { host: new URL(base).host, ...(origin ? { origin } : {}), ...(cookie ? { cookie: `${OPERATOR_COOKIE}=${cookie}` } : {}) }, ...(body !== undefined ? { body } : {}) });
 }
 
 describe("operator HTTP and action boundaries", () => {

@@ -123,11 +123,19 @@ reports **21.6 GiB free / 38.0 GiB required**, so no local install/build/databas
 or browser work bypasses the reserve. Publish the reviewed source, actual
 results, cleanup limits and final hosting identities separately.
 
-The finished authored scope is 115 unit/SSR cases (including all original 48
+The finished authored scope is 116 unit/SSR cases (including all original 48
 provenance identities), 15 disposable-PostgreSQL cases and six desktop/narrow
-touch browser cases: **136 cases, not yet executed**. The controller derives
+touch browser cases: **137 cases; full acceptance remains pending**. The controller derives
 their exact file/title identities from the sealed source AST and requires actual
 CLI exit zero, no retries, all expected outcomes, matching source bytes and
 verified owned cleanup. It also runs Next type generation, TypeScript checking,
 a production build and a client-asset scan for the authored operator fixture.
 These checks use no production key, provider/model request or production data.
+
+The browser failure in attempt four exposed Next 16.2.9's loopback URL
+normalization. Same-origin writes now compare a canonical HTTP(S) Origin with
+the validated incoming Host authority and request scheme; missing/malformed
+Host, protocol mismatches and forwarded-host substitutions remain denied.
+The added regression covers the normalized URL case without broadening
+localhost/127.0.0.1 origins. Earlier failed request headers were not captured;
+the next browser result is required to verify this integration repair.

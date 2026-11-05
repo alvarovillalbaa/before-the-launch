@@ -72,11 +72,27 @@ describe("private operator admission", () => {
   });
   it("requires an origin match for writes while permitting reads", () => {
     expect(isSameOriginWrite(new Request("https://before.test/api/runs"))).toBe(true);
-    expect(isSameOriginWrite(new Request("https://before.test/api/runs", { method: "POST", headers: { origin: "https://before.test" } }))).toBe(true);
+    expect(isSameOriginWrite(new Request("https://before.test/api/runs", { method: "POST", headers: { origin: "https://before.test", host: "before.test" } }))).toBe(true);
     for (const origin of ["https://other.test", "http://before.test", "null", "https://before.test.evil"]) {
-      expect(isSameOriginWrite(new Request("https://before.test/api/runs", { method: "POST", headers: { origin } }))).toBe(false);
+      expect(isSameOriginWrite(new Request("https://before.test/api/runs", { method: "POST", headers: { origin, host: "before.test" } }))).toBe(false);
     }
     expect(isSameOriginWrite(new Request("https://before.test/api/runs", { method: "POST" }))).toBe(false);
+  });
+  it("accepts a framework-normalized URL only when the actual Host and canonical Origin match", () => {
+    const target = "http://localhost:3100/api/operator/login";
+    const request = (origin: string, host?: string, forwarded?: string) => new Request(target, { method: "POST", headers: { origin,
+      ...(host === undefined ? {} : { host }), ...(forwarded ? { "x-forwarded-host": forwarded } : {}) } });
+    expect(isSameOriginWrite(request("http://127.0.0.1:3100", "127.0.0.1:3100"))).toBe(true);
+    expect(isSameOriginWrite(request("http://localhost:3100", "127.0.0.1:3100"))).toBe(false);
+    expect(isSameOriginWrite(request("https://127.0.0.1:3100", "127.0.0.1:3100"))).toBe(false);
+    expect(isSameOriginWrite(request("http://127.0.0.1:3100"))).toBe(false);
+    expect(isSameOriginWrite(request("http://other.test", "127.0.0.1:3100", "other.test"))).toBe(false);
+    for (const host of ["127.0.0.1:3100,other.test", "user@127.0.0.1:3100", "127.0.0.1:99999", "127.0.0.1:3100/path", "127.0.0.1%2e:3100", "127.0.0.1:3100#fragment", "127.0.0.1:3100 other.test"]) {
+      expect(isSameOriginWrite(request("http://127.0.0.1:3100", host))).toBe(false);
+    }
+    for (const origin of ["http://127.0.0.1:3100/path", "http://127.0.0.1:3100?x=1", "http://user@127.0.0.1:3100", "null"]) {
+      expect(isSameOriginWrite(request(origin, "127.0.0.1:3100"))).toBe(false);
+    }
   });
   it("keeps post-login navigation on an application page", () => {
     expect(safeReturnPath("/projects/owned?tab=setup")).toBe("/projects/owned?tab=setup");

@@ -34,7 +34,21 @@ async function login(page: Page, touch = false) {
   const response = page.waitForResponse((value) => value.url() === `${ORIGIN}/api/operator/login` && value.request().method() === "POST");
   if (touch) await page.getByRole("button", { name: "Open workspace", exact: true }).tap();
   else await page.getByRole("button", { name: "Open workspace", exact: true }).click();
-  expect((await response).status()).toBe(200);
+  const loginResponse = await response;
+  let failureContext: string | undefined;
+  if (loginResponse.status() !== 200) {
+    const request = loginResponse.request();
+    const [origin, host, site] = await Promise.all([request.headerValue("origin"), request.headerValue("host"), request.headerValue("sec-fetch-site")]);
+    const bounded = (value: string | null, maximum: number) => value === null ? null
+      : value.length <= maximum && /^[\x20-\x7e]*$/.test(value) ? value : "[invalid_or_oversized]";
+    const body: unknown = await loginResponse.json().catch(() => null);
+    const error = body && typeof body === "object" && "error" in body ? body.error : null;
+    const fixedErrors = ["A same-origin request is required.", "Operator access is not configured.", "Invalid sign-in request.", "Access key was not accepted."];
+    failureContext = JSON.stringify({ path: "/api/operator/login", status: loginResponse.status(),
+      origin: bounded(origin, 160), host: bounded(host, 160), secFetchSite: bounded(site, 24),
+      responseError: typeof error === "string" && fixedErrors.includes(error) ? error : "[unrecognized_response_error]" });
+  }
+  expect(loginResponse.status(), failureContext).toBe(200);
   await expect(page).toHaveURL(`${ORIGIN}/`);
 }
 
