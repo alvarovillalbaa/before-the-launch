@@ -47,6 +47,29 @@ let globalExpired = false, emitted = false, emergencyTimer;
 const clean = (value, max = 3000) => String(value ?? "").replaceAll(root, "[scratch]").replaceAll(repo, "[repository]").replaceAll(fixtureKey, "[authored operator key]").replace(/\x1b\[[0-?]*[ -/]*[@-~]/g, "").slice(0, max);
 const owner = () => { const item = fs.lstatSync(root); need(item.isDirectory() && !item.isSymbolicLink() && item.dev === identity.dev && item.ino === identity.ino && fs.readFileSync(path.join(root, "owner"), "utf8") === nonce, "scratch_identity_changed"); };
 const absent = pid => { try { process.kill(-pid, 0); return false; } catch (error) { return error.code === "ESRCH"; } };
+function remainingGroupSnapshot(pgid) {
+  const started = Date.now(), members = [];
+  let examined = 0, limited = false;
+  try {
+    const names = fs.readdirSync("/proc").filter(name => /^\d+$/.test(name));
+    limited = names.length > 4096;
+    for (const name of names.slice(0, 4096)) {
+      if (Date.now() - started >= 250 || members.length === 16) { limited = true; break; }
+      examined++;
+      try {
+        const stat = fs.readFileSync(`/proc/${name}/stat`, "utf8");
+        if (Buffer.byteLength(stat) > 4096) continue;
+        const fields = stat.slice(stat.lastIndexOf(")") + 1).trim().split(/\s+/);
+        const ppid = Number(fields[1]), group = Number(fields[2]), state = fields[0];
+        if (group !== pgid || !Number.isSafeInteger(ppid) || !/^[A-Za-z]$/.test(state)) continue;
+        let executable = null;
+        try { executable = path.basename(fs.readlinkSync(`/proc/${name}/exe`)).replace(/[^a-zA-Z0-9_.+-]/g, "_").slice(0, 120); } catch {}
+        members.push({ kind: state === "Z" ? "zombie" : "process", pid: Number(name), ppid, pgid: group, state, executable });
+      } catch { /* A process may exit between the directory and stat reads. */ }
+    }
+    return { kind: "linux-proc-original-group", members, examined, limited, elapsedMs: Date.now() - started };
+  } catch { return { kind: "linux-proc-unavailable", members, examined, limited: true, elapsedMs: Date.now() - started }; }
+}
 const handlers = new Map(["SIGINT", "SIGTERM", "SIGHUP"].map(signal => {
   const handler = () => { interrupted = true; for (const child of children) child.stop("interrupted"); };
   process.on(signal, handler); return [signal, handler];
@@ -91,7 +114,14 @@ function start(label, executable, args, seconds, { cleanup = false } = {}) {
   async function finish(allowed = [0]) {
     if (!finished) finished = (async () => {
       await done; clearTimeout(timer);
+      let naturalExitGrace = null, remainingGroup = null;
+      if (child.pid && exited && closed && !reason && !absent(child.pid)) {
+        const began = Date.now(), end = Math.min(began + 2_000, (cleanup ? cleanupEnd : workEnd) - 6_000);
+        while (!absent(child.pid) && !reason && (cleanup || !interrupted) && Date.now() < end) await new Promise(resolve => setTimeout(resolve, 25));
+        naturalExitGrace = { limitMs: 2_000, elapsedMs: Date.now() - began, groupAbsentAfterGrace: absent(child.pid) };
+      }
       if (child.pid && !absent(child.pid)) {
+        remainingGroup = remainingGroupSnapshot(child.pid);
         stop("process_group_remaining");
         while (!absent(child.pid) && Date.now() < stopAt + 6_000) await new Promise(resolve => setTimeout(resolve, 25));
       }
@@ -100,7 +130,7 @@ function start(label, executable, args, seconds, { cleanup = false } = {}) {
       const output = chunks.map(parts => Buffer.concat(parts));
       const processGroupAbsent = child.pid ? absent(child.pid) : true;
       ownershipReleased = exited && closed && processGroupAbsent;
-      const row = { label, args: [executable === process.execPath ? "[node]" : executable, ...args.map(arg => clean(arg, 250))], exitCode: exit, signal, stop: reason, exitObserved: exited, closeObserved: closed, processGroupAbsent,
+      const row = { label, args: [executable === process.execPath ? "[node]" : executable, ...args.map(arg => clean(arg, 250))], exitCode: exit, signal, stop: reason, exitObserved: exited, closeObserved: closed, processGroupAbsent, naturalExitGrace, remainingGroup,
         streams: output.map((bytes, i) => ({ name: i ? "stderr" : "stdout", bytes: counts[i], capturedBytes: bytes.length, sha256: hash(bytes), complete: closed && counts[i] === bytes.length, head: clean(bytes.toString(), 1200), tail: clean(bytes.subarray(-3500).toString(), 3500) })) };
       report.commands.push(row);
       if (label === "unit_and_postgresql") unitCommand = row;
