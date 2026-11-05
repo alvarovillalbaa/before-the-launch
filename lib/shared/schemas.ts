@@ -53,11 +53,20 @@ export const SourceCreateInputSchema = z.object({
 
 export const SimulationSetupInputSchema = z.object({
   projectId: z.string().uuid(),
+  requestId: z.string().uuid(),
+  engine: z.enum(["fake", "gateway"]).default("fake"),
   targetMarket: z.string().min(1).max(180),
-  personaIds: z.array(z.string().uuid()).min(1).max(10).optional(),
-  agentCount: z.number().int().min(1).max(10).default(8),
+  personaIds: z.array(z.string().uuid()).min(1).max(10),
+  agentCount: z.number().int().min(1).max(10),
   depth: z.enum(depthOptions).default("standard"),
   budgetLimitCents: z.number().int().min(0).max(100_000).default(0),
+}).superRefine((value, context) => {
+  if (value.personaIds.length !== value.agentCount || new Set(value.personaIds).size !== value.personaIds.length) {
+    context.addIssue({ code: "custom", path: ["personaIds"], message: "Choose the complete cohort once, with a matching persona count." });
+  }
+  if ((value.engine === "fake" && value.budgetLimitCents !== 0) || (value.engine === "gateway" && value.budgetLimitCents === 0)) {
+    context.addIssue({ code: "custom", path: ["budgetLimitCents"], message: "Free demo requires zero; Gateway requires a positive estimated spending target." });
+  }
 });
 
 export const EvidenceReferenceSchema = z.object({

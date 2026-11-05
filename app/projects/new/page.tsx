@@ -1,9 +1,11 @@
 import { AppShell } from "@/components/app-shell";
+import { requireOperatorPage } from "@/lib/server/security/operator-request";
 import { ProductUploadIntake } from "@/components/product-upload-intake";
 
 export const dynamic = "force-dynamic";
 
-export default function NewProjectPage() {
+export default async function NewProjectPage() {
+  await requireOperatorPage();
   return (
     <AppShell>
       <div className="mx-auto flex max-w-4xl flex-col gap-6">

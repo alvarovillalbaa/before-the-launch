@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { operatorRequestOrResponse } from "@/lib/server/security/operator-request";
 import {
   DATABASE_UNAVAILABLE_STATUS,
   databaseUnavailableErrorBody,
@@ -10,7 +11,9 @@ type RouteContext = {
   params: Promise<{ runId: string }>;
 };
 
-export async function GET(_request: Request, context: RouteContext) {
+export async function GET(request: Request, context: RouteContext) {
+  const actor = operatorRequestOrResponse(request);
+  if (actor instanceof Response) return actor;
   const { runId } = await context.params;
   try {
     const detail = await getRunResults(runId);
@@ -22,6 +25,11 @@ export async function GET(_request: Request, context: RouteContext) {
       id: detail.run.id,
       status: detail.run.status,
       engine: detail.run.engine,
+      updatedAt: detail.run.updatedAt,
+      depth: detail.run.depth,
+      budgetLimitCents: detail.run.budgetLimitCents,
+      errorMessage: detail.run.errorMessage,
+      execution: detail.execution,
       provenance: detail.provenance,
       globalScore: detail.run.globalScore,
       startedAt: detail.run.startedAt,

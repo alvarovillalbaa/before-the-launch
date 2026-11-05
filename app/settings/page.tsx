@@ -1,4 +1,5 @@
 import { AppShell } from "@/components/app-shell";
+import { requireOperatorPage } from "@/lib/server/security/operator-request";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -11,7 +12,8 @@ import { getServerEnv, hasAiGatewayCredentials } from "@/lib/server/config/env";
 
 export const dynamic = "force-dynamic";
 
-export default function SettingsPage() {
+export default async function SettingsPage() {
+  await requireOperatorPage();
   const env = getServerEnv();
   const hasCredentials = hasAiGatewayCredentials(env);
   return (

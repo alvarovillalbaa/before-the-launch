@@ -21,6 +21,16 @@ import {
   summarizeSimulationProvenance,
 } from "@/lib/shared/simulation-provenance";
 import { defaultPersonas } from "./personas";
+import { executionSummary, type RunRow } from "./simulation-execution-store";
+import { reconcileExpiredSimulationRun } from "./simulation-service";
+
+/** Admission signatures and execution journals are server-only; transport a derived summary separately. */
+export function toPublicSimulationRun<T extends RunRow>(run: T): T {
+  if (!run.disagreementSummary) return { ...run };
+  const summary = { ...run.disagreementSummary };
+  delete summary.executionControls;
+  return { ...run, disagreementSummary: summary };
+}
 
 export async function getOrCreateDefaultWorkspace() {
   const db = getDb();
@@ -114,7 +124,7 @@ export async function listProjectDashboard() {
       return {
         project,
         brief,
-        lastRun: run ?? null,
+        lastRun: run ? toPublicSimulationRun(run) : null,
         score: score ?? null,
       };
     }),
@@ -145,7 +155,7 @@ export async function getProjectDetail(projectId: string) {
     .where(eq(simulationRuns.projectId, projectId))
     .orderBy(desc(simulationRuns.createdAt));
   const workspacePersonas = await getWorkspacePersonas();
-  return { project, brief, sources: projectSources, runs, personas: workspacePersonas };
+  return { project, brief, sources: projectSources, runs: runs.map(toPublicSimulationRun), personas: workspacePersonas };
 }
 
 export async function listAllSources() {
@@ -163,7 +173,7 @@ export async function listAllSources() {
 
 export async function listAllRuns() {
   const db = getDb();
-  return db
+  const rows = await db
     .select({
       run: simulationRuns,
       project: productProjects,
@@ -171,9 +181,11 @@ export async function listAllRuns() {
     .from(simulationRuns)
     .innerJoin(productProjects, eq(simulationRuns.projectId, productProjects.id))
     .orderBy(desc(simulationRuns.createdAt));
+  return rows.map(row => ({ ...row, run: toPublicSimulationRun(row.run) }));
 }
 
 export async function getRunResults(runId: string) {
+  await reconcileExpiredSimulationRun(runId);
   const db = getDb();
   const [run] = await db.select().from(simulationRuns).where(eq(simulationRuns.id, runId)).limit(1);
   if (!run) return null;
@@ -226,12 +238,13 @@ export async function getRunResults(runId: string) {
     findingIds: agentsWithDetails.flatMap((entry) => entry.finding ? [entry.finding.id] : []),
   });
   return {
-    run,
+    run: toPublicSimulationRun(run),
     project: project ?? null,
     score: score ?? null,
     recommendations: recs,
     report: report ?? null,
     agents: agentsWithDetails,
     provenance,
+    execution: executionSummary(run, agents),
   };
 }

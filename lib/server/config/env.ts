@@ -9,6 +9,7 @@ const EnvSchema = z.object({
   AI_GATEWAY_MODEL: z.string().default("anthropic/claude-sonnet-4.5"),
   AI_GATEWAY_API_KEY: z.string().optional(),
   VERCEL_OIDC_TOKEN: z.string().optional(),
+  OPERATOR_ACCESS_KEY: z.string().optional(),
   MAX_UPLOAD_BYTES: z.coerce.number().int().positive().default(10 * 1024 * 1024),
   MAX_URL_BYTES: z.coerce.number().int().positive().default(2 * 1024 * 1024),
   URL_FETCH_TIMEOUT_MS: z.coerce.number().int().positive().default(8_000),

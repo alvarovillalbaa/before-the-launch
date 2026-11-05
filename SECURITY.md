@@ -4,6 +4,9 @@
 
 ## Implemented Controls
 
+- Private single-operator access protects workspace pages, APIs and server actions before data access. Sessions are signed, expiring and HttpOnly; production cookies also require HTTPS and SameSite=Strict. Missing access-key configuration fails closed, and writes require the same origin.
+- Positive Gateway runs require server-issued admission bound to the run and its captured configuration. Sequential reservations and reported-cost accounting enforce an estimated spending target, not a hard billing ceiling. Unknown charges remain unknown and stop further paid dispatch.
+- Queued claims prevent duplicate execution; expired claims are reconciled without restarting uncertain paid work. This does not establish durable Workflow execution or separate user memberships.
 - URL ingestion allows only HTTP and HTTPS.
 - Localhost, private IP ranges, link-local ranges, multicast ranges, and embedded URL credentials are blocked before fetch.
 - DNS targets are checked before URL fetches.

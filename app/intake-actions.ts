@@ -1,12 +1,14 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { requireOperatorAction } from "@/lib/server/security/operator-request";
 import {
   createProductFromUploads, previewProductIntake, ProductIntakeError,
 } from "@/lib/server/services/product-intake-service";
 import type { ProductIntakeCreateResult, ProductIntakePreviewResult } from "@/lib/shared/product-intake";
 
 export async function previewProductIntakeAction(formData: FormData): Promise<ProductIntakePreviewResult> {
+  await requireOperatorAction();
   try {
     return { ok: true, preview: await previewProductIntake(formData) };
   } catch (error) {
@@ -15,6 +17,7 @@ export async function previewProductIntakeAction(formData: FormData): Promise<Pr
 }
 
 export async function createProductFromUploadsAction(formData: FormData): Promise<ProductIntakeCreateResult> {
+  await requireOperatorAction();
   let projectId: string;
   try {
     projectId = await createProductFromUploads(formData);

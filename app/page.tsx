@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { requireOperatorPage } from "@/lib/server/security/operator-request";
 import { ArrowRightIcon, PlayIcon, PlusIcon } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { DatabaseUnavailableEmpty } from "@/components/database-unavailable-empty";
@@ -40,6 +41,7 @@ type PageProps = {
 const MISSING_FACT = "Not supplied in uploads";
 
 export default async function Home({ searchParams }: PageProps) {
+  await requireOperatorPage();
   const query = await searchParams;
   const view = query.view === "runs" ? "runs" : "projects";
   const chooseSimulation = query.simulate === "1";
