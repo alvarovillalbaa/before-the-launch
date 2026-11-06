@@ -28,3 +28,8 @@ The inactive workflow template is `source-storage-checks.workflow.yml.example`;
 only an owned `qa/source-storage-20261106-*` branch gets its temporary active copy.
 Disable/retire it after execution. Keep source on the current draft candidate;
 merging/deployment remains gated by the documented environment-write403.
+
+Completed: [23 unit and nine PostgreSQL passes](../results/2026/11-06/source-storage-checks.md),
+with the initial fixture lint rejection preserved. The generated lock is adopted
+exactly; the final runner verifies that artifact and performs frozen installation.
+Temporary CI is disabled/retired, and production remains gated.

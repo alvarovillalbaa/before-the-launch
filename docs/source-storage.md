@@ -50,3 +50,7 @@ PostgreSQL. It calls no real storage or model provider and makes no live hosted
 retention claim. Local installation/build/database work remains stopped by
 Storage Guard; the source stays on the existing draft candidate behind its
 documented production environment permission gate.
+
+[The focused receipt](results/2026/11-06/source-storage-checks.md) records 23 unit
+and nine PostgreSQL passes on their exact source, the preserved first lint failure,
+dependency artifact and owned cleanup. No live provider acceptance is inferred.
