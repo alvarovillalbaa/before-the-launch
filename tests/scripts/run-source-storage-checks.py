@@ -27,7 +27,7 @@ assert os.environ.get("DATABASE_URL") == fixture_url
 assert os.environ.get("SOURCE_STORAGE_DISPOSABLE_DATABASE") == "true"
 assert os.environ.get("GITHUB_REPOSITORY") == "alvarovillalbaa/before-the-launch"
 assert os.environ.get("GITHUB_EVENT_NAME") == "create"
-assert os.environ.get("GITHUB_REF") == "refs/heads/qa/source-storage-20261106-1"
+assert os.environ.get("GITHUB_REF") == "refs/heads/qa/source-storage-20261106-2"
 paths = subprocess.check_output(["git", "ls-files", "-z"]).decode().split("\0")[:-1]
 
 
@@ -59,7 +59,6 @@ report = {"sourceCommit": source, "startedAt": time.time(), "commands": [],
           "scope": "23 authored unit and 9 disposable PostgreSQL cases; mocked Blob leaves, no server/browser/live storage/model"}
 groups, selected = [], []
 export_expected = {}
-lock_generation = False
 database_marked = False
 status = 1
 lock = None
@@ -139,7 +138,7 @@ def run(argv, timeout=120, accepted=(0,)):
         proc.wait(timeout=10)
     report["commands"].append({"argv": argv, "exitCode": proc.returncode, "timedOut": timed_out,
         "seconds": round(time.time() - started, 3), "stdout": file_stream(out_path), "stderr": file_stream(err_path)})
-    assert all((lock_generation and name == "pnpm-lock.yaml") or digest((app / name).read_bytes()) == export_expected[name] for name in selected), "Export source changed"
+    assert all(digest((app / name).read_bytes()) == export_expected[name] for name in selected), "Export source changed"
     if proc.returncode not in accepted or timed_out:
         raise RuntimeError("Focused command failed: " + " ".join(argv))
     return base64.b64decode(report["commands"][-1]["stdout"]["base64"])
@@ -217,21 +216,30 @@ try:
     assert run(["node", "--version"]).strip() == b"v24.21.0"
     package = json.loads((app / "package.json").read_text())
     assert package["packageManager"] == "pnpm@10.24.0" and package["dependencies"]["@vercel/blob"] == "2.8.2"
-    old_direct = direct_resolutions((app / "pnpm-lock.yaml").read_bytes())
-    lock_generation = True
-    run(pnpm + ["install", "--lockfile-only", "--ignore-scripts", "--store-dir", str(root / "store")], 180)
-    lock_generation = False
+    preparation_bytes = (repo / "docs/results/2026/11-06/source-storage-attempt-1.json").read_bytes()
+    preparation_hash = "5595a6a9bbaf342efa1068cf18efc92308400463ab837cdc7307e7eefe66e9d9"
+    assert digest(preparation_bytes) == preparation_hash
+    preparation = json.loads(preparation_bytes)
+    assert preparation["sourceCommit"] == "85d3e8bc44e7d491a2f7f8deb906caf92bf721ca"
+    assert preparation["sourceUnchanged"] and preparation["scratchRemoved"] and preparation["databaseRemoved"] and preparation["streamClosureVerified"]
+    assert not preparation["residualSignals"] and len(preparation["commands"]) == 7
+    for command in preparation["commands"]:
+        for label in ["stdout", "stderr"]:
+            capture = command[label]
+            captured = base64.b64decode(capture["base64"], validate=True)
+            assert capture["complete"] and len(captured) == capture["bytes"] and digest(captured) == capture["sha256"]
+    assert all(preparation["commands"][index]["exitCode"] == 0 and not preparation["commands"][index]["timedOut"] for index in [1, 2])
+    assert preparation["directResolutionChanges"] == [{"section": "dependencies", "package": "@vercel/blob",
+        "before": {"specifier": "^1.1.1", "version": "1.1.1"}, "after": {"specifier": "2.8.2", "version": "2.8.2"}}]
+    assert preparation["generatedLock"]["otherDirectResolutionsUnchanged"] == 46
     lock = (app / "pnpm-lock.yaml").read_bytes()
-    report["generatedLock"] = {"bytes": len(lock), "sha256": digest(lock), "gzipBase64": base64.b64encode(gzip.compress(lock, mtime=0)).decode()}
+    generated = gzip.decompress(base64.b64decode(preparation["generatedLock"]["gzipBase64"], validate=True))
+    assert lock == generated and len(lock) == preparation["generatedLock"]["bytes"] and digest(lock) == preparation["generatedLock"]["sha256"]
     new_direct = direct_resolutions(lock)
-    report["directResolutionChanges"] = [{"section": key[0], "package": key[1], "before": old_direct.get(key), "after": new_direct.get(key)}
-        for key in sorted(set(old_direct) | set(new_direct)) if old_direct.get(key) != new_direct.get(key)]
-    assert set(old_direct) == set(new_direct)
     blob = ("dependencies", "@vercel/blob")
     assert new_direct[blob] == {"specifier": "2.8.2", "version": "2.8.2"}
-    assert all(value == new_direct[key] for key, value in old_direct.items() if key != blob), "Unrelated direct resolution changed"
-    report["generatedLock"]["otherDirectResolutionsUnchanged"] = len(old_direct) - 1
-    export_expected["pnpm-lock.yaml"] = digest(lock)
+    report["installedLock"] = {"bytes": len(lock), "sha256": digest(lock), "preparationSource": preparation["sourceCommit"],
+        "preparationReceiptSha256": preparation_hash, "preparationStreamsVerified": 14, "otherDirectResolutionsUnchanged": 46}
     report["testedExport"] = dict(export_expected)
     run(pnpm + ["install", "--frozen-lockfile", "--ignore-scripts", "--store-dir", str(root / "store")], 240)
     fresh = run(["node", "--input-type=module", "-e", "import pg from 'pg';const p=new pg.Pool({connectionString:process.env.DATABASE_URL});try{const r=await p.query(\"SELECT count(*)::int n FROM pg_tables WHERE schemaname='public'\");if(r.rows[0].n!==0)throw Error('CI public schema was not empty');console.log('fresh-database');}finally{await p.end();}"])

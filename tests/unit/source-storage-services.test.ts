@@ -49,8 +49,7 @@ function txFor(pending: StoredRow[]) {
         }));
         pending.push(...rows.map((row) => ({ table: name, row }))); return rows;
       });
-      let query: InsertQuery;
-      query = Object.assign(promise, { returning: () => promise, onConflictDoNothing: () => query });
+      const query: InsertQuery = Object.assign(promise, { returning: () => promise, onConflictDoNothing: () => query });
       return query;
     } };
   } };
