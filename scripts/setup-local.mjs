@@ -1,5 +1,6 @@
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
+import { randomBytes } from "node:crypto";
 
 const envPath = ".env.local";
 
@@ -10,11 +11,13 @@ if (!existsSync(envPath)) {
       "DATABASE_URL=postgres://before_launch:before_launch@127.0.0.1:54329/before_launch",
       "LOCAL_STORAGE_DIR=.data/storage",
       "SIMULATION_ENGINE=auto",
+      `OPERATOR_ACCESS_KEY=${randomBytes(32).toString("base64url")}`,
       "AI_GATEWAY_MODEL=anthropic/claude-sonnet-4.5",
       "MAX_UPLOAD_BYTES=10485760",
       "MAX_URL_FETCH_BYTES=2097152",
       "",
     ].join("\n"),
+    { flag: "wx", mode: 0o600 },
   );
 }
 
@@ -49,4 +52,4 @@ if (process.env.SKIP_DOCKER !== "1") {
 run("pnpm", ["db:push"]);
 run("pnpm", ["db:seed"]);
 
-console.log("Local setup complete. Run pnpm dev to start the app.");
+console.log("Local setup complete. Run pnpm dev, then sign in at /login with OPERATOR_ACCESS_KEY from your private .env.local. Existing environment files are preserved; add a strong key there if missing.");

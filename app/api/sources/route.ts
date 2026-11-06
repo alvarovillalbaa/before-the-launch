@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { operatorRequestOrResponse } from "@/lib/server/security/operator-request";
 import { SourceCreateInputSchema } from "@/lib/shared/schemas";
 import {
   DATABASE_UNAVAILABLE_STATUS,
@@ -11,6 +12,8 @@ import {
 } from "@/lib/server/services/source-ingestion";
 
 export async function POST(request: Request) {
+  const actor = operatorRequestOrResponse(request);
+  if (actor instanceof Response) return actor;
   const body = await request.json();
   const input = SourceCreateInputSchema.safeParse(body);
   if (!input.success) {

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { requireOperatorPage } from "@/lib/server/security/operator-request";
 import { AppShell } from "@/components/app-shell";
 import { DatabaseUnavailableEmpty } from "@/components/database-unavailable-empty";
 import { Badge } from "@/components/ui/badge";
@@ -25,6 +26,7 @@ import { listAllSources } from "@/lib/server/services/project-service";
 export const dynamic = "force-dynamic";
 
 export default async function SourcesPage() {
+  await requireOperatorPage();
   const { rows, databaseUnavailable } = await loadSources();
 
   return (

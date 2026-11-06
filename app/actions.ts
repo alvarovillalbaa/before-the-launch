@@ -1,6 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { after } from "next/server";
+import { requireOperatorAction } from "@/lib/server/security/operator-request";
 import { redirect } from "next/navigation";
 import {
   ProductBriefInputSchema,
@@ -15,7 +17,7 @@ import {
   createUrlSource,
   deleteSource,
 } from "@/lib/server/services/source-ingestion";
-import { createSimulationRun, deleteRun } from "@/lib/server/services/simulation-service";
+import { createSimulationRun, deleteRun, executeSimulationRun } from "@/lib/server/services/simulation-service";
 
 function stringValue(formData: FormData, key: string) {
   const value = formData.get(key);
@@ -23,6 +25,7 @@ function stringValue(formData: FormData, key: string) {
 }
 
 export async function createProjectAction(formData: FormData) {
+  await requireOperatorAction();
   const parsed = ProductBriefInputSchema.parse({
     productName: stringValue(formData, "productName"),
     category: stringValue(formData, "category"),
@@ -40,6 +43,7 @@ export async function createProjectAction(formData: FormData) {
 }
 
 export async function addTextSourceAction(formData: FormData) {
+  await requireOperatorAction();
   const parsed = SourceCreateInputSchema.parse({
     projectId: stringValue(formData, "projectId"),
     kind: stringValue(formData, "kind"),
@@ -57,6 +61,7 @@ export async function addTextSourceAction(formData: FormData) {
 }
 
 export async function addUrlSourceAction(formData: FormData) {
+  await requireOperatorAction();
   const parsed = SourceCreateInputSchema.parse({
     projectId: stringValue(formData, "projectId"),
     kind: stringValue(formData, "kind"),
@@ -74,6 +79,7 @@ export async function addUrlSourceAction(formData: FormData) {
 }
 
 export async function addFileSourceAction(formData: FormData) {
+  await requireOperatorAction();
   const projectId = stringValue(formData, "projectId");
   const kind = stringValue(formData, "kind") as SourceKind;
   const file = formData.get("file");
@@ -93,27 +99,33 @@ export async function addFileSourceAction(formData: FormData) {
 }
 
 export async function deleteSourceAction(formData: FormData) {
+  await requireOperatorAction();
   const projectId = stringValue(formData, "projectId");
   await deleteSource(stringValue(formData, "sourceId"));
   revalidatePath(`/projects/${projectId}`);
 }
 
 export async function startSimulationAction(formData: FormData) {
+  const actor = await requireOperatorAction();
   const personaIds = formData.getAll("personaIds").filter((value): value is string => typeof value === "string");
   const parsed = SimulationSetupInputSchema.parse({
     projectId: stringValue(formData, "projectId"),
+    requestId: stringValue(formData, "requestId"),
+    engine: stringValue(formData, "engine") || "fake",
     targetMarket: stringValue(formData, "targetMarket"),
-    agentCount: Number(stringValue(formData, "agentCount") || "8"),
+    agentCount: personaIds.length,
     depth: stringValue(formData, "depth") || "standard",
     budgetLimitCents: Number(stringValue(formData, "budgetLimitCents") || "0"),
-    personaIds: personaIds.length ? personaIds : undefined,
+    personaIds,
   });
-  const run = await createSimulationRun(parsed);
+  const run = await createSimulationRun(parsed, actor);
+  if (run.status === "queued") after(() => executeSimulationRun(run.id));
   revalidatePath(`/projects/${parsed.projectId}`);
   redirect(`/runs/${run.id}`);
 }
 
 export async function deleteRunAction(formData: FormData) {
+  await requireOperatorAction();
   const projectId = stringValue(formData, "projectId");
   await deleteRun(stringValue(formData, "runId"));
   revalidatePath(`/projects/${projectId}`);

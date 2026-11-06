@@ -41,4 +41,8 @@ Missing facts are shown as **Not supplied in uploads** and remain blank in the c
 
 Creation re-extracts the selected files and verifies that they match the preview. A database transaction groups the project, brief, sources, and chunks. Definite failures remove only the import's own staged originals. If a save response or database commit acknowledgment is lost, check Projects before retrying; the save may already have completed. Originals are kept when commit success cannot be determined.
 
-The current storage adapter writes originals to the configured local directory. Production durable storage and access isolation require the decisions described in [deployment](deployment.md); a public HTTP response alone does not prove an import can be saved durably.
+The shared [original file adapter](source-storage.md) supports local files and
+private Vercel Blob. Hosted uploads require a configured private store; the app
+does not fall back to ephemeral disk. The existing operator and environment
+permissions gate remains pending, so live durable hosted retention is not yet
+accepted. See [deployment](deployment.md).

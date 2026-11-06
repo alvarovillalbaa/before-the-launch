@@ -1,4 +1,5 @@
 import { AppShell } from "@/components/app-shell";
+import { requireOperatorPage } from "@/lib/server/security/operator-request";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -11,7 +12,8 @@ import { getServerEnv, hasAiGatewayCredentials } from "@/lib/server/config/env";
 
 export const dynamic = "force-dynamic";
 
-export default function SettingsPage() {
+export default async function SettingsPage() {
+  await requireOperatorPage();
   const env = getServerEnv();
   const hasCredentials = hasAiGatewayCredentials(env);
   return (
@@ -24,7 +26,7 @@ export default function SettingsPage() {
           </CardHeader>
           <CardContent className="grid gap-3 text-sm">
             <SettingRow label="Database" value={env.DATABASE_URL.replace(/:[^:@]+@/, ":***@")} />
-            <SettingRow label="Storage" value={env.LOCAL_STORAGE_DIR} />
+            <SettingRow label="Original files" value={env.SOURCE_STORAGE_DRIVER === "blob" ? "Private Vercel Blob" : env.LOCAL_STORAGE_DIR} />
             <SettingRow label="Simulation engine" value={env.SIMULATION_ENGINE} />
             <SettingRow label="AI model" value={env.AI_GATEWAY_MODEL} />
           </CardContent>

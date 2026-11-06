@@ -2,6 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AppShell } from "@/components/app-shell";
 import { DatabaseUnavailableEmpty } from "@/components/database-unavailable-empty";
+import { ControlSummary, formatExecutionSummaryMarkdown } from "@/components/control-summary";
+import { RunMonitor } from "@/components/run-monitor";
 import { AgentProvenanceNotice, SimulationProvenanceNotice } from "@/components/simulation-provenance";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -25,6 +27,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { isDatabaseUnavailableError } from "@/lib/server/db/errors";
 import { getRunResults } from "@/lib/server/services/project-service";
+import { requireOperatorPage } from "@/lib/server/security/operator-request";
 import { formatSimulationProvenanceMarkdown } from "@/lib/shared/simulation-provenance";
 
 export const dynamic = "force-dynamic";
@@ -34,6 +37,7 @@ type PageProps = {
 };
 
 export default async function RunPage({ params }: PageProps) {
+  await requireOperatorPage();
   const { runId } = await params;
   const { detail, databaseUnavailable } = await loadRunResults(runId);
   if (databaseUnavailable) {
@@ -45,10 +49,12 @@ export default async function RunPage({ params }: PageProps) {
   }
   if (!detail) notFound();
   const scores = detail.score?.scores;
+  const terminal = !["queued", "running"].includes(detail.run.status);
   const qualifiedReportMarkdown = detail.report
     ? [
         "# Current provenance assessment",
         formatSimulationProvenanceMarkdown(detail.provenance),
+        formatExecutionSummaryMarkdown(detail.execution),
         "---",
         "## Recorded report (unchanged)",
         detail.report.body,
@@ -77,6 +83,8 @@ export default async function RunPage({ params }: PageProps) {
           </Button>
         </section>
 
+        <RunMonitor runId={runId} status={detail.run.status} updatedAt={detail.run.updatedAt.toISOString()} recordedControls={detail.execution.recorded} />
+        <ControlSummary summary={detail.execution} />
         <SimulationProvenanceNotice provenance={detail.provenance} />
 
         <div className="grid gap-4 md:grid-cols-4">
@@ -113,7 +121,7 @@ export default async function RunPage({ params }: PageProps) {
                         <Progress value={typeof value === "number" ? value : 0} />
                       </div>
                     ))
-                  : "Scores are not available yet."}
+                  : terminal ? "No aggregate score was saved for this run. Available persona findings remain below." : "Scores are not available yet."}
               </CardContent>
             </Card>
             <Card className="rounded-lg">
@@ -122,6 +130,7 @@ export default async function RunPage({ params }: PageProps) {
                 <CardDescription>Product, pricing, messaging, and GTM.</CardDescription>
               </CardHeader>
               <CardContent className="flex flex-col gap-4">
+                {detail.recommendations.length === 0 ? <p className="text-sm text-muted-foreground">{terminal ? "No recommendations were saved for this run." : "Recommendations will appear when available."}</p> : null}
                 {detail.recommendations.map((recommendation) => (
                   <div key={recommendation.id} className="flex flex-col gap-2 border-b pb-4 last:border-b-0 last:pb-0">
                     <div className="flex flex-wrap gap-2">
@@ -166,7 +175,7 @@ export default async function RunPage({ params }: PageProps) {
                           <TableCell className="max-w-xs whitespace-normal">
                             <div className="flex flex-col">
                               <span className="font-medium">{String(agent.personaSnapshot.name)}</span>
-                              <span className="text-muted-foreground">{agent.status}</span>
+                              <span className="text-muted-foreground">{terminal && ["queued", "pending"].includes(agent.status) ? "Not executed" : terminal && agent.status === "running" ? "Incomplete" : agent.status}</span>
                             </div>
                           </TableCell>
                           <TableCell className="max-w-md whitespace-normal">
@@ -176,7 +185,7 @@ export default async function RunPage({ params }: PageProps) {
                           <TableCell>{result?.trustScore ?? "n/a"}</TableCell>
                           <TableCell>{result?.adoptionLikelihood ?? "n/a"}</TableCell>
                           <TableCell className="max-w-lg whitespace-normal text-muted-foreground">
-                            {result?.likelyObjections?.[0] ?? agent.errorMessage ?? "Pending"}
+                            {result?.likelyObjections?.[0] ?? agent.errorMessage ?? (terminal ? "No finding was saved for this persona." : "Pending finding")}
                           </TableCell>
                         </TableRow>
                       );
@@ -222,7 +231,7 @@ export default async function RunPage({ params }: PageProps) {
             <Card className="rounded-lg">
               <CardHeader>
                 <CardTitle>{detail.report?.title ?? "Report"}</CardTitle>
-                <CardDescription>Current provenance assessment followed by the unchanged recorded Markdown report.</CardDescription>
+                <CardDescription>Current provenance, execution controls and coverage followed by the unchanged recorded Markdown report.</CardDescription>
               </CardHeader>
               <CardContent className="grid gap-3">
                 <p className="text-sm text-muted-foreground">
@@ -230,10 +239,10 @@ export default async function RunPage({ params }: PageProps) {
                   {detail.provenance.qualification}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  The assessment is included below for copying. The recorded report follows unchanged; any provenance inside it reflects what was recorded when it was generated.
+                  The current assessments are included below for copying. The recorded report follows unchanged; any provenance inside it reflects what was recorded when it was generated.
                 </p>
                 <pre role="region" aria-label="Qualified Markdown report" tabIndex={0} className="max-h-[720px] overflow-auto whitespace-pre-wrap rounded-lg bg-muted p-4 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                  {qualifiedReportMarkdown ?? "Report is not available yet."}
+                  {qualifiedReportMarkdown ?? (terminal ? "No report was saved for this run. Review its coverage, stop reason and available persona findings." : "Report is not available yet.")}
                 </pre>
               </CardContent>
             </Card>

@@ -10,9 +10,9 @@ It is not a market prediction oracle. It is a structured pre-launch review tool.
 - Next.js App Router and TypeScript
 - Tailwind and shadcn/ui primitives
 - Postgres with Drizzle
-- Vercel AI SDK v6 structured output, with AI Gateway when credentials are present
+- Vercel AI SDK v6 structured output, with explicitly selected, operator-authorized AI Gateway runs
 - Vercel Workflow integration points through the Workflow DevKit
-- Local file storage fallback by default
+- Local original files outside Vercel; optional private Vercel Blob for hosting
 - Deterministic fake agents for local demo runs without AI credentials
 
 ## Local Start
@@ -26,6 +26,17 @@ pnpm dev
 
 Open `http://localhost:3000`.
 
+Both file intake paths share the [original storage contract](docs/source-storage.md).
+Local originals remain under `LOCAL_STORAGE_DIR`. Hosted uploads require a private
+Blob store and `SOURCE_STORAGE_DRIVER=blob`; missing configuration fails before
+database writes. No public Blob URL is exposed as a source key.
+
+The workspace requires `OPERATOR_ACCESS_KEY` in the server environment. Use a
+cryptographically random 32-byte key, keep it private, and enter it at `/login`.
+An empty or too-short key leaves access closed. Rotating the key revokes existing
+sessions and queued paid authorizations. This is a single-operator workspace;
+it does not provide separate user accounts or membership permissions.
+
 `pnpm setup:local` creates `.env.local`, starts Postgres with Docker Compose, pushes the Drizzle schema, and seeds demo data.
 
 If Docker is not available, point `DATABASE_URL` in `.env.local` at any local Postgres database and run:
@@ -38,7 +49,22 @@ pnpm dev
 
 ## AI Credentials
 
-The app works without AI credentials. In that mode, simulations use deterministic fake agents and still produce traces, evidence references, scores, recommendations, and exportable reports.
+Free demo is the default: zero model spending, no model request, and deterministic
+synthetic findings with traces, scores, recommendations and exportable reports.
+Gateway is a separate explicit choice. A positive USD amount is an **estimated
+spending target**, which final charges can exceed; it is not a hard billing cap.
+Missing credentials or model pricing leave Gateway unavailable. The app never
+silently converts an explicit Gateway request to a successful demo run.
+
+Quick, Standard and Deep change Gateway prompt treatment and output allowance.
+They retain the complete chosen cohort. Demo scores stay deterministic at every
+depth. Run pages show completed/failed/unexecuted coverage, outstanding estimated
+reservations, known charges, unknown charges and finite stop reasons. The
+[execution contract](docs/proposals/execution-controls-v2.md) separates this
+new scope from historical verification. Its [137 focused checks](docs/results/2026/11-05/execution-controls.md)
+passed with disposable PostgreSQL and the production build over local HTTPS.
+Deployment is pending: Vercel rejected the required production environment write
+with 403. Hosted persistence and real model charges remain unverified.
 
 [Result provenance](docs/simulation-provenance.md) distinguishes Gateway output,
 synthetic demo output and Gateway fallbacks in results, persona rows and reports.
@@ -64,7 +90,6 @@ VERCEL_OIDC_TOKEN=...
 Optional:
 
 ```bash
-SIMULATION_ENGINE=gateway
 AI_GATEWAY_MODEL=anthropic/claude-sonnet-4.5
 ```
 
@@ -72,8 +97,8 @@ AI_GATEWAY_MODEL=anthropic/claude-sonnet-4.5
 
 1. Upload product files, review the imported context, and create a project.
 2. Add context as text, URLs, or files.
-3. Run a simulation with selected personas.
-4. Inspect live-style agent traces and structured findings.
+3. Select the complete persona cohort, engine, depth and USD spending target.
+4. Follow saved progress, agent traces, coverage and structured findings.
 5. Review score breakdown and recommendations.
 6. Export the generated markdown report.
 

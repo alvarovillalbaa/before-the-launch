@@ -1,4 +1,5 @@
 import "dotenv/config";
+import { randomUUID } from "node:crypto";
 import { eq } from "drizzle-orm";
 import { closeDb, getDb } from "@/lib/server/db/client";
 import {
@@ -11,7 +12,8 @@ import {
 } from "@/lib/server/db/schema";
 import { getOrCreateDefaultWorkspace } from "@/lib/server/services/project-service";
 import { createProductProject } from "@/lib/server/services/project-service";
-import { createSimulationRun } from "@/lib/server/services/simulation-service";
+import { createSimulationRun, executeSimulationRun } from "@/lib/server/services/simulation-service";
+import { getWorkspacePersonas } from "@/lib/server/services/project-service";
 import { sha256 } from "@/lib/server/services/source-ingestion";
 
 async function seedSource(input: {
@@ -135,12 +137,16 @@ async function main() {
   ]);
 
   const completed = await createSimulationRun({
+    requestId: randomUUID(),
+    engine: "fake",
     projectId: project.id,
+    personaIds: (await getWorkspacePersonas()).slice(0, 8).map(persona => persona.id),
     targetMarket: "North American B2B SaaS product marketing teams",
     agentCount: 8,
     depth: "standard",
     budgetLimitCents: 0,
   });
+  await executeSimulationRun(completed.id);
 
   const [partial] = await db
     .insert(simulationRuns)

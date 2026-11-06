@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { randomUUID } from "node:crypto";
 import { notFound } from "next/navigation";
 import { FileTextIcon, LinkIcon, PlayIcon, Trash2Icon } from "lucide-react";
 import {
@@ -6,10 +7,10 @@ import {
   addTextSourceAction,
   addUrlSourceAction,
   deleteSourceAction,
-  startSimulationAction,
 } from "@/app/actions";
 import { AppShell } from "@/components/app-shell";
 import { DatabaseUnavailableEmpty } from "@/components/database-unavailable-empty";
+import { SimulationSetupForm } from "@/components/simulation-setup-form";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,12 +24,10 @@ import {
 import {
   Field,
   FieldDescription,
-  FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
-import { Separator } from "@/components/ui/separator";
 import {
   Table,
   TableBody,
@@ -40,9 +39,11 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { isDatabaseUnavailableError } from "@/lib/server/db/errors";
 import { getProjectDetail } from "@/lib/server/services/project-service";
+import { requireOperatorPage } from "@/lib/server/security/operator-request";
 import { sourceKinds } from "@/lib/shared/schemas";
 
 export const dynamic = "force-dynamic";
+export const maxDuration = 300;
 
 type PageProps = {
   params: Promise<{ projectId: string }>;
@@ -63,6 +64,7 @@ const briefFields = [
 ] as const;
 
 export default async function ProjectPage({ params, searchParams }: PageProps) {
+  await requireOperatorPage();
   const [{ projectId }, query] = await Promise.all([params, searchParams]);
   const selectedTab = typeof query.tab === "string" && ["sources", "setup", "runs", "brief"].includes(query.tab)
     ? query.tab
@@ -239,59 +241,17 @@ export default async function ProjectPage({ params, searchParams }: PageProps) {
               <CardHeader>
                 <CardTitle>Run simulation</CardTitle>
                 <CardDescription>
-                  Fake agents run deterministically without credentials. Gateway runs activate when credentials exist.
+                  Choose a free synthetic demo or an explicit Gateway run with an estimated USD spending target.
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form action={startSimulationAction}>
-                  <input type="hidden" name="projectId" value={projectId} />
-                  <FieldGroup>
-                    <div className="grid gap-4 md:grid-cols-4">
-                      <Field>
-                        <FieldLabel htmlFor="targetMarket">Target market</FieldLabel>
-                        <Input id="targetMarket" name="targetMarket" defaultValue={detail.brief?.market?.trim() || ""} maxLength={180} aria-describedby="target-market-help" required />
-                        <FieldDescription id="target-market-help">
-                          {detail.brief?.market?.trim()
-                            ? "Choose the audience or market for this simulation."
-                            : "Not supplied in uploads. Enter the audience or market to use for this simulation."}
-                        </FieldDescription>
-                      </Field>
-                      <Field>
-                        <FieldLabel htmlFor="agentCount">Agents</FieldLabel>
-                        <Input id="agentCount" name="agentCount" type="number" min={1} max={10} defaultValue={8} />
-                      </Field>
-                      <Field>
-                        <FieldLabel htmlFor="depth">Depth</FieldLabel>
-                        <NativeSelect id="depth" name="depth" className="w-full">
-                          <NativeSelectOption value="quick">Quick</NativeSelectOption>
-                          <NativeSelectOption value="standard">Standard</NativeSelectOption>
-                          <NativeSelectOption value="deep">Deep</NativeSelectOption>
-                        </NativeSelect>
-                      </Field>
-                      <Field>
-                        <FieldLabel htmlFor="budgetLimitCents">Budget limit</FieldLabel>
-                        <Input id="budgetLimitCents" name="budgetLimitCents" type="number" min={0} defaultValue={0} />
-                      </Field>
-                    </div>
-                    <Separator />
-                    <div className="grid gap-3 md:grid-cols-2">
-                      {detail.personas.map((persona) => (
-                        <label key={persona.id} className="flex min-h-11 gap-3 rounded-lg border p-3 text-sm">
-                          <input type="checkbox" name="personaIds" value={persona.id} defaultChecked={persona.isDefault} />
-                          <span className="flex flex-col gap-1">
-                            <span className="font-medium">{persona.name}</span>
-                            <span className="text-muted-foreground">{persona.description}</span>
-                          </span>
-                        </label>
-                      ))}
-                    </div>
-                    <Button type="submit" className="min-h-11" disabled={!detail.brief}>
-                      <PlayIcon data-icon="inline-start" />
-                      Run simulation
-                    </Button>
-                  </FieldGroup>
-                  {!detail.brief ? <p role="note" className="mt-3 text-sm text-muted-foreground">A current product brief is required before starting a simulation.</p> : null}
-                </form>
+                <SimulationSetupForm
+                  projectId={projectId}
+                  initialRequestId={randomUUID()}
+                  defaultTargetMarket={detail.brief?.market?.trim() || ""}
+                  personas={detail.personas.map(({ id, name, description, isDefault }) => ({ id, name, description, isDefault }))}
+                  hasBrief={Boolean(detail.brief)}
+                />
               </CardContent>
             </Card>
           </div> : null}
