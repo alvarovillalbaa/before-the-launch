@@ -5,6 +5,7 @@ import path from "node:path";
 import { Pool } from "pg";
 import { closeDb } from "@/lib/server/db/client";
 import { createProductFromUploads, previewProductIntake } from "@/lib/server/services/product-intake-service";
+import { createFileSource, readLocalStoredSource } from "@/lib/server/services/source-ingestion";
 import { INTAKE_MAX_TOTAL_BYTES } from "@/lib/shared/product-intake";
 import { ProductBriefInputSchema } from "@/lib/shared/schemas";
 
@@ -201,6 +202,45 @@ describe.sequential("upload-only intake with disposable PostgreSQL", () => {
           expect(chunk.text.length).toBeLessThanOrEqual(2400);
           expect(chunk.content_hash).toBe(createHash("sha256").update(chunk.text).digest("hex"));
         });
+      }
+    }
+  });
+
+  it("persists file-source originals, native metadata and chunks together", async () => {
+    const { id } = await commit(documents({ name: "project.txt", text: "Authored existing product context." }));
+    const bytes = Buffer.from("# Authored reference\nExact original bytes, accents café, and whitespace.\n");
+    const source = await createFileSource({ projectId: id, kind: "product", title: "Reference",
+      fileName: "reference.md", mimeType: "text/markdown", bytes });
+    const row = (await pool.query("SELECT * FROM sources WHERE id=$1", [source.id])).rows[0];
+    expect(row).toMatchObject({ project_id: id, input_type: "file", status: "ready", title: "Reference",
+      mime_type: "text/markdown", byte_size: bytes.byteLength, content_hash: createHash("sha256").update(bytes).digest("hex"),
+      extracted_text: bytes.toString("utf8").trim() });
+    expect(row.storage_key).toMatch(/^intake-[^/]+\/[0-9a-f-]{36}\.md$/);
+    expect(await readLocalStoredSource(row.storage_key)).toEqual(bytes);
+    const chunks = (await pool.query("SELECT text FROM source_chunks WHERE source_id=$1 ORDER BY chunk_index", [source.id])).rows;
+    expect(chunks.map(chunk => chunk.text).join("")).toBe(bytes.toString("utf8").trim());
+  });
+
+  it("rolls back the new source and discards only its originals after a chunk-write failure", async () => {
+    const { id } = await commit(documents({ name: "retained.txt", text: "Retain this existing project and its original." }));
+    const before = await counts(), pathsBefore = await storedPaths();
+    let ownsFunction = false, ownsTrigger = false;
+    try {
+      await pool.query("CREATE FUNCTION source_storage_reject_chunk() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN RAISE EXCEPTION 'Authored disposable chunk-write failure'; END; $$");
+      ownsFunction = true;
+      await pool.query("CREATE TRIGGER source_storage_reject_chunk BEFORE INSERT ON source_chunks FOR EACH ROW EXECUTE FUNCTION source_storage_reject_chunk()");
+      ownsTrigger = true;
+      await expect(createFileSource({ projectId: id, kind: "product", title: "Rollback reference",
+        fileName: "rollback.txt", mimeType: "text/plain", bytes: Buffer.from("Authored rollback source and chunks.") }))
+        .rejects.toThrow(/source could not be saved/i);
+      expect(await counts()).toEqual(before);
+      expect(await storedPaths()).toEqual(pathsBefore);
+      expect((await pool.query("SELECT count(*)::int count FROM sources WHERE title=$1", ["Rollback reference"])).rows[0].count).toBe(0);
+    } finally {
+      try {
+        if (ownsTrigger) await pool.query("DROP TRIGGER source_storage_reject_chunk ON source_chunks");
+      } finally {
+        if (ownsFunction) await pool.query("DROP FUNCTION source_storage_reject_chunk()");
       }
     }
   });
