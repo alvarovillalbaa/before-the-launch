@@ -1,0 +1,38 @@
+# Inactive. Only the owned QA branch receives a bound temporary active copy.
+name: Temporary private source storage acceptance
+on:
+  create:
+permissions:
+  contents: read
+jobs:
+  storage:
+    if: github.repository == 'alvarovillalbaa/before-the-launch' && github.event.repository.private == false && github.event.ref_type == 'branch' && github.event.ref == 'qa/source-storage-20261106-1' && github.ref == 'refs/heads/qa/source-storage-20261106-1'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17.6
+        env:
+          POSTGRES_USER: intake_ci
+          POSTGRES_PASSWORD: disposable_ci_only
+          POSTGRES_DB: before_launch_intake_ci
+        ports: ['54329:5432']
+        options: >-
+          --health-cmd "pg_isready -U intake_ci -d before_launch_intake_ci"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      SOURCE_COMMIT: 85d3e8bc44e7d491a2f7f8deb906caf92bf721ca
+      SOURCE_STORAGE_PUBLIC_REPOSITORY: ${{ github.event.repository.private == false }}
+      DATABASE_URL: postgres://intake_ci:disposable_ci_only@127.0.0.1:54329/before_launch_intake_ci
+      SOURCE_STORAGE_DISPOSABLE_DATABASE: 'true'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ env.SOURCE_COMMIT }}
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: 24.21.0
+          package-manager-cache: false
+      - name: Verify private originals and real PostgreSQL rollback
+        run: python3 tests/scripts/run-source-storage-checks.py
