@@ -1,11 +1,10 @@
 import { createHash } from "node:crypto";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
-import path from "node:path";
 import * as cheerio from "cheerio";
 import { and, eq, isNull } from "drizzle-orm";
 import { getServerEnv } from "@/lib/server/config/env";
 import { getDb } from "@/lib/server/db/client";
 import { sourceChunks, sources } from "@/lib/server/db/schema";
+import { createSourceStorageBatch, readStoredSource } from "@/lib/server/storage/source-storage";
 import type { SourceKind } from "@/lib/shared/schemas";
 import { assertPublicDnsTarget, normalizePublicHttpUrl } from "./source-security";
 
@@ -251,41 +250,56 @@ export async function createFileSource(input: CreateFileSourceInput) {
     throw new Error("The uploaded file exceeds the configured size limit.");
   }
 
-  await mkdir(env.LOCAL_STORAGE_DIR, { recursive: true });
-  const storageKey = `${input.projectId}/${Date.now()}-${input.fileName.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
-  const storagePath = path.join(env.LOCAL_STORAGE_DIR, storageKey);
-  await mkdir(path.dirname(storagePath), { recursive: true });
-  await writeFile(storagePath, input.bytes);
-
-  let text = "";
-  let status = "ready";
-  let errorMessage: string | null = null;
+  let batch: Awaited<ReturnType<typeof createSourceStorageBatch>> | null = null;
+  let transactionBodyCompleted = false;
   try {
-    text = (await extractFileText(input)).trim().slice(0, 200_000);
-  } catch (error) {
-    status = "failed";
-    errorMessage =
-      error instanceof Error ? error.message : "The uploaded file could not be processed.";
+    batch = await createSourceStorageBatch();
+    const storageKey = await batch.write({ fileName: input.fileName, mimeType: input.mimeType, bytes: input.bytes });
+    let text = "";
+    let status = "ready";
+    let errorMessage: string | null = null;
+    try {
+      text = (await extractFileText(input)).trim().slice(0, 200_000);
+    } catch (error) {
+      status = "failed";
+      errorMessage = error instanceof Error ? error.message : "The uploaded file could not be processed.";
+    }
+    return await db.transaction(async (tx) => {
+      const [source] = await tx.insert(sources).values({
+        projectId: input.projectId,
+        kind: input.kind,
+        inputType: "file",
+        status,
+        title: input.title,
+        contentHash: sha256(input.bytes),
+        mimeType: input.mimeType,
+        byteSize: input.bytes.byteLength,
+        storageKey,
+        extractedText: text,
+        errorMessage,
+      }).returning();
+      const chunks = chunkText(text);
+      if (chunks.length) await tx.insert(sourceChunks).values(chunks.map((chunk, index) => ({
+        sourceId: source.id,
+        chunkIndex: index,
+        text: chunk,
+        tokenEstimate: estimateTokens(chunk),
+        contentHash: sha256(chunk),
+      })));
+      transactionBodyCompleted = true;
+      return source;
+    });
+  } catch {
+    if (transactionBodyCompleted) {
+      throw new Error("The source save result could not be confirmed. Its original was kept; check the project before trying again.");
+    }
+    if (batch) {
+      try { await batch.discard(); } catch {
+        throw new Error("The source could not be saved and cleanup of its staged original could not be confirmed. Ask the operator to review storage before retrying.");
+      }
+    }
+    throw new Error("The source could not be saved. Check that the configured original-file storage is available and Postgres is running, then try again.");
   }
-
-  const [source] = await db
-    .insert(sources)
-    .values({
-      projectId: input.projectId,
-      kind: input.kind,
-      inputType: "file",
-      status,
-      title: input.title,
-      contentHash: sha256(input.bytes),
-      mimeType: input.mimeType,
-      byteSize: input.bytes.byteLength,
-      storageKey,
-      extractedText: text,
-      errorMessage,
-    })
-    .returning();
-  if (text) await persistChunks(source.id, text);
-  return source;
 }
 
 export async function deleteSource(sourceId: string) {
@@ -310,6 +324,5 @@ export async function getReadySources(projectId: string) {
 }
 
 export async function readLocalStoredSource(storageKey: string) {
-  const env = getServerEnv();
-  return readFile(path.join(env.LOCAL_STORAGE_DIR, storageKey));
+  return readStoredSource(storageKey);
 }

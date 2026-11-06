@@ -5,6 +5,9 @@ const EnvSchema = z.object({
     .string()
     .default("postgres://before_launch:before_launch@127.0.0.1:54329/before_launch"),
   LOCAL_STORAGE_DIR: z.string().default(".data/storage"),
+  SOURCE_STORAGE_DRIVER: z.enum(["local", "blob"]).default("local"),
+  BLOB_READ_WRITE_TOKEN: z.string().optional(),
+  BLOB_STORE_ID: z.string().optional(),
   SIMULATION_ENGINE: z.enum(["auto", "fake", "gateway"]).default("auto"),
   AI_GATEWAY_MODEL: z.string().default("anthropic/claude-sonnet-4.5"),
   AI_GATEWAY_API_KEY: z.string().optional(),

@@ -1,10 +1,9 @@
-import { randomUUID } from "node:crypto";
-import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { eq } from "drizzle-orm";
 import { getServerEnv } from "@/lib/server/config/env";
 import { getDb } from "@/lib/server/db/client";
 import { personas, productBriefs, productProjects, sourceChunks, sources, workspaces } from "@/lib/server/db/schema";
+import { createSourceStorageBatch } from "@/lib/server/storage/source-storage";
 import {
   INTAKE_EXTENSIONS, INTAKE_FIELDS, INTAKE_FIELD_LIMITS, INTAKE_MAX_EXTRACTED_CHARACTERS,
   INTAKE_MAX_FILES, INTAKE_MAX_TOTAL_BYTES, type ProductIntakePreview,
@@ -181,17 +180,14 @@ export async function createProductFromUploads(formData: FormData): Promise<stri
   if (digests.length !== 1 || typeof digests[0] !== "string" || !/^[a-f0-9]{64}$/.test(digests[0])) validation("Preview the selected files before creating the product.");
   const prepared = await prepareIntake(formData);
   if (prepared.preview.digest !== digests[0]) validation("The selected files or their extracted content changed. Preview them again before creating the product.");
-  const env = getServerEnv();
-  let directory: string | null = null;
+  let batch: Awaited<ReturnType<typeof createSourceStorageBatch>> | null = null;
   let transactionBodyCompleted = false;
   try {
-    await mkdir(env.LOCAL_STORAGE_DIR, { recursive: true });
-    directory = await mkdtemp(path.join(env.LOCAL_STORAGE_DIR, "intake-"));
+    batch = await createSourceStorageBatch();
     const storedFiles: (PreparedFile & { storageKey: string })[] = [];
     for (const file of prepared.files) {
-      const basename = `${randomUUID()}${file.extension}`;
-      await writeFile(path.join(directory, basename), file.bytes, { flag: "wx" });
-      storedFiles.push({ ...file, storageKey: `${path.basename(directory)}/${basename}` });
+      const storageKey = await batch.write({ fileName: file.name, mimeType: file.mimeType, bytes: file.bytes });
+      storedFiles.push({ ...file, storageKey });
     }
     const projectId = await getDb().transaction(async tx => {
       const [createdWorkspace] = await tx.insert(workspaces).values({ name: "Local workspace", slug: "local" }).onConflictDoNothing({ target: workspaces.slug }).returning();
@@ -214,10 +210,14 @@ export async function createProductFromUploads(formData: FormData): Promise<stri
     });
     return projectId;
   } catch {
-    if (directory && !transactionBodyCompleted) await rm(directory, { recursive: true, force: true }).catch(() => {});
+    let cleanupFailed = false;
+    if (batch && !transactionBodyCompleted) {
+      try { await batch.discard(); } catch { cleanupFailed = true; }
+    }
     // A lost COMMIT acknowledgement is ambiguous. Keep originals so a committed
     // project's files are never removed by compensation; database rows are atomic.
-    if (transactionBodyCompleted) validation("The save result could not be confirmed. Check the project dashboard before trying again.");
-    validation("The product could not be saved. Check that local storage is writable and Postgres is running, then try again.");
+    if (transactionBodyCompleted) validation("The save result could not be confirmed. The originals were kept; check the project dashboard before trying again.");
+    if (cleanupFailed) validation("The product could not be saved and cleanup of its staged originals could not be confirmed. Ask the operator to review storage before retrying.");
+    validation("The product could not be saved. Check that the configured original-file storage is available and Postgres is running, then try again.");
   }
 }

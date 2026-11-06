@@ -14,7 +14,6 @@ Optional:
 - `AI_GATEWAY_API_KEY`
 - `AI_GATEWAY_MODEL`
 - `SIMULATION_ENGINE`
-- `BLOB_READ_WRITE_TOKEN`
 - `MAX_UPLOAD_BYTES`
 - `MAX_URL_FETCH_BYTES`
 
@@ -43,9 +42,23 @@ bounds do not establish durable background processing after process death.
 
 ## Storage
 
-Local storage is the default fallback. In production, configure Vercel Blob and update the storage adapter in `source-ingestion.ts` to write uploaded bytes to Blob while keeping the same source metadata fields.
+Both upload paths use `lib/server/storage/source-storage.ts`. Outside Vercel,
+`SOURCE_STORAGE_DRIVER=local` preserves local original files. Vercel rejects that
+mode for new uploads instead of writing originals to ephemeral disk.
 
-The upload-only intake also stages originals through local storage. Both ingestion paths need durable hosted storage before production file retention can be claimed. Current services use one shared workspace protected by a single-operator session; separate user accounts and isolated account storage remain outside this scope. The intake source change did not provision managed storage or a database. See [product intake](product-intake.md) and its [historical acceptance evidence](results/2026/10-27/upload-workspace.md) for those proof limits.
+For hosting, provision a **private** Vercel Blob store, set
+`SOURCE_STORAGE_DRIVER=blob`, and supply either `BLOB_READ_WRITE_TOKEN` or
+`BLOB_STORE_ID` with the Vercel OIDC environment. Keep all credentials server-side.
+Uploads always require private access; a public store is not supported. The app
+stores a versioned Blob pathname in the existing source key field, without a
+database migration. No store, plan or environment setting is provisioned by this
+source change. The earlier environment-write403 production gate remains pending.
+
+See the [original file contract](source-storage.md) for compensation, uncertain
+commits and compatibility limits. Current services use one shared workspace
+protected by a single-operator session; separate user accounts remain outside
+this scope. [Historical intake evidence](results/2026/10-27/upload-workspace.md)
+does not prove the new adapter or live hosted retention.
 
 ## Security Checklist
 

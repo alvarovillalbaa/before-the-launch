@@ -12,7 +12,7 @@ It is not a market prediction oracle. It is a structured pre-launch review tool.
 - Postgres with Drizzle
 - Vercel AI SDK v6 structured output, with explicitly selected, operator-authorized AI Gateway runs
 - Vercel Workflow integration points through the Workflow DevKit
-- Local file storage fallback by default
+- Local original files outside Vercel; optional private Vercel Blob for hosting
 - Deterministic fake agents for local demo runs without AI credentials
 
 ## Local Start
@@ -25,6 +25,11 @@ pnpm dev
 ```
 
 Open `http://localhost:3000`.
+
+Both file intake paths share the [original storage contract](docs/source-storage.md).
+Local originals remain under `LOCAL_STORAGE_DIR`. Hosted uploads require a private
+Blob store and `SOURCE_STORAGE_DRIVER=blob`; missing configuration fails before
+database writes. No public Blob URL is exposed as a source key.
 
 The workspace requires `OPERATOR_ACCESS_KEY` in the server environment. Use a
 cryptographically random 32-byte key, keep it private, and enter it at `/login`.

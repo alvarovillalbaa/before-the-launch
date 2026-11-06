@@ -26,7 +26,7 @@ export default async function SettingsPage() {
           </CardHeader>
           <CardContent className="grid gap-3 text-sm">
             <SettingRow label="Database" value={env.DATABASE_URL.replace(/:[^:@]+@/, ":***@")} />
-            <SettingRow label="Storage" value={env.LOCAL_STORAGE_DIR} />
+            <SettingRow label="Original files" value={env.SOURCE_STORAGE_DRIVER === "blob" ? "Private Vercel Blob" : env.LOCAL_STORAGE_DIR} />
             <SettingRow label="Simulation engine" value={env.SIMULATION_ENGINE} />
             <SettingRow label="AI model" value={env.AI_GATEWAY_MODEL} />
           </CardContent>
