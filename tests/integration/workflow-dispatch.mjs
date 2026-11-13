@@ -91,7 +91,13 @@ export async function qualifyWorkflow({ root, env, report, startApp, stopApp }) 
     ownRuns.add(response.body.run.id); return response.body.run.id;
   }
   async function complete(id) {
-    await until(async () => (await row(id)).status === "completed", "saved_run_not_completed");
+    try { await until(async () => (await row(id)).status === "completed", "saved_run_not_completed"); }
+    catch (error) {
+      const saved = await row(id);
+      report.lastIncompleteRun = { id, status: saved.status, workflowRunId: saved.workflow_run_id, reason: saved.error_message,
+        attempts: saved.disagreement_summary.executionControls.attempts.length };
+      throw error;
+    }
     const saved = await row(id), controls = saved.disagreement_summary.executionControls;
     assert.ok(saved.workflow_run_id); assert.ok(controls.claim);
     assert.equal(controls.attempts.length, personaIds.length);

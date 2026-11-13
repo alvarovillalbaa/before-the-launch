@@ -148,6 +148,20 @@ subreaper; the controller waits for and reads back owned group absence rather
 than equating compiler leader exit with cleanup. This does not retroactively
 qualify the failed original.
 
+Runtime43507480438 atb3b2482f compiled and passed D01-D04 with actual
+Workflow/PostgreSQL execution, concurrent Hook-owner recovery and a dropped
+completed HTTP response. D05 then timed out after server restart; D06-D08 did
+not run. All source/process/container/network/scratch guards and the child
+subreaper passed. The original remains failed. Reading a World does not start
+its queue: the exact pinned `@workflow/core`5.4.0 `getWorld()` implementation
+returns its cached instance, and `@workflow/world-local`5.2.1 recovers only
+inside `start()`. Following the
+[SDK startup contract](https://github.com/vercel/workflow/blob/main/skills/migrating-to-workflow-sdk/references/runtime-targets.md),
+the dispatcher now awaits `world.start?.()` once per process through a shared
+Symbol promise. This also prevents separate Next route bundles from repeatedly
+scanning/re-enqueueing one live journal. Reopening a saved request initializes
+recovery; no autonomous idle-boot or interrupted-model recovery is claimed.
+
 Lifecycle support and exact restart semantics must follow the installed
 SDK's actual local World, not an assumed API. A mocked `start()` is only unit
 evidence and cannot replace the real runtime boundary. Preserve every original

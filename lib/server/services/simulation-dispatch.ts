@@ -1,5 +1,6 @@
 import { getRun, start } from "workflow/api";
 import { HookConflictError } from "workflow/errors";
+import { getWorld } from "workflow/runtime";
 import { simulationWorkflow } from "@/workflows/simulation-workflow";
 import { bindSimulationWorkflowRun, readSimulationDispatchRun } from "./simulation-dispatch-store";
 import { SimulationControlError, type RunRow } from "./simulation-execution-store";
@@ -10,6 +11,19 @@ export type SimulationDispatch = {
   run: RunRow;
   error?: { code: string; message: string };
 };
+
+const worldStartup = Symbol.for("before-the-launch.workflow-startup");
+const runtime = globalThis as typeof globalThis & { [worldStartup]?: Promise<void> };
+
+async function startSimulationWorld() {
+  // Next can bundle this module into several route layers. Start the SDK's
+  // process-wide World once, including its local journal/queue recovery.
+  runtime[worldStartup] ??= (async () => {
+    const world = await getWorld();
+    await world.start?.();
+  })().catch(error => { delete runtime[worldStartup]; throw error; });
+  await runtime[worldStartup];
+}
 
 async function readBoundDispatch(run: RunRow): Promise<SimulationDispatch> {
   if (run.status !== "queued" || !run.workflowRunId) return { confirmed: true, run };
@@ -24,6 +38,7 @@ async function readBoundDispatch(run: RunRow): Promise<SimulationDispatch> {
 export async function dispatchSavedSimulationRun(savedRun: RunRow): Promise<SimulationDispatch> {
   let current = savedRun;
   try {
+    await startSimulationWorld();
     current = await readSimulationDispatchRun(savedRun.id);
     if (current.status !== "queued" || current.workflowRunId) return await readBoundDispatch(current);
     let workflowRunId: string;
