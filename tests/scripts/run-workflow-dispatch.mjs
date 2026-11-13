@@ -24,7 +24,8 @@ const digest = bytes => createHash("sha256").update(bytes).digest("hex");
 const generated = ["node_modules", ".next", ".swc", "next-env.d.ts", "tsconfig.tsbuildinfo", "app/.well-known/workflow"];
 for (const name of generated) assert.ok(!fs.existsSync(path.join(repo, name)), `owned output must start absent: ${name}`);
 const report = { kind: "before-launch.workflow-dispatch", source: process.env.EXPECTED_SOURCE, runId: process.env.GITHUB_RUN_ID,
-  node: process.version, commands: [], checks: [], cleanup: {}, accepted: false };
+  profile: process.env.WORKFLOW_DISPATCH_PROFILE ?? "full", node: process.version, commands: [], checks: [], cleanup: {}, accepted: false };
+assert.ok(["full", "browser"].includes(report.profile));
 const groups = [], privateValues = [owner];
 const environment = Object.fromEntries(["PATH", "HOME", "USER", "LOGNAME", "LANG", "RUNNER_TEMP"].filter(key => process.env[key]).map(key => [key, process.env[key]]));
 const operatorKey = randomBytes(32).toString("hex"), password = randomBytes(20).toString("hex"); privateValues.push(operatorKey, password);
@@ -36,7 +37,7 @@ Object.assign(environment, { CI: "true", NEXT_TELEMETRY_DISABLED: "1", TMPDIR: p
   npm_config_cache: path.join(root, "npm-cache"), npm_config_userconfig: path.join(root, "npm-user"), npm_config_globalconfig: path.join(root, "npm-global"),
   PLAYWRIGHT_BROWSERS_PATH: path.join(root, "browsers"), DATABASE_URL: `postgres://workflow_ci:${password}@127.0.0.1:54331/btl_workflow_ci`,
   OPERATOR_ACCESS_KEY: operatorKey, SIMULATION_ENGINE: "fake", SOURCE_STORAGE_DRIVER: "local", LOCAL_STORAGE_DIR: path.join(root, "storage"),
-  WORKFLOW_DISPATCH_TARGET: "local-disposable", WORKFLOW_TARGET_WORLD: "local", WORKFLOW_LOCAL_DATA_DIR: path.join(root, "journal"),
+  WORKFLOW_DISPATCH_TARGET: "local-disposable", WORKFLOW_DISPATCH_PROFILE: report.profile, WORKFLOW_TARGET_WORLD: "local", WORKFLOW_LOCAL_DATA_DIR: path.join(root, "journal"),
   WORKFLOW_LOCAL_BASE_URL: "https://127.0.0.1:3120", WORKFLOW_NODE_HTTP: "1", WORKFLOW_LOCAL_RECOVER_ACTIVE_RUNS: "true" });
 const redact = text => privateValues.reduce((result, value) => result.replaceAll(value, "[private fixture]"), text).slice(-20_000);
 function vector() {

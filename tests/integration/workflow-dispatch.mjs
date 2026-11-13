@@ -15,8 +15,11 @@ export async function qualifyWorkflow({ root, env, report, startApp, stopApp }) 
   assert.match(env.DATABASE_URL, /^postgres:\/\/workflow_ci:[a-f0-9]+@127\.0\.0\.1:54331\/btl_workflow_ci$/);
   assert.equal(env.WORKFLOW_TARGET_WORLD, "local");
   assert.equal(env.WORKFLOW_LOCAL_BASE_URL, origin);
+  assert.ok(["full", "browser"].includes(env.WORKFLOW_DISPATCH_PROFILE));
   assert.ok(!Object.keys(env).some(key => /API_KEY|OIDC_TOKEN|BLOB_.*TOKEN/.test(key)));
   const { Pool } = await import("pg");
+  // Browser installation is in owned scratch, including for this parent process.
+  process.env.PLAYWRIGHT_BROWSERS_PATH = env.PLAYWRIGHT_BROWSERS_PATH;
   const { chromium } = await import("@playwright/test");
   const pool = new Pool({ connectionString: env.DATABASE_URL });
   const cert = fs.readFileSync(`${root}/cert.pem`);
@@ -112,21 +115,26 @@ export async function qualifyWorkflow({ root, env, report, startApp, stopApp }) 
     try { entry.evidence = await fn(); entry.status = "passed"; }
     catch (error) { entry.status = "failed"; entry.error = error instanceof assert.AssertionError ? { type: "AssertionError", message: error.message.slice(0, 1000) } : { type: error.name, message: String(error.message).slice(0, 1000) }; throw error; }
   }
+  async function signIn() {
+    const login = await api("/api/operator/login", { accessKey: env.OPERATOR_ACCESS_KEY });
+    assert.equal(login.status, 200); cookie = login.headers["set-cookie"][0].split(";", 1)[0];
+    assert.match(login.headers["set-cookie"][0], /HttpOnly/i); assert.match(login.headers["set-cookie"][0], /Secure/i);
+  }
   try {
     await new Promise((resolve, reject) => { server.once("error", reject); server.listen(3120, "127.0.0.1", resolve); });
     app = await startApp();
-    await check("D01", "operator access and cross-origin refusal", async () => {
+    if (env.WORKFLOW_DISPATCH_PROFILE === "full") await check("D01", "operator access and cross-origin refusal", async () => {
       assert.equal((await api("/api/projects", undefined, { authenticated: false })).status, 401);
-      const login = await api("/api/operator/login", { accessKey: env.OPERATOR_ACCESS_KEY });
-      assert.equal(login.status, 200); cookie = login.headers["set-cookie"][0].split(";", 1)[0];
-      assert.match(login.headers["set-cookie"][0], /HttpOnly/i); assert.match(login.headers["set-cookie"][0], /Secure/i);
+      await signIn();
       assert.equal((await api("/api/runs", {}, { requestOrigin: "https://authored.invalid" })).status, 403);
       assert.equal((await api("/api/runs/11111111-1111-4111-8111-111111111111/execute", {}, { authenticated: false })).status, 401);
       return { unauthenticatedRead: 401, unauthenticatedExecute: 401, crossOriginWrite: 403 };
     });
+    else await signIn(); // Browser-profile setup, not a replay of the closed D01.
     projectId = (await query("select id from product_projects where name='SignalForge LaunchOS'"))[0].id;
     personaIds = (await query("select id from personas order by id limit 2")).map(p => p.id);
     assert.equal(personaIds.length, 2);
+    if (env.WORKFLOW_DISPATCH_PROFILE === "full") {
     await check("D02", "real API create, Workflow step and PostgreSQL report", async () => complete(await create()));
     await check("D03", "concurrent dispatch keeps one native owner and one SQL execution", async () => {
       hold = true; const id = await create(), owner = (await row(id)).workflow_run_id;
@@ -168,7 +176,9 @@ export async function qualifyWorkflow({ root, env, report, startApp, stopApp }) 
       assert.equal((await row(stopped)).error_message, "operator_stop");
       return { stopped, expired, personaAttempts: 0, expiry: "authored expired SQL claim, not a paid crash" };
     });
-    browserServer = await chromium.launchServer({ headless: true, args: [`--ignore-certificate-errors-spki-list=${spki}`] });
+    }
+    browserServer = await chromium.launchServer({ headless: true, args: [`--ignore-certificate-errors-spki-list=${spki}`],
+      env: Object.fromEntries(["PATH", "HOME", "LANG", "TMPDIR"].filter(key => env[key]).map(key => [key, env[key]])) });
     browser = await chromium.connect(browserServer.wsEndpoint());
     for (const [id, width, touch] of [["D07", 1280, false], ["D08", 390, true]]) {
       await check(id, `${touch ? "narrow touch" : "desktop"} monitor retries an uncertain actual response`, async () => {
@@ -196,7 +206,7 @@ export async function qualifyWorkflow({ root, env, report, startApp, stopApp }) 
         } finally { await context.close(); }
       });
     }
-    assert.equal(report.checks.length, 8); assert.ok(report.transport.queueDelivered > 0);
+    assert.equal(report.checks.length, env.WORKFLOW_DISPATCH_PROFILE === "full" ? 8 : 2); assert.ok(report.transport.queueDelivered > 0);
     const journalFiles = fs.readdirSync(env.WORKFLOW_LOCAL_DATA_DIR, { recursive: true }).filter(name => String(name).endsWith(".json"));
     assert.ok(journalFiles.length > 0); report.localJournal = { jsonFiles: journalFiles.length, privatePayloadsRetained: false };
     report.ownSimulationRuns = ownRuns.size;

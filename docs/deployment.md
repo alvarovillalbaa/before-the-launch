@@ -57,6 +57,13 @@ safe to replay. For Vercel, use the default authenticated Vercel World. An
 explicit non-Vercel World is rejected by the hosted config. No World setting,
 operator key or environment write was applied to the hosted project here.
 
+Before upgrading an existing local journal from World versions before5.1,
+stop the old instance and back up that private directory outside the repository.
+The SDK resets a directory containing only its older flat-layout files instead
+of migrating it. Use a fresh data directory for this release; retain the old
+backup for inspection. This checkout has no `.workflow-data/`, and no existing
+local journal was started, deleted or migrated during qualification.
+
 ## Storage
 
 Both upload paths use `lib/server/storage/source-storage.ts`. Outside Vercel,

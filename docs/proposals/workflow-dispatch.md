@@ -103,7 +103,8 @@ lifecycle scripts, creates one labelled Docker bridge network and disposable
 PostgreSQL17 container, applies the existing schema only to that empty database,
 and seeds authored demonstration data. It runs targeted ESLint and a production
 Next/Workflow compile, then `tests/integration/workflow-dispatch.mjs`. No existing
-137/48-case suite is replayed. All eight identities must pass on this source:
+137/48-case suite is replayed. All eight identities need recorded original
+passes, with unchanged application/runtime/lock bytes across their sources:
 
 | ID | Boundary |
 | --- | --- |
@@ -161,6 +162,17 @@ the dispatcher now awaits `world.start?.()` once per process through a shared
 Symbol promise. This also prevents separate Next route bundles from repeatedly
 scanning/re-enqueueing one live journal. Reopening a saved request initializes
 recovery; no autonomous idle-boot or interrupted-model recovery is claimed.
+
+Runtime43508517484 atd5a868d0 passed D01-D06, compiled the real Workflow and
+passed all source/owned cleanup guards. Browser launch then failed because the
+parent controller did not use the scratch browser-install path. The original
+remains failed; no browser identity ran. The next profile sets that exact
+private path before importing Playwright and runs **D07/D08 only**, with fresh
+owned app/PG/free-run fixtures. D01-D06 are closed on their original source and
+are not replayed. Only fixture/profile code and this proposal change; all app,
+Workflow, dependency and lock bytes remain exact. The completed release will
+therefore have eight qualified identities across originals, not one green
+eight-case invocation.
 
 Lifecycle support and exact restart semantics must follow the installed
 SDK's actual local World, not an assumed API. A mocked `start()` is only unit
