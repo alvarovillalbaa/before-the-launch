@@ -99,7 +99,7 @@ that body. Completion of the Workflow does not substitute for SQL coverage.
 
 `tests/scripts/run-workflow-dispatch.mjs` is the sole CI controller. It verifies
 the complete checked-out source vector, installs the frozen lock without
-lifecycle scripts, creates one labelled internal Docker network and disposable
+lifecycle scripts, creates one labelled Docker bridge network and disposable
 PostgreSQL17 container, applies the existing schema only to that empty database,
 and seeds authored demonstration data. It runs targeted ESLint and a production
 Next/Workflow compile, then `tests/integration/workflow-dispatch.mjs`. No existing
@@ -126,6 +126,16 @@ COMMIT. D05 proves recovery when reopening initializes the Local World, not
 autonomous idle boot or recovery of an interrupted model request. D06's expired
 claim is authored free state, not a paid-provider crash experiment. Hosted
 Vercel transport and provider billing remain outside this packet.
+
+Original run43506370496 at00867b61 stopped before build/application checks:
+PostgreSQL readiness failed through the internal-network port fixture. No
+original connection error or database log was retained, so the specific cause
+is unobserved. All source/process/container/network/scratch guards passed and
+the original artifact is retained. The next candidate uses a dedicated bridge
+with the database port still bound only to127.0.0.1, and captures finite redacted
+readiness diagnostics. It also keeps a visible check-request action for any
+queued run, allowing an operator to reconcile a subsequently failed dispatcher
+without depending on an earlier transport error or a page reload.
 
 Lifecycle support and exact restart semantics must follow the installed
 SDK's actual local World, not an assumed API. A mocked `start()` is only unit

@@ -98,9 +98,9 @@ export function RunMonitor({ runId, status, updatedAt, recordedControls }: Props
       <p className="font-medium">{status === "queued" ? "Run queued" : status === "running" ? "Simulation in progress" : status === "partial" ? "Partial run — review coverage and stop reason" : status === "failed" ? "Run failed — saved findings remain available" : "Run finished"}</p>
       {active(status) ? <p className="text-muted-foreground">Saved progress is checked every two seconds. {recordedControls ? "A run can be claimed only once; reopening it does not start another run." : "This historical run has no recorded execution controls and is not automatically started."}</p> : null}
       {active(status) && recordedControls ? <>
-        {status === "queued" && message ? <Button type="button" variant="outline" className="min-h-11" disabled={dispatchPending}
+        {status === "queued" ? <Button type="button" variant="outline" className="min-h-11" disabled={dispatchPending}
           onClick={() => { requested.current = null; setDispatchPending(true); setDispatchAttempt(value => value + 1); }}>
-          {dispatchPending ? "Confirming execution…" : "Retry this saved execution request"}
+          {dispatchPending ? "Confirming execution…" : message ? "Retry this saved execution request" : "Check this saved execution request"}
         </Button> : null}
         <Button type="button" variant="outline" className="min-h-11" onClick={stop} disabled={stopPending || stopRequested}>{stopPending ? "Requesting stop…" : stopRequested ? "Stop requested" : "Stop remaining personas"}</Button>
         <p className="text-muted-foreground">Stopping does not promise to abort a provider request already in flight. It can finish and incur a charge.</p>

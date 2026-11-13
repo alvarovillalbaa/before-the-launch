@@ -114,12 +114,24 @@ try {
   assert.equal(report.versions.workflow, "5.4.0"); assert.equal(report.versions.next, "16.2.9");
   assert.deepEqual(vector(), before);
   for (const port of [54331, 3120, 3121]) await freePort(port);
-  await run("owned-network", "docker", ["network", "create", "--internal", "--label", `btl.workflow.owner=${owner}`, network]); networkCreated = true;
+  await run("owned-network", "docker", ["network", "create", "--label", `btl.workflow.owner=${owner}`, network]); networkCreated = true;
   await run("owned-postgresql", "docker", ["run", "--detach", "--name", container, "--label", `btl.workflow.owner=${owner}`, "--network", network, "--publish", "127.0.0.1:54331:5432", "--env", "POSTGRES_DB=btl_workflow_ci", "--env", "POSTGRES_USER=workflow_ci", "--env", `POSTGRES_PASSWORD=${password}`, "postgres:17-alpine"], 120_000); containerCreated = true;
   report.database = { container, network, identity: JSON.parse(await run("owned-database-identity", "docker", ["inspect", container]))[0].Id,
     image: JSON.parse(await run("database-image-identity", "docker", ["image", "inspect", "postgres:17-alpine"]))[0].RepoDigests };
   const { Pool } = await import("pg"); const readiness = new Pool({ connectionString: environment.DATABASE_URL });
-  try { let ready = false; for (let attempt = 0; attempt < 60; attempt++) { try { await readiness.query("select 1"); ready = true; break; } catch { await new Promise(resolve => setTimeout(resolve, 500)); } } assert.ok(ready, "owned PG readiness"); } finally { await readiness.end(); }
+  try {
+    let ready = false, lastError;
+    for (let attempt = 0; attempt < 60; attempt++) {
+      try { await readiness.query("select 1"); ready = true; break; }
+      catch (error) { lastError = { code: error.code, message: redact(String(error.message)) }; await new Promise(resolve => setTimeout(resolve, 500)); }
+    }
+    if (!ready) {
+      report.database.readinessError = lastError;
+      const diagnostic = await run("owned-database-readiness-diagnostic", "docker", ["logs", "--tail", "40", container]);
+      fs.writeFileSync(path.join(proof, "database-readiness-failure.txt"), redact(diagnostic));
+    }
+    assert.ok(ready, "owned PG readiness");
+  } finally { await readiness.end(); }
   await run("existing-schema-empty-disposable-database", process.execPath, [cli("drizzle-kit/bin.cjs"), "push", "--force"], 90_000);
   await run("authored-seed", process.execPath, [cli("tsx/dist/cli.mjs"), "scripts/seed.ts"], 60_000);
   await run("targeted-lint", process.execPath, [cli("eslint/bin/eslint.js"), "app/actions.ts", "app/api/runs/route.ts", "app/api/runs/[runId]/execute/route.ts", "components/run-monitor.tsx", "lib/server/services/simulation-dispatch.ts", "lib/server/services/simulation-dispatch-store.ts", "lib/server/services/simulation-service.ts", "workflows/simulation-steps.ts", "workflows/simulation-workflow.ts", "proxy.ts", "next.config.ts", "tests/integration/workflow-dispatch.mjs", "tests/scripts/run-workflow-dispatch.mjs"], 60_000);
