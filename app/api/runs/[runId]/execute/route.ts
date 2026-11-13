@@ -1,7 +1,6 @@
-import { after } from "next/server";
 import { operatorRequestOrResponse } from "@/lib/server/security/operator-request";
 import { simulationErrorResponse } from "@/lib/server/services/simulation-http";
-import { executeSimulationRun } from "@/lib/server/services/simulation-service";
+import { dispatchSavedSimulationRun } from "@/lib/server/services/simulation-dispatch";
 import { getRunResults } from "@/lib/server/services/project-service";
 
 export const maxDuration = 300;
@@ -13,7 +12,9 @@ export async function POST(request: Request, { params }: { params: Promise<{ run
   try {
     const detail = await getRunResults(runId);
     if (!detail) return Response.json({ error: "Run not found." }, { status: 404 });
-    if (detail.run.status === "queued") after(() => executeSimulationRun(runId));
-    return Response.json({ ok: true, status: detail.run.status }, { status: 202, headers: { "Cache-Control": "private, no-store" } });
+    const dispatch = await dispatchSavedSimulationRun(detail.run);
+    return Response.json({ ok: dispatch.confirmed, status: dispatch.run.status, error: dispatch.error },
+      { status: dispatch.confirmed ? 202 : dispatch.error?.code === "workflow_binding_conflict" ? 409 : 503,
+        headers: { "Cache-Control": "private, no-store" } });
   } catch (error) { return simulationErrorResponse(error); }
 }

@@ -42,6 +42,37 @@ bytes/index; no tests, app server, browser, database or model is run by this
 prerequisite. Mac Storage Guard failed at1.9GiB free versus34GiB required, so
 no local dependency installation/build/database is permitted.
 
+Prerequisite run43501105419 passed at82ad999f: Node22.23.4, pnpm10.24.0,
+Workflow5.4.0 and Next16.2.9. Every other direct version stayed fixed. The
+actual470322-byte lock is SHA-256
+`017c182d5d8f6595dd461f5ac20f678f3f80f9576437d6b88cc6f6dfd1a0b3cb`;
+frozen install and source/owned cleanup guards passed. Installed Next route/
+after guides and Workflow start/idempotency/step/Local World guides were read.
+The new lock replaces Workflow's required transitive family; it does not
+upgrade the AI SDK, React or Next direct versions. The temporary workflow is
+disabled and its SHA-checked ref deleted/absent. No product runtime test ran.
+
+## Transport boundary
+
+The SDK's generated internal routes must bypass the operator-cookie proxy so
+its queue can deliver. Public application pages, status, execution and stop
+APIs keep their existing operator and same-origin checks. The SDK's Local
+World has **no authentication** and is for a single local instance, not public
+production. Local dev/start commands therefore bind127.0.0.1. Do not expose
+its internal routes through a public reverse proxy. Hosted Vercel configuration
+rejects an explicit non-Vercel World; production relies on that authenticated
+World's transport. Loopback CI is not evidence for hosted queue authentication.
+
+Workflow arguments carry the saved run ID only. The worker reads its own
+opaque Workflow ID and binds it through compare-and-set, recovering a lost
+HTTP acknowledgment without overwriting a conflicting owner. Start Hook
+retention is one day; the saved SQL binding and terminal status remain the
+longer-lived authority. A known failed/cancelled dispatcher can close only an
+unclaimed queued simulation. An active SQL claim is preserved and still uses
+its original expiry/partial-result reconciliation. The execution step has zero
+automatic retries; a crash may have sent a model request and must not replay
+that body. Completion of the Workflow does not substitute for SQL coverage.
+
 ## Delivery contract
 
 - Creation and explicit execution submit the saved run ID through real
@@ -63,6 +94,38 @@ no local dependency installation/build/database is permitted.
   saved progress; stop/expired-claim preservation; unauthenticated refusal.
   Use exact new authored fixtures and finite identities, with no real provider
   or production service request. Publish the executable scope before running.
+
+## Executable qualification
+
+`tests/scripts/run-workflow-dispatch.mjs` is the sole CI controller. It verifies
+the complete checked-out source vector, installs the frozen lock without
+lifecycle scripts, creates one labelled internal Docker network and disposable
+PostgreSQL17 container, applies the existing schema only to that empty database,
+and seeds authored demonstration data. It runs targeted ESLint and a production
+Next/Workflow compile, then `tests/integration/workflow-dispatch.mjs`. No existing
+137/48-case suite is replayed. All eight identities must pass on this source:
+
+| ID | Boundary |
+| --- | --- |
+| D01 | Operator read/execute refusal and authenticated cross-origin write refusal |
+| D02 | Actual API create, compiled Workflow step, two free findings and one SQL report |
+| D03 | Four concurrent execute requests recover one actual Hook owner after controlled loss of an owned queued SQL binding; one execution/finding set |
+| D04 | Drop a completed real execute HTTP response, retry the same saved run and owner |
+| D05 | Kill/reap the owned server while queue delivery is held; restart with the same journal/PG and reopen the saved run to initialize recovery |
+| D06 | Stop before delivery, plus an authored expired SQL claim; neither starts persona work |
+| D07 | Desktop Chromium monitor shows actual response uncertainty, retries the saved owner and displays/reloads completed results |
+| D08 | The same monitor flow at390×844 with emulated touch and no horizontal overflow |
+
+The owned HTTPS fixture forwards actual application and SDK bytes. It only
+holds queue delivery and drops selected actual responses; it never substitutes
+an SDK/service response. Node trusts the authored certificate; Chromium trusts
+its exact SPKI. Browser external requests are refused and reported; no traces,
+videos, HAR, login screenshots, keys or journal payloads become artifacts.
+D03's deliberate SQL fixture binding loss is not evidence of a real failed
+COMMIT. D05 proves recovery when reopening initializes the Local World, not
+autonomous idle boot or recovery of an interrupted model request. D06's expired
+claim is authored free state, not a paid-provider crash experiment. Hosted
+Vercel transport and provider billing remain outside this packet.
 
 Lifecycle support and exact restart semantics must follow the installed
 SDK's actual local World, not an assumed API. A mocked `start()` is only unit

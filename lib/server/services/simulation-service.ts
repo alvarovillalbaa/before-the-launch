@@ -399,6 +399,20 @@ async function finalizeRun(runId: string, claimId: string | null, reason: string
   });
 }
 
+export async function finalizeFailedSimulationDispatch(runId: string, workflowRunId: string) {
+  const [run] = await getDb().select().from(simulationRuns).where(eq(simulationRuns.id, runId)).limit(1);
+  if (!run) throw new SimulationControlError("run_not_found", 404);
+  if (run.status !== "queued" || run.workflowRunId !== workflowRunId) return run;
+  try { return await finalizeRun(runId, null, "workflow_dispatch_failed"); }
+  catch (error) {
+    // The SQL worker may have acquired its claim after the status read.
+    if (!(error instanceof SimulationControlError) || error.code !== "execution_stopped") throw error;
+    const [current] = await getDb().select().from(simulationRuns).where(eq(simulationRuns.id, runId)).limit(1);
+    if (!current) throw new SimulationControlError("run_not_found", 404);
+    return current;
+  }
+}
+
 export async function executeSimulationRun(runId: string) {
   await reconcileExpiredSimulationRun(runId);
   const claimed = await claimRun(runId);

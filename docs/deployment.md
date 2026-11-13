@@ -1,5 +1,7 @@
 # Deployment
 
+Last updated: 2026-11-13
+
 ## Vercel
 
 Deploy as a Next.js App Router application.
@@ -30,15 +32,30 @@ For production, replace seed data with a migration-backed process before onboard
 
 ## Workflows
 
-The app includes `withWorkflow` and a workflow entrypoint, but no caller starts
-that workflow and durable Workflow execution is unverified. Current run creation
-returns a queued row and schedules protected HTTP execution with Next `after`.
-The execute route is a fallback; a conditional queued claim permits execution
-once across duplicate callers. Its hosting duration is 300 seconds, with a
-240-second run deadline and 60-second model-call deadline. Expired claims are
-reconciled without replaying uncertain paid work. Database availability is needed
-to persist and reconcile controls; a worker can die before finalization. These
-bounds do not establish durable background processing after process death.
+The durable-dispatch candidate uses the pinned Workflow5.4.0 API and actual
+step boundary. Creation, actions and the protected execute route submit the
+saved SQL run through one domain Hook token. Duplicate starts recover the same
+owner, with one day of Hook retention and the longer-lived saved SQL binding.
+Dispatch uncertainty keeps the saved run and offers a retry of that request;
+it does not fall back to `after()` or create a new simulation ID.
+
+The worker binds its own opaque Workflow ID before the existing SQL claim.
+Execution step retries are zero: an interrupted body could have sent a model
+request. Existing240-second run/60-second call bounds, stop/admission and
+expired-claim partial-result reconciliation remain. A known failed/cancelled
+dispatcher can close an unclaimed queued run, never overwrite an active claim.
+Workflow completion is not proof of complete model coverage or known cost.
+The [new runtime qualification](proposals/workflow-dispatch.md) is pending;
+the dependency install pass does not prove durable product execution.
+
+Local `dev` and `start` bind127.0.0.1. The SDK Local World is a single-instance
+development backend with no authentication; do not expose its internal routes
+through a public proxy or run multiple workers against the same data directory.
+Its default `.workflow-data/` is private/ignored. Restart recovery follows the
+SDK's recorded step/queue semantics; it cannot make uncertain external calls
+safe to replay. For Vercel, use the default authenticated Vercel World. An
+explicit non-Vercel World is rejected by the hosted config. No World setting,
+operator key or environment write was applied to the hosted project here.
 
 ## Storage
 

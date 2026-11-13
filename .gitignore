@@ -41,6 +41,7 @@ yarn-error.log*
 /.data/
 /drizzle/
 /app/.well-known/workflow/
+/.workflow-data/
 
 # vercel
 .vercel

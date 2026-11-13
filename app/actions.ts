@@ -1,7 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { after } from "next/server";
 import { requireOperatorAction } from "@/lib/server/security/operator-request";
 import { redirect } from "next/navigation";
 import {
@@ -17,7 +16,8 @@ import {
   createUrlSource,
   deleteSource,
 } from "@/lib/server/services/source-ingestion";
-import { createSimulationRun, deleteRun, executeSimulationRun } from "@/lib/server/services/simulation-service";
+import { createSimulationRun, deleteRun } from "@/lib/server/services/simulation-service";
+import { dispatchSavedSimulationRun } from "@/lib/server/services/simulation-dispatch";
 
 function stringValue(formData: FormData, key: string) {
   const value = formData.get(key);
@@ -119,7 +119,7 @@ export async function startSimulationAction(formData: FormData) {
     personaIds,
   });
   const run = await createSimulationRun(parsed, actor);
-  if (run.status === "queued") after(() => executeSimulationRun(run.id));
+  await dispatchSavedSimulationRun(run);
   revalidatePath(`/projects/${parsed.projectId}`);
   redirect(`/runs/${run.id}`);
 }

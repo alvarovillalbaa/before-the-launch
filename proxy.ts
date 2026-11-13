@@ -23,4 +23,5 @@ export function proxy(request: NextRequest) {
   return response;
 }
 
-export const config = { matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"] };
+// SDK-owned routes use their World's transport; local launch commands bind loopback.
+export const config = { matcher: ["/((?!_next/static|_next/image|favicon.ico|\\.well-known/workflow/).*)"] };

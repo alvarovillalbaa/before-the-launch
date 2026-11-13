@@ -10,11 +10,14 @@ const active = (status: string) => status === "queued" || status === "running";
 
 export function RunMonitor({ runId, status, updatedAt, recordedControls }: Props) {
   const router = useRouter();
-  const requested = useRef(false);
+  const requested = useRef<string | null>(null);
+  const latestDispatch = useRef<AbortController | null>(null);
   const lastUpdate = useRef(updatedAt);
   const [message, setMessage] = useState<string | null>(null);
   const [stopPending, setStopPending] = useState(false);
   const [stopRequested, setStopRequested] = useState(false);
+  const [dispatchAttempt, setDispatchAttempt] = useState(0);
+  const [dispatchPending, setDispatchPending] = useState(false);
 
   useEffect(() => {
     if (!active(status)) return;
@@ -48,24 +51,31 @@ export function RunMonitor({ runId, status, updatedAt, recordedControls }: Props
       }
     }
     async function execute() {
+      const request = new AbortController();
+      latestDispatch.current = request;
+      const timeout = setTimeout(() => request.abort(), 15_000);
       try {
         // Refresh/unmount only cancels polling. The server owns the bounded execution claim.
-        const response = await fetch(`/api/runs/${encodeURIComponent(runId)}/execute`, { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" }, body: "{}" });
+        const response = await fetch(`/api/runs/${encodeURIComponent(runId)}/execute`, { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" }, body: "{}", signal: request.signal });
         if (!response.ok && !disposed) {
           const body = await response.json().catch(() => null);
           setMessage(typeof body?.error?.message === "string" ? body.error.message.slice(0, 500) : "Execution could not be confirmed. Saved status will continue to be checked.");
         }
+        if (response.ok && !disposed) setMessage(null);
       } catch {
         if (!disposed) setMessage("The execution response is unavailable. This does not mean the current request stopped; saved status will continue to be checked.");
+      } finally {
+        clearTimeout(timeout);
+        if (latestDispatch.current === request) { latestDispatch.current = null; setDispatchPending(false); }
       }
     }
-    if (status === "queued" && recordedControls && !requested.current) {
-      requested.current = true;
+    if (status === "queued" && recordedControls && requested.current !== runId) {
+      requested.current = runId;
       void execute();
     }
     timer = setTimeout(poll, 2_000);
     return () => { disposed = true; controller.abort(); if (timer) clearTimeout(timer); };
-  }, [runId, status, updatedAt, recordedControls, router]);
+  }, [runId, status, updatedAt, recordedControls, router, dispatchAttempt]);
 
   async function stop() {
     if (stopPending || stopRequested) return;
@@ -88,10 +98,14 @@ export function RunMonitor({ runId, status, updatedAt, recordedControls }: Props
       <p className="font-medium">{status === "queued" ? "Run queued" : status === "running" ? "Simulation in progress" : status === "partial" ? "Partial run — review coverage and stop reason" : status === "failed" ? "Run failed — saved findings remain available" : "Run finished"}</p>
       {active(status) ? <p className="text-muted-foreground">Saved progress is checked every two seconds. {recordedControls ? "A run can be claimed only once; reopening it does not start another run." : "This historical run has no recorded execution controls and is not automatically started."}</p> : null}
       {active(status) && recordedControls ? <>
+        {status === "queued" && message ? <Button type="button" variant="outline" className="min-h-11" disabled={dispatchPending}
+          onClick={() => { requested.current = null; setDispatchPending(true); setDispatchAttempt(value => value + 1); }}>
+          {dispatchPending ? "Confirming execution…" : "Retry this saved execution request"}
+        </Button> : null}
         <Button type="button" variant="outline" className="min-h-11" onClick={stop} disabled={stopPending || stopRequested}>{stopPending ? "Requesting stop…" : stopRequested ? "Stop requested" : "Stop remaining personas"}</Button>
         <p className="text-muted-foreground">Stopping does not promise to abort a provider request already in flight. It can finish and incur a charge.</p>
       </> : null}
-      {message ? <p role="status" aria-live="polite">{message}</p> : null}
+      {message && active(status) ? <p role="status" aria-live="polite">{message}</p> : null}
       <p className="text-xs text-muted-foreground">If your operator session expires, <Link className="underline" href="/login">sign in again</Link> before using run controls.</p>
     </section>
   );

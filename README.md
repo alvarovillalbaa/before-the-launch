@@ -1,5 +1,13 @@
 # before-the-launch
 
+Last updated: 2026-11-13
+
+The [durable-dispatch candidate](docs/proposals/workflow-dispatch.md) wires
+saved runs to Workflow5.4.0 with atomic duplicate-owner recovery and an actual
+Node step. Its pinned dependency/frozen-install prerequisite passed; the new
+compiled Workflow/runtime checks remain pending. Older137/48-case results do
+not qualify that changed runtime, and main/production remain the earlier release.
+
 `before-the-launch` is a local-first perception simulator for product launches.
 It helps teams upload launch context, run configurable market-persona agents, inspect every trace, and turn the result into concrete product, pricing, messaging, and GTM changes.
 

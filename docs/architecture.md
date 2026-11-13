@@ -1,5 +1,7 @@
 # Architecture
 
+Last updated: 2026-11-13
+
 `before-the-launch` is a local-first Next.js App Router application.
 
 ## Layers
@@ -25,4 +27,17 @@ Postgres is the durable system of record. Uploaded files are written to `LOCAL_S
 
 ## Workflows
 
-The Workflow DevKit integration is configured in `next.config.ts`, and `workflows/simulation-workflow.ts` exposes the durable simulation entrypoint. Local server actions call the simulation service directly so development works without a workflow worker or AI credentials.
+The durable-dispatch candidate starts `simulationWorkflow` through the real
+Workflow API from creation/actions/execution. A domain Hook deduplicates starts;
+the existing `workflowRunId` is bound through compare-and-set by both dispatcher
+and worker. Only the saved run ID is passed. Node/SQL/model execution lives in a
+step with zero automatic body retries; SQL claims, admissions and partial-result
+reconciliation remain authoritative. There is no request-lifetime execution
+fallback. Candidate runtime qualification is pending under
+[the release contract](proposals/workflow-dispatch.md); earlier checks retain
+their own sources and do not qualify the new dependency/runtime.
+
+Local commands bind127.0.0.1 because the SDK's Local World has no authentication.
+Do not expose its generated routes through a public proxy. Vercel uses its
+authenticated World; an explicit non-Vercel World is rejected in that hosting
+configuration. This does not add multi-user or membership isolation.

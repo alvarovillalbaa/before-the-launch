@@ -1,8 +1,9 @@
-import { after, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { SimulationSetupInputSchema } from "@/lib/shared/schemas";
 import { operatorRequestOrResponse } from "@/lib/server/security/operator-request";
 import { simulationErrorResponse } from "@/lib/server/services/simulation-http";
-import { createSimulationRun, executeSimulationRun } from "@/lib/server/services/simulation-service";
+import { createSimulationRun } from "@/lib/server/services/simulation-service";
+import { dispatchSavedSimulationRun } from "@/lib/server/services/simulation-dispatch";
 import { toPublicSimulationRun } from "@/lib/server/services/project-service";
 
 export const maxDuration = 300;
@@ -22,8 +23,10 @@ export async function POST(request: Request) {
   }
   try {
     const run = await createSimulationRun(input.data, actor);
-    if (run.status === "queued") after(() => executeSimulationRun(run.id));
-    return NextResponse.json({ ok: true, run: toPublicSimulationRun(run) }, { status: 201, headers: { "Cache-Control": "private, no-store" } });
+    const dispatch = await dispatchSavedSimulationRun(run);
+    return NextResponse.json({ ok: true, run: toPublicSimulationRun(dispatch.run),
+      dispatch: { confirmed: dispatch.confirmed, error: dispatch.error } },
+    { status: 201, headers: { "Cache-Control": "private, no-store" } });
   } catch (error) {
     return simulationErrorResponse(error);
   }
