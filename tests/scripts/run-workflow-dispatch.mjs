@@ -70,16 +70,28 @@ async function collect(handle, result) {
   }
 }
 async function stop(handle, crash = false) {
-  if (handle.child.exitCode === null && handle.child.signalCode === null) process.kill(-handle.child.pid, crash ? "SIGKILL" : "SIGTERM");
+  if (groupExists(handle.child.pid)) process.kill(-handle.child.pid, crash ? "SIGKILL" : "SIGTERM");
   let result = await Promise.race([handle.done, new Promise(resolve => setTimeout(() => resolve(null), 8000))]);
   if (!result) { process.kill(-handle.child.pid, "SIGKILL"); handle.entry.forced = true; result = await handle.done; }
   if (crash) handle.entry.controlledCrash = true;
+  // The CI wrapper is a Linux child subreaper and reaps orphaned compiler
+  // workers. Wait for that readback rather than treating leader exit as proof.
+  const end = Date.now() + 5000;
+  while (groupExists(handle.child.pid) && Date.now() < end) await new Promise(resolve => setTimeout(resolve, 50));
+  if (groupExists(handle.child.pid)) {
+    process.kill(-handle.child.pid, "SIGKILL"); handle.entry.forcedGroupCleanup = true;
+    const killEnd = Date.now() + 5000;
+    while (groupExists(handle.child.pid) && Date.now() < killEnd) await new Promise(resolve => setTimeout(resolve, 50));
+  }
   await collect(handle, result); assert.ok(handle.entry.reaped && handle.entry.groupAbsent, "owned process group remains");
 }
 async function run(label, command, args, timeout = 120_000, extra = {}) {
   const handle = start(label, command, args, extra);
   const timer = setTimeout(() => { handle.entry.timedOut = true; try { process.kill(-handle.child.pid, "SIGKILL"); } catch {} }, timeout);
-  const result = await handle.done; clearTimeout(timer); await collect(handle, result);
+  const result = await handle.done; clearTimeout(timer);
+  const settleEnd = Date.now() + 2000;
+  while (groupExists(handle.child.pid) && Date.now() < settleEnd) await new Promise(resolve => setTimeout(resolve, 50));
+  await collect(handle, result);
   if (result.code !== 0 || !handle.entry.groupAbsent || handle.entry.timedOut) {
     fs.writeFileSync(path.join(proof, `${report.commands.indexOf(handle.entry) + 1}-failure.txt`), redact(fs.readFileSync(handle.stdoutPath, "utf8") + fs.readFileSync(handle.stderrPath, "utf8")));
   }
@@ -149,7 +161,7 @@ try {
 } finally {
   try {
     for (const handle of groups) {
-      if (handle.child.exitCode === null && handle.child.signalCode === null) await stop(handle);
+      if (groupExists(handle.child.pid) || (handle.child.exitCode === null && handle.child.signalCode === null)) await stop(handle);
       assert.ok(!groupExists(handle.child.pid), "captured child group remains");
     }
     report.cleanup.capturedProcessGroupsAbsent = true;

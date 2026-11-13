@@ -137,6 +137,17 @@ readiness diagnostics. It also keeps a visible check-request action for any
 queued run, allowing an operator to reconcile a subsequently failed dispatcher
 without depending on an earlier transport error or a page reload.
 
+Original runtime43506996062 at0b6157b2 reached the existing schema, authored
+seed and targeted lint, then failed compilation: `HookConflictError` permits an
+absent `conflictingRunId`. The source now treats that case as unconfirmed and
+never binds an invented owner. No application identities ran. Its original
+ZIP/diagnostic is preserved. Cleanup stopped on a remaining compiler process
+group; database/network/scratch removal and final source guard were therefore
+**not verified** in that original. The next CI wrapper is a Linux child
+subreaper; the controller waits for and reads back owned group absence rather
+than equating compiler leader exit with cleanup. This does not retroactively
+qualify the failed original.
+
 Lifecycle support and exact restart semantics must follow the installed
 SDK's actual local World, not an assumed API. A mocked `start()` is only unit
 evidence and cannot replace the real runtime boundary. Preserve every original

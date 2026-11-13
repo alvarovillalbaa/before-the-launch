@@ -33,7 +33,7 @@ export async function dispatchSavedSimulationRun(savedRun: RunRow): Promise<Simu
       });
       workflowRunId = workflow.runId;
     } catch (error) {
-      if (!HookConflictError.is(error)) throw error;
+      if (!HookConflictError.is(error) || typeof error.conflictingRunId !== "string" || !error.conflictingRunId) throw error;
       workflowRunId = error.conflictingRunId;
     }
     return await readBoundDispatch(await bindSimulationWorkflowRun(current.id, workflowRunId));
