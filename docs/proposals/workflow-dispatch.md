@@ -185,6 +185,20 @@ SDK or SQL reply is injected. A finite control-region/request diagnostic is
 retained on failure; no keys, DOM snapshots, login screens or HAR are captured.
 Application/runtime/lock bytes remain unchanged and D01-D06 stay closed.
 
+## Qualified result
+
+Runtime43510133974 atd54207ba passed D07/D08 alone, with actual saved runs,
+owner-preserving retry and completed/reloaded UI at1280×844 and390×844 touch
+emulation. Each had zero page errors/external requests/overflow. All source,
+Chromium/process/database/network/scratch guards and uploaded-proof cleanup
+passed. The complete [qualification packet](../results/2026/11-13/workflow-dispatch.md)
+combines these two identities with D01-D06 from43508517484 atd5a868d0. Only
+two fixture files and two docs changed between the sources; all app/Workflow/
+dependency/lock bytes are identical. Seven temporary workflows are disabled and
+all task QA refs are absent. The original failures and Runtime2's unverified
+cleanup remain preserved. Main/production and the hosted environment-write gate
+remain unchanged; real provider/billing and hosted transport are not qualified.
+
 Lifecycle support and exact restart semantics must follow the installed
 SDK's actual local World, not an assumed API. A mocked `start()` is only unit
 evidence and cannot replace the real runtime boundary. Preserve every original

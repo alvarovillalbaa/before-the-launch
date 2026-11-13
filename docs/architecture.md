@@ -33,9 +33,11 @@ the existing `workflowRunId` is bound through compare-and-set by both dispatcher
 and worker. Only the saved run ID is passed. Node/SQL/model execution lives in a
 step with zero automatic body retries; SQL claims, admissions and partial-result
 reconciliation remain authoritative. There is no request-lifetime execution
-fallback. Candidate runtime qualification is pending under
-[the release contract](proposals/workflow-dispatch.md); earlier checks retain
-their own sources and do not qualify the new dependency/runtime.
+fallback. A shared process promise explicitly starts the World when a saved
+request is reopened. [Eight runtime/UI identities](results/2026/11-13/workflow-dispatch.md)
+are qualified across preserved originals under
+[the release contract](proposals/workflow-dispatch.md). Earlier checks retain
+their own sources; hosted access/persistence and real billing remain unverified.
 
 Local commands bind127.0.0.1 because the SDK's Local World has no authentication.
 Do not expose its generated routes through a public proxy. Vercel uses its

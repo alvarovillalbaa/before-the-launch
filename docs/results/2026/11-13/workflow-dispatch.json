@@ -1,0 +1,2507 @@
+{
+  "schemaVersion": 1,
+  "kind": "before-launch.workflow-dispatch-qualification",
+  "observedAtUtc": "2026-11-13T21:26:00Z",
+  "repository": "alvarovillalbaa/before-the-launch",
+  "branch": "work/durable-simulations-20261113",
+  "qualification": {
+    "distinctIdentities": 8,
+    "oneGreenEightCaseInvocation": false,
+    "sources": [
+      {
+        "source": "d5a868d04e3d90801e75860ad7f7c77aade93155",
+        "runId": 43508517484,
+        "identities": [
+          "D01",
+          "D02",
+          "D03",
+          "D04",
+          "D05",
+          "D06"
+        ]
+      },
+      {
+        "source": "d54207ba6ec2d1184c9b5acfa5d37c19308c329c",
+        "runId": 43510133974,
+        "identities": [
+          "D07",
+          "D08"
+        ]
+      }
+    ],
+    "changedBetweenQualifiedSources": [
+      "docs/deployment.md",
+      "docs/proposals/workflow-dispatch.md",
+      "tests/integration/workflow-dispatch.mjs",
+      "tests/scripts/run-workflow-dispatch.mjs"
+    ],
+    "applicationWorkflowDependenciesAndLockUnchanged": true,
+    "older137And48SuitesReplayed": false
+  },
+  "prerequisite": {
+    "runId": 43501105419,
+    "workflowId": 417707082,
+    "artifactId": 14074725267,
+    "archiveSha256": "2b1c9fabbc9a89077dd6d32f7ead0e383d49842ce28d2116cfbbb934c791ac16",
+    "receipt": {
+      "kind": "before-launch.workflow-prerequisite",
+      "runId": "43501105419",
+      "source": "82ad999f749f8ddf3859343607fa9ef63458a4d8",
+      "commands": [
+        {
+          "label": "node-version",
+          "exitCode": 0,
+          "forced": false,
+          "reaped": true,
+          "groupAbsent": true,
+          "stdout": {
+            "bytes": 9,
+            "sha256": "2266957ed9a639bd7264d714bfa798a961510bf2e50695c668ab8fc0c3f4e906"
+          },
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        {
+          "label": "pinned-pnpm-tool",
+          "exitCode": 0,
+          "forced": false,
+          "reaped": true,
+          "groupAbsent": true,
+          "stdout": {
+            "bytes": 23,
+            "sha256": "da13ab9d025b19c91553bc7d4c450975d3e4e36dd7c5fef6f223f8008ba39547"
+          },
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        {
+          "label": "pnpm-version",
+          "exitCode": 0,
+          "forced": false,
+          "reaped": true,
+          "groupAbsent": true,
+          "stdout": {
+            "bytes": 8,
+            "sha256": "d57d8c9c1f2bf0cd42f130efec6786ebacc3a3e25d8695ad1ca56216de38faa4"
+          },
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        {
+          "label": "resolve-exact-workflow",
+          "exitCode": 0,
+          "forced": false,
+          "reaped": true,
+          "groupAbsent": true,
+          "stdout": {
+            "bytes": 883,
+            "sha256": "a4e964e4e8a04bce4e2d2fbb9ff63b4cc4dc7e2f8e0c5a3a64f47306a2b40275"
+          },
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        {
+          "label": "frozen-install",
+          "exitCode": 0,
+          "forced": false,
+          "reaped": true,
+          "groupAbsent": true,
+          "stdout": {
+            "bytes": 1764,
+            "sha256": "2c55b2280871d499bf71f1166183b11d0b4f67501faf3774f45e64dea1a89db7"
+          },
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      ],
+      "cleanup": {
+        "capturedChildGroupsAbsent": true,
+        "ownedNodeModulesAbsent": true,
+        "privateFiles": 10,
+        "scratchAbsent": true
+      },
+      "testsAppDatabaseBrowserOrModelExecuted": false,
+      "sourceBefore": {
+        "files": 1059,
+        "bytes": 10034900,
+        "vectorSha256": "89162cffdcf9c6362e81a9bdc1264d455c5339486528c5db08f1c74ed6f2d456"
+      },
+      "nodeVersion": "v22.23.4",
+      "directVersionsBefore": {
+        "@ai-sdk/react": "3.0.211",
+        "@base-ui/react": "1.6.0",
+        "@vercel/blob": "2.8.2",
+        "ai": "6.0.209",
+        "cheerio": "1.2.0",
+        "class-variance-authority": "0.7.1",
+        "clsx": "2.1.1",
+        "cmdk": "1.1.1",
+        "date-fns": "4.4.0",
+        "dotenv": "17.4.2",
+        "drizzle-orm": "0.45.2",
+        "embla-carousel-react": "8.6.0",
+        "input-otp": "1.4.2",
+        "lucide-react": "1.21.0",
+        "mammoth": "1.12.0",
+        "next": "16.2.9",
+        "next-themes": "0.4.6",
+        "pdf-parse": "2.4.5",
+        "pg": "8.22.0",
+        "radix-ui": "1.6.0",
+        "react": "19.2.4",
+        "react-day-picker": "10.0.1",
+        "react-dom": "19.2.4",
+        "react-resizable-panels": "4.11.2",
+        "recharts": "3.9.0",
+        "shadcn": "4.11.0",
+        "sonner": "2.0.7",
+        "tailwind-merge": "3.6.0",
+        "tw-animate-css": "1.4.0",
+        "vaul": "1.1.2",
+        "workflow": "4.5.0",
+        "zod": "4.4.3",
+        "@playwright/test": "1.61.1",
+        "@tailwindcss/postcss": "4.3.1",
+        "@types/node": "20.19.43",
+        "@types/pg": "8.20.0",
+        "@types/react": "19.2.17",
+        "@types/react-dom": "19.2.3",
+        "@vitejs/plugin-react": "5.2.0",
+        "@vitest/coverage-v8": "4.1.9",
+        "drizzle-kit": "0.31.10",
+        "eslint": "9.39.4",
+        "eslint-config-next": "16.2.9",
+        "tailwindcss": "4.3.1",
+        "tsx": "4.22.4",
+        "typescript": "5.9.3",
+        "vitest": "4.1.9"
+      },
+      "directVersionsAfter": {
+        "@ai-sdk/react": "3.0.211",
+        "@base-ui/react": "1.6.0",
+        "@vercel/blob": "2.8.2",
+        "ai": "6.0.209",
+        "cheerio": "1.2.0",
+        "class-variance-authority": "0.7.1",
+        "clsx": "2.1.1",
+        "cmdk": "1.1.1",
+        "date-fns": "4.4.0",
+        "dotenv": "17.4.2",
+        "drizzle-orm": "0.45.2",
+        "embla-carousel-react": "8.6.0",
+        "input-otp": "1.4.2",
+        "lucide-react": "1.21.0",
+        "mammoth": "1.12.0",
+        "next": "16.2.9",
+        "next-themes": "0.4.6",
+        "pdf-parse": "2.4.5",
+        "pg": "8.22.0",
+        "radix-ui": "1.6.0",
+        "react": "19.2.4",
+        "react-day-picker": "10.0.1",
+        "react-dom": "19.2.4",
+        "react-resizable-panels": "4.11.2",
+        "recharts": "3.9.0",
+        "shadcn": "4.11.0",
+        "sonner": "2.0.7",
+        "tailwind-merge": "3.6.0",
+        "tw-animate-css": "1.4.0",
+        "vaul": "1.1.2",
+        "workflow": "5.4.0",
+        "zod": "4.4.3",
+        "@playwright/test": "1.61.1",
+        "@tailwindcss/postcss": "4.3.1",
+        "@types/node": "20.19.43",
+        "@types/pg": "8.20.0",
+        "@types/react": "19.2.17",
+        "@types/react-dom": "19.2.3",
+        "@vitejs/plugin-react": "5.2.0",
+        "@vitest/coverage-v8": "4.1.9",
+        "drizzle-kit": "0.31.10",
+        "eslint": "9.39.4",
+        "eslint-config-next": "16.2.9",
+        "tailwindcss": "4.3.1",
+        "tsx": "4.22.4",
+        "typescript": "5.9.3",
+        "vitest": "4.1.9"
+      },
+      "sourceAfterLock": {
+        "files": 1059,
+        "bytes": 10041249,
+        "vectorSha256": "54b24731cd0a096c462e32bf907ff8378a87995240eb583ba26757c0d25bcb04"
+      },
+      "lock": {
+        "bytes": 470322,
+        "sha256": "017c182d5d8f6595dd461f5ac20f678f3f80f9576437d6b88cc6f6dfd1a0b3cb",
+        "blob": "19089cf30d323bbe8436e66a535d6f342f0a1d95"
+      },
+      "bundledGuides": [
+        {
+          "package": "workflow",
+          "installedPath": "node_modules/workflow/docs/api-reference/workflow/get-workflow-metadata.mdx",
+          "file": "workflow--api-reference--workflow--get-workflow-metadata.mdx",
+          "bytes": 3023,
+          "sha256": "ebfc7756bcfbdf4f51880f6f7adbf2eda28e3798d70637bd2cf22fe9cf3a25f5"
+        },
+        {
+          "package": "workflow",
+          "installedPath": "node_modules/workflow/docs/api-reference/workflow-api/start.mdx",
+          "file": "workflow--api-reference--workflow-api--start.mdx",
+          "bytes": 21971,
+          "sha256": "3789c74f88d3729aa66e731027236e050bb2ba8c48174d55e32ceefb8efc7229"
+        },
+        {
+          "package": "workflow",
+          "installedPath": "node_modules/workflow/docs/cookbook/common-patterns/idempotency.mdx",
+          "file": "workflow--cookbook--common-patterns--idempotency.mdx",
+          "bytes": 4999,
+          "sha256": "ff562ebf872aac50a1c3596a0f00068cb3465fc626f952feb61846581a074681"
+        },
+        {
+          "package": "workflow",
+          "installedPath": "node_modules/workflow/docs/foundations/idempotency.mdx",
+          "file": "workflow--foundations--idempotency.mdx",
+          "bytes": 21488,
+          "sha256": "86d9d274909c4ddcf24948773143b5ba905699c5d333d870c027ad6fb9c3d847"
+        },
+        {
+          "package": "workflow",
+          "installedPath": "node_modules/workflow/docs/foundations/workflows-and-steps.mdx",
+          "file": "workflow--foundations--workflows-and-steps.mdx",
+          "bytes": 8670,
+          "sha256": "0c80f32a9eccc8025512fed9ba0a2c106fb31ea840a015ae9f15d2f7ff0f3f84"
+        },
+        {
+          "package": "workflow",
+          "installedPath": "node_modules/workflow/docs/getting-started/next.mdx",
+          "file": "workflow--getting-started--next.mdx",
+          "bytes": 10519,
+          "sha256": "f24c760f12dfc2f1b34649b08e30f74b4fff0680bd7909dfd67281d13bbb6feb"
+        },
+        {
+          "package": "workflow",
+          "installedPath": "node_modules/workflow/docs/worlds/local.mdx",
+          "file": "workflow--worlds--local.mdx",
+          "bytes": 9958,
+          "sha256": "23669a0ddc312087bf713b9c312d0cb77ec9e1a2cecdeddad1c8bc19cc72e18e"
+        },
+        {
+          "package": "next",
+          "installedPath": "node_modules/next/dist/docs/01-app/03-api-reference/03-file-conventions/route.md",
+          "file": "next--01-app--03-api-reference--03-file-conventions--route.md",
+          "bytes": 20018,
+          "sha256": "16421e5b5c4643d225a48f17960c27a1dcf3061ca6873a0eead6ae83297370f4"
+        },
+        {
+          "package": "next",
+          "installedPath": "node_modules/next/dist/docs/01-app/03-api-reference/04-functions/after.md",
+          "file": "next--01-app--03-api-reference--04-functions--after.md",
+          "bytes": 11299,
+          "sha256": "6cc26debbaff0d88f5b883ef987017d600b2511f06e5367cde3f1403f2dcc643"
+        }
+      ],
+      "nextBundledGuidesAvailable": true,
+      "frozenInstallSourceUnchanged": true,
+      "sourceAfterCleanup": {
+        "files": 1059,
+        "bytes": 10041249,
+        "vectorSha256": "54b24731cd0a096c462e32bf907ff8378a87995240eb583ba26757c0d25bcb04"
+      },
+      "finalStatus": " M pnpm-lock.yaml\n",
+      "accepted": true
+    },
+    "workflowState": "disabled_manually",
+    "qaRefAbsent": true
+  },
+  "originals": [
+    {
+      "runId": 43506370496,
+      "url": "https://github.com/alvarovillalbaa/before-the-launch/actions/runs/43506370496",
+      "qaCommit": "bc9b337de8249b3881c6f444506e3cadfac15da9",
+      "workflowId": 417735794,
+      "workflowState": "disabled_manually",
+      "qaRef": "qa/btl-workflow-runtime-20261113-1",
+      "qaRefShaCheckedBeforeDeletion": true,
+      "qaRefAbsent": true,
+      "artifact": {
+        "id": 14076785782,
+        "sha256": "1eb1f3467ef51ddc400d837288354434fb1d3637b7051227bf5d3a8f0f321606",
+        "originalArchiveRetainedLocally": true,
+        "receiptAndSourceVectorHashVerified": true
+      },
+      "receipt": {
+        "kind": "before-launch.workflow-dispatch",
+        "source": "00867b610d556ddb6d2ac44a3ccbdbaaca013ee2",
+        "runId": "43506370496",
+        "node": "v22.23.4",
+        "commands": [
+          {
+            "label": "pinned-pnpm",
+            "pid": 2438,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 23,
+              "sha256": "da13ab9d025b19c91553bc7d4c450975d3e4e36dd7c5fef6f223f8008ba39547"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "pnpm-version",
+            "pid": 2458,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 8,
+              "sha256": "d57d8c9c1f2bf0cd42f130efec6786ebacc3a3e25d8695ad1ca56216de38faa4"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "frozen-install",
+            "pid": 2471,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 1824,
+              "sha256": "6255d91250d810d653410e7001d8fa87b9eaabf45bc08840b0cfeb85da48ebdc"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "owned-network",
+            "pid": 2493,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 65,
+              "sha256": "722474432270b52c9d764f692152f97b9724c8b3220ea8d6ee8596ca4041b7a1"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "owned-postgresql",
+            "pid": 2517,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 65,
+              "sha256": "da40afc24206cc3a73bb08bf6138a1086a1167d0652226d3d73978e11b5c9996"
+            },
+            "stderr": {
+              "bytes": 1520,
+              "sha256": "0f745efa544a29fa14027c5eebaa89912dac2e93c1b210a777d0ff10b0cb4702"
+            }
+          },
+          {
+            "label": "owned-database-identity",
+            "pid": 2654,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 9961,
+              "sha256": "e6cd385c9df9bc966b3f0ac69fc6e4c1c8f45332c8db3db1c8c1de62462c0085"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "database-image-identity",
+            "pid": 2684,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 4244,
+              "sha256": "a06ad544b2d2570be53024ce5faff160b417ef988ad0ff24938017465e50931f"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "verify-owned-container",
+            "pid": 2730,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 9961,
+              "sha256": "e6cd385c9df9bc966b3f0ac69fc6e4c1c8f45332c8db3db1c8c1de62462c0085"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "remove-owned-container-and-volumes",
+            "pid": 2738,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 27,
+              "sha256": "a5b48fa55f7a4d21e50d1448248aee844362a2ebdf675b549c36c57bc1830973"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "readback-owned-container-absence",
+            "pid": 2786,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "verify-owned-network",
+            "pid": 2794,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 892,
+              "sha256": "d8da522eaa56540b8727448642e637b2e776b97a7ffb806f3786e3bbf5c96942"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "remove-owned-network",
+            "pid": 2802,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 35,
+              "sha256": "e5e4783e7a5940a31cadff4d1365316a03fcca378d31e3ea16649409f5933cb2"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "readback-owned-network-absence",
+            "pid": 2821,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          }
+        ],
+        "checks": [],
+        "cleanup": {
+          "capturedProcessGroupsAbsent": true,
+          "ownedDatabaseAbsent": true,
+          "ownedNetworkAbsent": true,
+          "sourceClean": true,
+          "privateScratchAbsent": true
+        },
+        "accepted": false,
+        "sourceBefore": {
+          "files": 1064,
+          "bytes": 10086912,
+          "sha256": "5fd1828d49045ad82df0289cad95f7be79a0faa1ba2b61d3aa9e0db7f5a43421"
+        },
+        "versions": {
+          "workflow": "5.4.0",
+          "next": "16.2.9",
+          "@playwright/test": "1.61.1"
+        },
+        "database": {
+          "container": "btl-workflow-43506370496-1",
+          "network": "btl-workflow-43506370496-1-network",
+          "identity": "ac689818854dacf2664f62e9e98e53b55bf52ffc73e1e09769668e92513b1fa6",
+          "image": [
+            "postgres@sha256:d3244e8ce3f165ee3c93d9c4a4b1d0fe48b3a89e2287b717fdcbbde92d405065"
+          ]
+        },
+        "failure": {
+          "type": "AssertionError",
+          "message": "owned PG readiness"
+        },
+        "sourceAfter": {
+          "files": 1064,
+          "bytes": 10086912,
+          "sha256": "5fd1828d49045ad82df0289cad95f7be79a0faa1ba2b61d3aa9e0db7f5a43421"
+        }
+      }
+    },
+    {
+      "runId": 43506996062,
+      "url": "https://github.com/alvarovillalbaa/before-the-launch/actions/runs/43506996062",
+      "qaCommit": "f129b0339d7998ea70d1167de57052437ebcce62",
+      "workflowId": 417739047,
+      "workflowState": "disabled_manually",
+      "qaRef": "qa/btl-workflow-runtime-20261113-2",
+      "qaRefShaCheckedBeforeDeletion": true,
+      "qaRefAbsent": true,
+      "artifact": {
+        "id": 14077117007,
+        "sha256": "f77d2aed007cb27f11a19eccbc95af7c67a1e5dd9474b74247a686c7968546df",
+        "originalArchiveRetainedLocally": true,
+        "receiptAndSourceVectorHashVerified": true
+      },
+      "receipt": {
+        "kind": "before-launch.workflow-dispatch",
+        "source": "0b6157b298a926377cd928782d92783bf0e10d32",
+        "runId": "43506996062",
+        "node": "v22.23.4",
+        "commands": [
+          {
+            "label": "pinned-pnpm",
+            "pid": 2201,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 23,
+              "sha256": "a941066d38162d18c88ea4b096d8cf11d19b0d46b973f6d916e2f9b8794e1f36"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "pnpm-version",
+            "pid": 2214,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 8,
+              "sha256": "d57d8c9c1f2bf0cd42f130efec6786ebacc3a3e25d8695ad1ca56216de38faa4"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "frozen-install",
+            "pid": 2226,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 1707,
+              "sha256": "3b9eec1cc04b92e48803794382206bb63291f94a048c0e95d38123cf9f736d93"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "owned-network",
+            "pid": 2252,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 65,
+              "sha256": "d4117fe0e0dae07540c3af09d34fa3dce8f8aee31f97c438e237b2f39c57bd30"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "owned-postgresql",
+            "pid": 2293,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 65,
+              "sha256": "46bcb539a26de01178a86119909a0b426c107d3a5481c6002cafa7137038b62d"
+            },
+            "stderr": {
+              "bytes": 1586,
+              "sha256": "2b510e509c752446f310ffac54ef735e38a59470786fcab9851b7eefa914febd"
+            }
+          },
+          {
+            "label": "owned-database-identity",
+            "pid": 2456,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 10167,
+              "sha256": "b3fe71a6fe7e6af4ca0299cb47defd143b6b96467a08667f2fbd177b71631d20"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "database-image-identity",
+            "pid": 2484,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 4244,
+              "sha256": "eabf95367803aace19f41676014c94b9d5be2cd5d405e3bb4e82f989fb344f6f"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "existing-schema-empty-disposable-database",
+            "pid": 2529,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 8904,
+              "sha256": "7cab4b5b017a0a58bb9e896f8b7bd1b3e574ed660d60205c03fef990299105c1"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "authored-seed",
+            "pid": 2551,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 140,
+              "sha256": "5dcc2d07d6599807e9d0bab0f3743786ef3a5e9b4ca6a95d514a76d1e4be3f80"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "targeted-lint",
+            "pid": 2591,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "compiled-production-workflow",
+            "pid": 2603,
+            "exitCode": 1,
+            "reaped": true,
+            "groupAbsent": false,
+            "stdout": {
+              "bytes": 437,
+              "sha256": "c2f5039b4b07d4929de813c0da6ab1530a9b27f836852ab471040aa5d7ca79e4"
+            },
+            "stderr": {
+              "bytes": 720,
+              "sha256": "1d8ad289b5f23b7cbe9cc224f319374aebe3201d11480016e5c262b3b97da3ba"
+            }
+          }
+        ],
+        "checks": [],
+        "cleanup": {
+          "failure": {
+            "type": "AssertionError",
+            "message": "captured child group remains"
+          }
+        },
+        "accepted": false,
+        "sourceBefore": {
+          "files": 1064,
+          "bytes": 10088037,
+          "sha256": "07d4782a9f2b20248842233a029a935aa068841040dcfc6204c8fdf60d1ced66"
+        },
+        "versions": {
+          "workflow": "5.4.0",
+          "next": "16.2.9",
+          "@playwright/test": "1.61.1"
+        },
+        "database": {
+          "container": "btl-workflow-43506996062-1",
+          "network": "btl-workflow-43506996062-1-network",
+          "identity": "05e855ac44a7abd10c072a0348254a16ed8ebef937ba4b2bb093e112d3eb883c",
+          "image": [
+            "postgres@sha256:d3244e8ce3f165ee3c93d9c4a4b1d0fe48b3a89e2287b717fdcbbde92d405065"
+          ]
+        },
+        "failure": {
+          "type": "AssertionError",
+          "message": "compiled-production-workflow failed\n\n1 !== 0\n"
+        }
+      }
+    },
+    {
+      "runId": 43507480438,
+      "url": "https://github.com/alvarovillalbaa/before-the-launch/actions/runs/43507480438",
+      "qaCommit": "5669c9c2bf7dd65ff212e765d69c08a30821ae95",
+      "workflowId": 417741584,
+      "workflowState": "disabled_manually",
+      "qaRef": "qa/btl-workflow-runtime-20261113-3",
+      "qaRefShaCheckedBeforeDeletion": true,
+      "qaRefAbsent": true,
+      "artifact": {
+        "id": 14076672176,
+        "sha256": "f7a2cd6971b7cf3a5eadbc6755069ee0691cf413106dccea02417af1145a45be",
+        "originalArchiveRetainedLocally": true,
+        "receiptAndSourceVectorHashVerified": true
+      },
+      "receipt": {
+        "kind": "before-launch.workflow-dispatch",
+        "source": "b3b2482fefe967ff20b3cb1c8abaa7632f8f2a4d",
+        "runId": "43507480438",
+        "node": "v22.23.4",
+        "commands": [
+          {
+            "label": "pinned-pnpm",
+            "pid": 2412,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 23,
+              "sha256": "da13ab9d025b19c91553bc7d4c450975d3e4e36dd7c5fef6f223f8008ba39547"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "pnpm-version",
+            "pid": 2425,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 8,
+              "sha256": "d57d8c9c1f2bf0cd42f130efec6786ebacc3a3e25d8695ad1ca56216de38faa4"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "frozen-install",
+            "pid": 2437,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 1763,
+              "sha256": "eeeeab1354e9226a8e9c5ca31dc4ec974a0edebaa1215a9bd108c27558513ba1"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "owned-network",
+            "pid": 2486,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 65,
+              "sha256": "a1314370e438b57d5a571348fd19d37602af5b44cf8a70d63596e7759c5d263f"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "owned-postgresql",
+            "pid": 2526,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 65,
+              "sha256": "4c609bbf3ff81db745a26d615c33ef1c5c5aadb015280885f26d2062e04de32b"
+            },
+            "stderr": {
+              "bytes": 1586,
+              "sha256": "21d8b95080509136c0ba677fd321aed0f9df472807265cb7a63701de15951f77"
+            }
+          },
+          {
+            "label": "owned-database-identity",
+            "pid": 2687,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 10167,
+              "sha256": "f47b53a4a6588ad19474fd48731ae23212ec96de047b9a3abf47b41ce4bf92a0"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "database-image-identity",
+            "pid": 2716,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 4244,
+              "sha256": "9e61fd4fa9bb9da7b51e51c06dc237dda7dd2c2a69fd742dc4aaf8e360f5acc5"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "existing-schema-empty-disposable-database",
+            "pid": 2760,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 8904,
+              "sha256": "7cab4b5b017a0a58bb9e896f8b7bd1b3e574ed660d60205c03fef990299105c1"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "authored-seed",
+            "pid": 2781,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 140,
+              "sha256": "f4fba2f0683458f5c0afd7ab30f4a421c777a717cc5a98b35b066cf6f8157b91"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "targeted-lint",
+            "pid": 2821,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "compiled-production-workflow",
+            "pid": 2832,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 1469,
+              "sha256": "5a45309aceadea8c4e0c6d76658a37339eb8c03a2afde1a59d1793ebb4bf63a3"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "chromium-install",
+            "pid": 3062,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 16126,
+              "sha256": "8e7a09d15719fb99481c97656422f141b7089f86363b76032363e350b6d58745"
+            },
+            "stderr": {
+              "bytes": 237,
+              "sha256": "3b419c69ff321ee6851fa5489a2bb0c9a2ef093815a709dbd05391f89767267f"
+            }
+          },
+          {
+            "label": "authored-tls",
+            "pid": 3689,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr": {
+              "bytes": 2181,
+              "sha256": "eac730567c68f8ef4daf5e9cfb4e6d0b8867a3d3cde9ad4cc3b71e05d8c29623"
+            }
+          },
+          {
+            "label": "production-server",
+            "pid": 3690,
+            "exitCode": null,
+            "reaped": true,
+            "groupAbsent": true,
+            "controlledCrash": true,
+            "stdout": {
+              "bytes": 734,
+              "sha256": "bb412fc416093eda47cbed4728e919670f39daa2b2ab93af0ef41b62671ccce2"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "production-server",
+            "pid": 3714,
+            "exitCode": 143,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 116,
+              "sha256": "54c3bf1abcc642458632a969d8958ab115b19fd897e180d207e1311748f87e21"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "verify-owned-container",
+            "pid": 3741,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 10167,
+              "sha256": "f47b53a4a6588ad19474fd48731ae23212ec96de047b9a3abf47b41ce4bf92a0"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "remove-owned-container-and-volumes",
+            "pid": 3749,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 27,
+              "sha256": "a156fed7738f68a951ff93d8fbe48a2b2d4465a809ad50be3ca793b454301292"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "readback-owned-container-absence",
+            "pid": 3808,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "verify-owned-network",
+            "pid": 3816,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 894,
+              "sha256": "a747c00b9e4df92a7c5b84a79aec55ce188730646ff7f429db2109d7ecd2880a"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "remove-owned-network",
+            "pid": 3824,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 35,
+              "sha256": "8dc4a77a057498c2fd1fdd74785fb787b00f84d9b2dc809662ebd2cb79cf841b"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "readback-owned-network-absence",
+            "pid": 3857,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          }
+        ],
+        "checks": [
+          {
+            "id": "D01",
+            "name": "operator access and cross-origin refusal",
+            "status": "passed",
+            "evidence": {
+              "unauthenticatedRead": 401,
+              "unauthenticatedExecute": 401,
+              "crossOriginWrite": 403
+            }
+          },
+          {
+            "id": "D02",
+            "name": "real API create, Workflow step and PostgreSQL report",
+            "status": "passed",
+            "evidence": {
+              "id": "cc573f42-a07f-4968-b339-34f368e4a4ff",
+              "workflowRunId": "wrun_01M7BBSEY4TNXMS14J3EHBDPZH",
+              "status": "completed",
+              "findings": 2,
+              "modelCostCents": 0
+            }
+          },
+          {
+            "id": "D03",
+            "name": "concurrent dispatch keeps one native owner and one SQL execution",
+            "status": "passed",
+            "evidence": {
+              "id": "43720dfd-2856-4698-ad69-9186fce2423e",
+              "workflowRunId": "wrun_01M7BBSFA39P1081NYDR44EA4P",
+              "status": "completed",
+              "findings": 2,
+              "modelCostCents": 0,
+              "concurrentRequests": 4,
+              "controlledBindingLoss": true
+            }
+          },
+          {
+            "id": "D04",
+            "name": "lost real HTTP response retries the saved owner",
+            "status": "passed",
+            "evidence": {
+              "id": "0fa75c27-bc25-4032-8f1f-0cdaf5e1723f",
+              "workflowRunId": "wrun_01M7BBSFSF9XZJ95PC8TJKMHBZ",
+              "status": "completed",
+              "findings": 2,
+              "modelCostCents": 0,
+              "realCompletedResponseLost": true
+            }
+          },
+          {
+            "id": "D05",
+            "name": "saved journal recovers a queued run after server process restart",
+            "status": "failed",
+            "error": {
+              "type": "Error",
+              "message": "saved_run_not_completed"
+            }
+          }
+        ],
+        "cleanup": {
+          "capturedProcessGroupsAbsent": true,
+          "ownedDatabaseAbsent": true,
+          "ownedNetworkAbsent": true,
+          "sourceClean": true,
+          "privateScratchAbsent": true
+        },
+        "accepted": false,
+        "sourceBefore": {
+          "files": 1064,
+          "bytes": 10089586,
+          "sha256": "77a39faab984d8d5b804b7b1ac12cc8b61632f548e9ac6abecbe742f7df5375b"
+        },
+        "versions": {
+          "workflow": "5.4.0",
+          "next": "16.2.9",
+          "@playwright/test": "1.61.1"
+        },
+        "database": {
+          "container": "btl-workflow-43507480438-1",
+          "network": "btl-workflow-43507480438-1-network",
+          "identity": "aae7d7adc9f860fc9112b9cd5e356ad59109a6e0a629d8c3c6646a3dca6bc1d7",
+          "image": [
+            "postgres@sha256:d3244e8ce3f165ee3c93d9c4a4b1d0fe48b3a89e2287b717fdcbbde92d405065"
+          ]
+        },
+        "transport": {
+          "queueHeld": 6,
+          "queueDelivered": 6,
+          "actualResponsesDropped": 1,
+          "origin": "https://127.0.0.1:3120",
+          "certificateSha256": "a7c32e54bf03ee44492ff728dc80ce7d14d322e8c0be2e4894cb0609d3043ad7",
+          "browserTrust": "exact authored certificate SPKI"
+        },
+        "failure": {
+          "type": "Error",
+          "message": "saved_run_not_completed"
+        },
+        "sourceAfter": {
+          "files": 1064,
+          "bytes": 10089586,
+          "sha256": "77a39faab984d8d5b804b7b1ac12cc8b61632f548e9ac6abecbe742f7df5375b"
+        }
+      }
+    },
+    {
+      "runId": 43508517484,
+      "url": "https://github.com/alvarovillalbaa/before-the-launch/actions/runs/43508517484",
+      "qaCommit": "6abb395a97837512dcb44bac059c413ce660de57",
+      "workflowId": 417746619,
+      "workflowState": "disabled_manually",
+      "qaRef": "qa/btl-workflow-runtime-20261113-4",
+      "qaRefShaCheckedBeforeDeletion": true,
+      "qaRefAbsent": true,
+      "artifact": {
+        "id": 14077960972,
+        "sha256": "0f21d939df7af6220d006fd8002984eac31ccf22466af9131193491a909fe903",
+        "originalArchiveRetainedLocally": true,
+        "receiptAndSourceVectorHashVerified": true
+      },
+      "receipt": {
+        "kind": "before-launch.workflow-dispatch",
+        "source": "d5a868d04e3d90801e75860ad7f7c77aade93155",
+        "runId": "43508517484",
+        "node": "v22.23.4",
+        "commands": [
+          {
+            "label": "pinned-pnpm",
+            "pid": 2252,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 23,
+              "sha256": "da13ab9d025b19c91553bc7d4c450975d3e4e36dd7c5fef6f223f8008ba39547"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "pnpm-version",
+            "pid": 2265,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 8,
+              "sha256": "d57d8c9c1f2bf0cd42f130efec6786ebacc3a3e25d8695ad1ca56216de38faa4"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "frozen-install",
+            "pid": 2277,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 1582,
+              "sha256": "d764a75bc978d55f0fac95102e0defb3d4aa43ae3553eb436892e0e9da6410f5"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "owned-network",
+            "pid": 2293,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 65,
+              "sha256": "715cfd990c78e4630858c62f39c3f0d5f51486ab25e0dea7c555c6f4ecf77ad0"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "owned-postgresql",
+            "pid": 2335,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 65,
+              "sha256": "af249d45dea514ae6cb9b5a01b9d6f8c0c9e447348cb39fa894995eadfd4cab0"
+            },
+            "stderr": {
+              "bytes": 1487,
+              "sha256": "0d70fecd219123628b61e0b9ed8a79972d45fc997c059c8220b0224d29062c9d"
+            }
+          },
+          {
+            "label": "owned-database-identity",
+            "pid": 2491,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 10167,
+              "sha256": "a6ab5efd228b7c27e269c76c0815c47b20a3e6843c9eb72c494b8d381d9c27d7"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "database-image-identity",
+            "pid": 2524,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 4244,
+              "sha256": "f3c3fbfda9c36cf7244dc5ac6f5cdef9591e76bdeb8ec6e09c80026b046f6657"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "existing-schema-empty-disposable-database",
+            "pid": 2568,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 8904,
+              "sha256": "7cab4b5b017a0a58bb9e896f8b7bd1b3e574ed660d60205c03fef990299105c1"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "authored-seed",
+            "pid": 2589,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 140,
+              "sha256": "fc6a5c81cc7ba9c2402282f007b7bce76871215ec1ba3d5cb1066ae446468b28"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "targeted-lint",
+            "pid": 2628,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "compiled-production-workflow",
+            "pid": 2639,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 1469,
+              "sha256": "bb809b4435dcdc415906968071ad4796a06729382b3e0fdf288958a5fe7a8494"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "chromium-install",
+            "pid": 2796,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 16243,
+              "sha256": "6e60c930e5391b6b87113d925c3c43697dd98a034ece833dc410cf98c66a9060"
+            },
+            "stderr": {
+              "bytes": 237,
+              "sha256": "3b419c69ff321ee6851fa5489a2bb0c9a2ef093815a709dbd05391f89767267f"
+            }
+          },
+          {
+            "label": "authored-tls",
+            "pid": 3430,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr": {
+              "bytes": 2138,
+              "sha256": "546312dfddeb81940febb21d983b4a3e2207cb1819b641e117ec8436bf80e6bc"
+            }
+          },
+          {
+            "label": "production-server",
+            "pid": 3431,
+            "exitCode": null,
+            "reaped": true,
+            "groupAbsent": true,
+            "controlledCrash": true,
+            "stdout": {
+              "bytes": 733,
+              "sha256": "468acd6d366e2f7a08f3eb0c69704dbeeb35f7c226ef8f6e93d5b3e7d2efdbe9"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "production-server",
+            "pid": 3457,
+            "exitCode": 143,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 733,
+              "sha256": "bdeb022b6733c092264493b61824522b45bd91c507f55aa17e264ecb0b916f79"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "verify-owned-container",
+            "pid": 3475,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 10167,
+              "sha256": "a6ab5efd228b7c27e269c76c0815c47b20a3e6843c9eb72c494b8d381d9c27d7"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "remove-owned-container-and-volumes",
+            "pid": 3483,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 27,
+              "sha256": "7685af6df947009ec0ed38fd80713baa8440999ee86818603eaf19bde0440dc5"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "readback-owned-container-absence",
+            "pid": 3542,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "verify-owned-network",
+            "pid": 3550,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 894,
+              "sha256": "ada4d3546e6e5c6337590296c256822156f0f0b74d5685158d1073fbf698b270"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "remove-owned-network",
+            "pid": 3559,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 35,
+              "sha256": "b1de2f975a4b7c5baacfddb0bc3bbc5cdeac3eccd3790b29dd0c027ba45c185c"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "readback-owned-network-absence",
+            "pid": 3592,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          }
+        ],
+        "checks": [
+          {
+            "id": "D01",
+            "name": "operator access and cross-origin refusal",
+            "status": "passed",
+            "evidence": {
+              "unauthenticatedRead": 401,
+              "unauthenticatedExecute": 401,
+              "crossOriginWrite": 403
+            }
+          },
+          {
+            "id": "D02",
+            "name": "real API create, Workflow step and PostgreSQL report",
+            "status": "passed",
+            "evidence": {
+              "id": "80abc388-1f61-43c6-945c-c40bfdec60d2",
+              "workflowRunId": "wrun_01M7BC4E01R4WTE3VMKV0BRNNM",
+              "status": "completed",
+              "findings": 2,
+              "modelCostCents": 0
+            }
+          },
+          {
+            "id": "D03",
+            "name": "concurrent dispatch keeps one native owner and one SQL execution",
+            "status": "passed",
+            "evidence": {
+              "id": "c0e19c5c-ec14-4643-b763-254714e21d95",
+              "workflowRunId": "wrun_01M7BC4E6P8JX0Z0GVR2E0E4XP",
+              "status": "completed",
+              "findings": 2,
+              "modelCostCents": 0,
+              "concurrentRequests": 4,
+              "controlledBindingLoss": true
+            }
+          },
+          {
+            "id": "D04",
+            "name": "lost real HTTP response retries the saved owner",
+            "status": "passed",
+            "evidence": {
+              "id": "359483c5-4257-4903-a67b-cbedd6b4b6a6",
+              "workflowRunId": "wrun_01M7BC4EHTHJK2J1CHCW27MRMK",
+              "status": "completed",
+              "findings": 2,
+              "modelCostCents": 0,
+              "realCompletedResponseLost": true
+            }
+          },
+          {
+            "id": "D05",
+            "name": "saved journal recovers a queued run after server process restart",
+            "status": "passed",
+            "evidence": {
+              "id": "a66194b9-ea11-4b51-8562-5ed328dcf1fe",
+              "workflowRunId": "wrun_01M7BC4ER5CQ5QQ5HTB2ND1J5G",
+              "status": "completed",
+              "findings": 2,
+              "modelCostCents": 0,
+              "recoveryTrigger": "saved-run reopen initializes Local World",
+              "interruptedBody": false
+            }
+          },
+          {
+            "id": "D06",
+            "name": "queued stop and authored expired claim never execute personas",
+            "status": "passed",
+            "evidence": {
+              "stopped": "a03bc4a9-7739-4527-83b8-faf697b3cdd4",
+              "expired": "18eb60e0-14a0-4d3c-b93c-2b0f02666485",
+              "personaAttempts": 0,
+              "expiry": "authored expired SQL claim, not a paid crash"
+            }
+          }
+        ],
+        "cleanup": {
+          "capturedProcessGroupsAbsent": true,
+          "ownedDatabaseAbsent": true,
+          "ownedNetworkAbsent": true,
+          "sourceClean": true,
+          "privateScratchAbsent": true
+        },
+        "accepted": false,
+        "sourceBefore": {
+          "files": 1064,
+          "bytes": 10091531,
+          "sha256": "95e34ad3b720d41305d51a6a864e61133dfc4b35a40999d56f7563798e68a0d5"
+        },
+        "versions": {
+          "workflow": "5.4.0",
+          "next": "16.2.9",
+          "@playwright/test": "1.61.1"
+        },
+        "database": {
+          "container": "btl-workflow-43508517484-1",
+          "network": "btl-workflow-43508517484-1-network",
+          "identity": "30cc78f214b3fe4e357385a116afa97a59138df6facaddca37e2e65705fce713",
+          "image": [
+            "postgres@sha256:d3244e8ce3f165ee3c93d9c4a4b1d0fe48b3a89e2287b717fdcbbde92d405065"
+          ]
+        },
+        "transport": {
+          "queueHeld": 7,
+          "queueDelivered": 9,
+          "actualResponsesDropped": 1,
+          "origin": "https://127.0.0.1:3120",
+          "certificateSha256": "5022c1511a5185c71157f2bb2d93c77cbc598ee6e5e5149a260def4afcc1909b",
+          "browserTrust": "exact authored certificate SPKI"
+        },
+        "failure": {
+          "type": "Error",
+          "message": "Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1228/chrome-headless-shell-linux64/chrome-headless-shell\n╔════════════════════════════════════════════════════════════╗\n║ Looks like Playwright was just installed or updated.       ║\n║ Please run the following command to download new browsers: ║\n║                                                            ║\n║     npx playwright install                                 ║\n║                                                            ║\n║ <3 Playwright Team                                         ║\n╚════════════════════════════════════════════════════════════╝ Failed to launch browser."
+        },
+        "sourceAfter": {
+          "files": 1064,
+          "bytes": 10091531,
+          "sha256": "95e34ad3b720d41305d51a6a864e61133dfc4b35a40999d56f7563798e68a0d5"
+        }
+      }
+    },
+    {
+      "runId": 43509180543,
+      "url": "https://github.com/alvarovillalbaa/before-the-launch/actions/runs/43509180543",
+      "qaCommit": "e3f9aac679a84695e408c344952a9e275e160290",
+      "workflowId": 417750278,
+      "workflowState": "disabled_manually",
+      "qaRef": "qa/btl-workflow-runtime-20261113-5",
+      "qaRefShaCheckedBeforeDeletion": true,
+      "qaRefAbsent": true,
+      "artifact": {
+        "id": 14078196380,
+        "sha256": "2c395d601d5ed856fe8d7a3f93933639a3102430dfa8bdcdb0a6c5df747e6df2",
+        "originalArchiveRetainedLocally": true,
+        "receiptAndSourceVectorHashVerified": true
+      },
+      "receipt": {
+        "kind": "before-launch.workflow-dispatch",
+        "source": "cc0e37f02f4cb8db3d05ccb56b161845c50d36f0",
+        "runId": "43509180543",
+        "profile": "browser",
+        "node": "v22.23.4",
+        "commands": [
+          {
+            "label": "pinned-pnpm",
+            "pid": 2227,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 23,
+              "sha256": "260b81283a0da65e0d8dfcf98575e940ede1f863ed00bc5c0ec5bd2f838907e1"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "pnpm-version",
+            "pid": 2240,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 8,
+              "sha256": "d57d8c9c1f2bf0cd42f130efec6786ebacc3a3e25d8695ad1ca56216de38faa4"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "frozen-install",
+            "pid": 2255,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 1824,
+              "sha256": "cd430f8bc0217c476074c7a46c704e14197b49d7632e38ff38685c046ea1ed1d"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "owned-network",
+            "pid": 2273,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 65,
+              "sha256": "4ba43870a8f07ac0055babd3490ef26e07823c8f9ff62584bcd2bdf8bcb67b81"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "owned-postgresql",
+            "pid": 2315,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 65,
+              "sha256": "bfd5b4e2a623240461e36e56cf24b3d4f7997c1562b29a2862ab3015882ef24a"
+            },
+            "stderr": {
+              "bytes": 1520,
+              "sha256": "9d54ea3c5bdec90326e7769d7583635049bb8d7f0e7974a6adfbbf9668eb45bc"
+            }
+          },
+          {
+            "label": "owned-database-identity",
+            "pid": 2481,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 10166,
+              "sha256": "44c6257e1eab383219281af69ba26d002a1a5f93b9c1e0a8771d40dc8578b6dd"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "database-image-identity",
+            "pid": 2508,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 4244,
+              "sha256": "dcf2d51ee37703f601a5c1b0c6de2f4cc8c682f11b43c8fd2a6e1f1af787d988"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "existing-schema-empty-disposable-database",
+            "pid": 2551,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 8904,
+              "sha256": "7cab4b5b017a0a58bb9e896f8b7bd1b3e574ed660d60205c03fef990299105c1"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "authored-seed",
+            "pid": 2573,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 140,
+              "sha256": "b394edf69fdafc3365abdd897689b2715af4a6b970cc01a03dfbce52bb51ce36"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "targeted-lint",
+            "pid": 2612,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "compiled-production-workflow",
+            "pid": 2624,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 1469,
+              "sha256": "33fb9547505f676c754de26401a9f088dd28cfc8399fcaef223688db9a21d1c0"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "chromium-install",
+            "pid": 2812,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 16126,
+              "sha256": "e3b12dad1ce3844bbc6b9dd9001a06f45b67644e2c99c5c093542525b6d06958"
+            },
+            "stderr": {
+              "bytes": 237,
+              "sha256": "3b419c69ff321ee6851fa5489a2bb0c9a2ef093815a709dbd05391f89767267f"
+            }
+          },
+          {
+            "label": "authored-tls",
+            "pid": 3446,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr": {
+              "bytes": 1108,
+              "sha256": "af043cda01236596c5c68619889db74825f0a4a82a46e76fa9d91f33e6a895e1"
+            }
+          },
+          {
+            "label": "production-server",
+            "pid": 3447,
+            "exitCode": 143,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 192,
+              "sha256": "815bb4fd9c307b3d6dccc21533efe99e8ceec3b51a501a904c7fb94d122959e6"
+            },
+            "stderr": {
+              "bytes": 293,
+              "sha256": "881a2fd839cc37104bab86f631fa492996cc0ad6a0b0a8308db68471c6d929d5"
+            }
+          },
+          {
+            "label": "verify-owned-container",
+            "pid": 3532,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 10166,
+              "sha256": "44c6257e1eab383219281af69ba26d002a1a5f93b9c1e0a8771d40dc8578b6dd"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "remove-owned-container-and-volumes",
+            "pid": 3540,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 27,
+              "sha256": "4cf3301b725c2c20d44187459d05e2ba878af75bbe02d38e3c1a8e69c3479ac0"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "readback-owned-container-absence",
+            "pid": 3600,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "verify-owned-network",
+            "pid": 3608,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 894,
+              "sha256": "c6661a32bc392b9e4a343c2b6559c0e26549380b52cc818f90dd89e8d61884df"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "remove-owned-network",
+            "pid": 3617,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 35,
+              "sha256": "60178c28e6e750fecbd55ee6b4ec0a9a8444f694b9a4649c0903fc429c69f39c"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "readback-owned-network-absence",
+            "pid": 3652,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          }
+        ],
+        "checks": [
+          {
+            "id": "D07",
+            "name": "desktop monitor retries an uncertain actual response",
+            "status": "failed",
+            "error": {
+              "type": "TimeoutError",
+              "message": "locator.waitFor: Timeout 25000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Retry this saved execution request', exact: true }) to be visible\n"
+            }
+          }
+        ],
+        "cleanup": {
+          "ownedChromiumReaped": true,
+          "capturedProcessGroupsAbsent": true,
+          "ownedDatabaseAbsent": true,
+          "ownedNetworkAbsent": true,
+          "sourceClean": true,
+          "privateScratchAbsent": true
+        },
+        "accepted": false,
+        "sourceBefore": {
+          "files": 1064,
+          "bytes": 10093570,
+          "sha256": "246da04d3290d4edbb35a595f8d2c36ece8757d4c2b7dc1f50a46f19531379fd"
+        },
+        "versions": {
+          "workflow": "5.4.0",
+          "next": "16.2.9",
+          "@playwright/test": "1.61.1"
+        },
+        "database": {
+          "container": "btl-workflow-43509180543-1",
+          "network": "btl-workflow-43509180543-1-network",
+          "identity": "fd8371a113f74c40a12232a000b3d7fc13fceedb9d7addf405478aba7b387f4f",
+          "image": [
+            "postgres@sha256:d3244e8ce3f165ee3c93d9c4a4b1d0fe48b3a89e2287b717fdcbbde92d405065"
+          ]
+        },
+        "transport": {
+          "queueHeld": 1,
+          "queueDelivered": 1,
+          "actualResponsesDropped": 1,
+          "origin": "https://127.0.0.1:3120",
+          "certificateSha256": "f10a0bce51d2bbde89cfb6cd178b8bfc1b731d8463681e37540821d812d6390a",
+          "browserTrust": "exact authored certificate SPKI"
+        },
+        "failure": {
+          "type": "TimeoutError",
+          "message": "locator.waitFor: Timeout 25000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Retry this saved execution request', exact: true }) to be visible\n"
+        },
+        "sourceAfter": {
+          "files": 1064,
+          "bytes": 10093570,
+          "sha256": "246da04d3290d4edbb35a595f8d2c36ece8757d4c2b7dc1f50a46f19531379fd"
+        }
+      }
+    },
+    {
+      "runId": 43510133974,
+      "url": "https://github.com/alvarovillalbaa/before-the-launch/actions/runs/43510133974",
+      "qaCommit": "a56d1caaa9ea5edf299b2663a0a19bb7c0534822",
+      "workflowId": 417755159,
+      "workflowState": "disabled_manually",
+      "qaRef": "qa/btl-workflow-runtime-20261113-6",
+      "qaRefShaCheckedBeforeDeletion": true,
+      "qaRefAbsent": true,
+      "artifact": {
+        "id": 14077274399,
+        "sha256": "a45e3ce995e9f825b1c662934520d5c2fd978ae0c6feead29a3e91fdcb5f5e84",
+        "originalArchiveRetainedLocally": true,
+        "receiptAndSourceVectorHashVerified": true
+      },
+      "receipt": {
+        "kind": "before-launch.workflow-dispatch",
+        "source": "d54207ba6ec2d1184c9b5acfa5d37c19308c329c",
+        "runId": "43510133974",
+        "profile": "browser",
+        "node": "v22.23.4",
+        "commands": [
+          {
+            "label": "pinned-pnpm",
+            "pid": 2249,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 23,
+              "sha256": "da13ab9d025b19c91553bc7d4c450975d3e4e36dd7c5fef6f223f8008ba39547"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "pnpm-version",
+            "pid": 2263,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 8,
+              "sha256": "d57d8c9c1f2bf0cd42f130efec6786ebacc3a3e25d8695ad1ca56216de38faa4"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "frozen-install",
+            "pid": 2275,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 1582,
+              "sha256": "88012071c189adab893b7b60c62f907659aa5a864fa0a0e4de1ac4cf755c8a61"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "owned-network",
+            "pid": 2291,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 65,
+              "sha256": "1adfe8c7b4b3689ff53fbe704657893ff0f0f467932c153f20a0e58a03ba9f7c"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "owned-postgresql",
+            "pid": 2332,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 65,
+              "sha256": "5d09f4cb23cc141aec18b3e9aa613f16217f957aa4abbc612f434810cfab1108"
+            },
+            "stderr": {
+              "bytes": 1586,
+              "sha256": "6352d8f2ae6c35982892b42631d0ea58dc538459b90653ed0742f0130ea0978e"
+            }
+          },
+          {
+            "label": "owned-database-identity",
+            "pid": 2490,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 10167,
+              "sha256": "f6640e9d4df52b62e5beb9a332ab729d7de11f7f95c39fe597b4461d5ece79c8"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "database-image-identity",
+            "pid": 2520,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 4244,
+              "sha256": "a3f90b852af9765087deb269171a2d4415af789b02561cf3f9b2ba50d0761ff7"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "existing-schema-empty-disposable-database",
+            "pid": 2564,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 8904,
+              "sha256": "7cab4b5b017a0a58bb9e896f8b7bd1b3e574ed660d60205c03fef990299105c1"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "authored-seed",
+            "pid": 2585,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 140,
+              "sha256": "311008361c18e721ee074b82784a608c777df1417c0ed5795b8c653fd0e8e851"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "targeted-lint",
+            "pid": 2625,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "compiled-production-workflow",
+            "pid": 2636,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 1469,
+              "sha256": "9846361cd16a3275ac8fa7654692a04dad4e686fafc83187faa4cfe5af16964e"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "chromium-install",
+            "pid": 2828,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 16243,
+              "sha256": "97c016835881380a1c4ab935514d2965630b48651cabc25eb4c84ab2c0da16a9"
+            },
+            "stderr": {
+              "bytes": 237,
+              "sha256": "3b419c69ff321ee6851fa5489a2bb0c9a2ef093815a709dbd05391f89767267f"
+            }
+          },
+          {
+            "label": "authored-tls",
+            "pid": 3462,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr": {
+              "bytes": 894,
+              "sha256": "91dd18043d884fb47a5873a7ebc8a8f78c6d933e24b2423ae29dbe0b05d64ea1"
+            }
+          },
+          {
+            "label": "production-server",
+            "pid": 3463,
+            "exitCode": 143,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 527,
+              "sha256": "a835c0b747b09acd27e98788a1651377aaf268231476f52f10d260b4f32a5f73"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "verify-owned-container",
+            "pid": 3554,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 10167,
+              "sha256": "f6640e9d4df52b62e5beb9a332ab729d7de11f7f95c39fe597b4461d5ece79c8"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "remove-owned-container-and-volumes",
+            "pid": 3562,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 27,
+              "sha256": "b1fcb787926fa6699d5965c94395e2d17f3ce1af73ce340da9c8cf21358703a8"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "readback-owned-container-absence",
+            "pid": 3621,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "verify-owned-network",
+            "pid": 3629,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 894,
+              "sha256": "a78d388ab78c0d04013fefd10f1e242f0826cc302ef5290be88ad4717e566d12"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "remove-owned-network",
+            "pid": 3637,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 35,
+              "sha256": "138d539a221203aa72a52a00ff13278634a9fb09cab20ec01ad575efd7d20fb6"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          },
+          {
+            "label": "readback-owned-network-absence",
+            "pid": 3670,
+            "exitCode": 0,
+            "reaped": true,
+            "groupAbsent": true,
+            "stdout": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "stderr": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          }
+        ],
+        "checks": [
+          {
+            "id": "D07",
+            "name": "desktop monitor retries an uncertain actual response",
+            "status": "passed",
+            "evidence": {
+              "id": "cfc1d0ea-b017-4c0c-abb2-7af714d8ed04",
+              "workflowRunId": "wrun_01M7BCR0AA7TMD904J3X5C2BTZ",
+              "status": "completed",
+              "findings": 2,
+              "modelCostCents": 0,
+              "viewport": {
+                "width": 1280,
+                "height": 844
+              },
+              "touchEmulated": false,
+              "pageErrors": 0,
+              "externalRequests": 0,
+              "lostResponse": "one browser-intercepted request forwarded to the actual endpoint with the fixture CA, then aborted after its real response"
+            }
+          },
+          {
+            "id": "D08",
+            "name": "narrow touch monitor retries an uncertain actual response",
+            "status": "passed",
+            "evidence": {
+              "id": "ffc6dfe3-b1d9-47bf-a54e-5ef4a26776b4",
+              "workflowRunId": "wrun_01M7BCR370HJ54FFDYTFWRGZ6N",
+              "status": "completed",
+              "findings": 2,
+              "modelCostCents": 0,
+              "viewport": {
+                "width": 390,
+                "height": 844
+              },
+              "touchEmulated": true,
+              "pageErrors": 0,
+              "externalRequests": 0,
+              "lostResponse": "one browser-intercepted request forwarded to the actual endpoint with the fixture CA, then aborted after its real response"
+            }
+          }
+        ],
+        "cleanup": {
+          "ownedChromiumReaped": true,
+          "capturedProcessGroupsAbsent": true,
+          "ownedDatabaseAbsent": true,
+          "ownedNetworkAbsent": true,
+          "sourceClean": true,
+          "privateScratchAbsent": true
+        },
+        "accepted": true,
+        "sourceBefore": {
+          "files": 1064,
+          "bytes": 10096547,
+          "sha256": "e8b619726c68a1d86e8d1e8e041a0f72562ff2f067e451a880a77c2b7d19ca85"
+        },
+        "versions": {
+          "workflow": "5.4.0",
+          "next": "16.2.9",
+          "@playwright/test": "1.61.1"
+        },
+        "database": {
+          "container": "btl-workflow-43510133974-1",
+          "network": "btl-workflow-43510133974-1-network",
+          "identity": "1652a635f9c92e4f41d171704a19c69f5fbe7ac475ac4f910f1fa3d598b56e8f",
+          "image": [
+            "postgres@sha256:d3244e8ce3f165ee3c93d9c4a4b1d0fe48b3a89e2287b717fdcbbde92d405065"
+          ]
+        },
+        "transport": {
+          "queueHeld": 2,
+          "queueDelivered": 2,
+          "actualResponsesDropped": 2,
+          "origin": "https://127.0.0.1:3120",
+          "certificateSha256": "1347b8f2c281008a265962e1cf92804efa40eda7a87d6cb79c923db0eb0f1736",
+          "browserTrust": "exact authored certificate SPKI"
+        },
+        "localJournal": {
+          "jsonFiles": 26,
+          "privatePayloadsRetained": false
+        },
+        "ownSimulationRuns": 2,
+        "sourceAfter": {
+          "files": 1064,
+          "bytes": 10096547,
+          "sha256": "e8b619726c68a1d86e8d1e8e041a0f72562ff2f067e451a880a77c2b7d19ca85"
+        }
+      }
+    }
+  ],
+  "limits": [
+    "No hosted operator key, World configuration, SQL/Blob persistence or production release was configured or accepted.",
+    "No real model call, real charge or automatic interrupted-model replay experiment ran.",
+    "Local World has no authentication and is restricted to a single loopback instance; hosted transport authentication is outside these checks.",
+    "D03 used controlled authored binding loss; it does not prove a real failed COMMIT.",
+    "D05 recovery began when reopening a saved execution request explicitly started the World; it does not prove autonomous idle boot.",
+    "D06 expired claim was authored free fixture state.",
+    "D07/D08 used deterministic browser interception after a real endpoint response, not a fabricated app/SDK/SQL reply.",
+    "Touch was Chromium emulation, not a physical mobile device.",
+    "Original 43506996062 cleanup and final source guard remain unverified. Later passes do not repair its historical evidence."
+  ]
+}

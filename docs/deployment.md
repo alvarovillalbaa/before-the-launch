@@ -45,8 +45,11 @@ request. Existing240-second run/60-second call bounds, stop/admission and
 expired-claim partial-result reconciliation remain. A known failed/cancelled
 dispatcher can close an unclaimed queued run, never overwrite an active claim.
 Workflow completion is not proof of complete model coverage or known cost.
-The [new runtime qualification](proposals/workflow-dispatch.md) is pending;
-the dependency install pass does not prove durable product execution.
+The [new runtime qualification](results/2026/11-13/workflow-dispatch.md) covers
+six real Workflow/PG identities and two desktop/narrow monitor identities
+across preserved originals. Reopening a saved execution request explicitly
+starts the World once per process and recovered a queued run after process
+death. Hosted transport/access/persistence and real charges remain unverified.
 
 Local `dev` and `start` bind127.0.0.1. The SDK Local World is a single-instance
 development backend with no authentication; do not expose its internal routes
