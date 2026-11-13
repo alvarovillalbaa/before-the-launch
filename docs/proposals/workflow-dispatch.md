@@ -174,6 +174,17 @@ Workflow, dependency and lock bytes remain exact. The completed release will
 therefore have eight qualified identities across originals, not one green
 eight-case invocation.
 
+Browser profile43509180543 atcc0e37f0 launched Chromium but D07 timed out:
+the HTTPS proxy recorded a completed actual response drop and the retry button
+was not observed. The cause was not captured; D08 did not run. Source, browser,
+process, database, network and scratch cleanup passed. The next browser profile
+uses a deterministic browser interception: validate the original empty POST,
+origin and operator cookie, forward it to the actual endpoint with the authored
+CA, await its real202, then abort that one browser response. No fake success,
+SDK or SQL reply is injected. A finite control-region/request diagnostic is
+retained on failure; no keys, DOM snapshots, login screens or HAR are captured.
+Application/runtime/lock bytes remain unchanged and D01-D06 stay closed.
+
 Lifecycle support and exact restart semantics must follow the installed
 SDK's actual local World, not an assumed API. A mocked `start()` is only unit
 evidence and cannot replace the real runtime boundary. Preserve every original

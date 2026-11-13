@@ -184,15 +184,44 @@ export async function qualifyWorkflow({ root, env, report, startApp, stopApp }) 
       await check(id, `${touch ? "narrow touch" : "desktop"} monitor retries an uncertain actual response`, async () => {
         hold = true; const runId = await create(), owner = (await row(runId)).workflow_run_id;
         const context = await browser.newContext({ viewport: { width, height: 844 }, isMobile: touch, hasTouch: touch, serviceWorkers: "block" });
-        const errors = [], external = [];
+        const errors = [], external = [], executionResponses = [], executionFailures = [];
         try {
           await context.addCookies([{ name: "btl_operator", value: cookie.slice(cookie.indexOf("=") + 1), url: origin, httpOnly: true, secure: true, sameSite: "Strict" }]);
-          await context.route("**/*", async route => { const target = new URL(route.request().url()); if (target.origin === origin) await route.continue(); else { external.push(target.origin); await route.abort(); } });
+          let loseFirstExecutionResponse = true;
+          const executePath = `/api/runs/${runId}/execute`;
+          await context.route("**/*", async route => {
+            const target = new URL(route.request().url());
+            if (target.origin !== origin) { external.push(target.origin); await route.abort(); return; }
+            if (target.pathname === executePath && route.request().method() === "POST" && loseFirstExecutionResponse) {
+              loseFirstExecutionResponse = false;
+              try {
+              assert.equal(route.request().postData(), "{}");
+              assert.ok((await route.request().headerValue("cookie"))?.includes(cookie));
+              assert.equal(await route.request().headerValue("origin"), origin);
+              // Forward the exact authored request to the actual app with the
+              // fixture CA, then discard its real completed response. No fake
+              // success body or SDK/storage result is returned to the browser.
+              const actual = await api(executePath, {}); assert.equal(actual.status, 202);
+              report.transport.actualResponsesDropped++; await route.abort("failed");
+              } catch (error) {
+                report.browserFaultFailure = { type: error.name, message: String(error.message).slice(0, 1000) };
+                await route.abort("failed").catch(() => {});
+              }
+            } else await route.continue();
+          });
           const page = await context.newPage(); page.on("pageerror", error => errors.push(error.message));
-          drop = `/api/runs/${runId}/execute`; const lostBefore = report.transport.actualResponsesDropped;
+          page.on("response", response => { if (response.url() === origin + executePath) executionResponses.push(response.status()); });
+          page.on("requestfailed", request => { if (request.url() === origin + executePath) executionFailures.push(request.failure()?.errorText); });
+          const lostBefore = report.transport.actualResponsesDropped;
           await page.goto(`${origin}/runs/${runId}`);
           const retry = page.getByRole("button", { name: "Retry this saved execution request", exact: true });
-          await retry.waitFor({ state: "visible", timeout: 25_000 });
+          try { await retry.waitFor({ state: "visible", timeout: 25_000 }); }
+          catch (error) {
+            const region = page.getByRole("region", { name: "Run progress and controls", exact: true });
+            report.monitorFailure = { id, pathname: new URL(page.url()).pathname, errors: errors.slice(0, 5), external: external.slice(0, 5), executionResponses, executionFailures,
+              controls: (await region.textContent().catch(() => "region absent"))?.slice(0, 1600), dropped: report.transport.actualResponsesDropped - lostBefore };
+            throw error;
+          }
           assert.equal(report.transport.actualResponsesDropped, lostBefore + 1);
           assert.ok(await page.getByRole("region", { name: "Run progress and controls", exact: true }).textContent().then(text => text.includes("response is unavailable")));
           const request = page.waitForResponse(response => response.url() === origin + `/api/runs/${runId}/execute` && response.request().method() === "POST");
@@ -202,7 +231,8 @@ export async function qualifyWorkflow({ root, env, report, startApp, stopApp }) 
           await until(async () => (await page.getByRole("region", { name: "Run progress and controls", exact: true }).textContent()).includes("Run finished"), "monitor_did_not_refresh");
           await page.reload(); assert.ok((await page.getByRole("region", { name: "Run progress and controls", exact: true }).textContent()).includes("Run finished"));
           assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)); assert.deepEqual(errors, []); assert.deepEqual(external, []);
-          return { ...evidence, viewport: { width, height: 844 }, touchEmulated: touch, pageErrors: errors.length, externalRequests: external.length };
+          return { ...evidence, viewport: { width, height: 844 }, touchEmulated: touch, pageErrors: errors.length, externalRequests: external.length,
+            lostResponse: "one browser-intercepted request forwarded to the actual endpoint with the fixture CA, then aborted after its real response" };
         } finally { await context.close(); }
       });
     }
