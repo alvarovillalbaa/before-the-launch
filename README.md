@@ -1,5 +1,9 @@
 # before-the-launch
 
+<!-- project-family:start -->
+> **Project family:** [Web & Creative Apps](https://github.com/alvarovillalbaa#web-and-creative-apps) · **Area:** Product experiments
+<!-- project-family:end -->
+
 `before-the-launch` is a local-first perception simulator for product launches.
 It helps teams upload launch context, run configurable market-persona agents, inspect every trace, and turn the result into concrete product, pricing, messaging, and GTM changes.
 
